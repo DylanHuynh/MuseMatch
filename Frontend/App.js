@@ -1,12 +1,19 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
+
+import { useForm, Controller  } from "react-hook-form";
+import Login from './pages/Login.js';
 
 export default function App() {
+  const { control, handleSubmit, formState: { errors } } = useForm();
+  const onSubmit = data => console.log(data);
+
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app! Yeet</Text>
-      <StatusBar style="auto" />
+      <Login>
+
+      </Login>
     </View>
   );
 }
