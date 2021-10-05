@@ -4,18 +4,12 @@ import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import { useForm, Controller  } from "react-hook-form";
 import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
-// import {
-//     GoogleSignin,
-//     GoogleSigninButton,
-//   } from '@react-native-google-signin/google-signin';
 
 export default function Login() {
     const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
         defaultValues: {
-          firstName: '',
-          lastName: '',
+          username: '',
           password: '',
-          confirmPassword: '',
         }
       });
       const onSubmit = data => {
@@ -32,8 +26,8 @@ export default function Login() {
 
       return (
         <View style={styles.container}>
-          <Text style={styles.createAccountLabel}>Create Account</Text>
-          <Text style={styles.label}>First name</Text>
+          <Text style={styles.createAccountLabel}>Sign In</Text>
+          <Text style={styles.label}>Username</Text>
           <Controller
             control={control}
             render={({field: { onChange, onBlur, value }}) => (
@@ -44,21 +38,7 @@ export default function Login() {
                 value={value}
               />
             )}
-            name="firstName"
-            rules={{ required: true }}
-          />
-          <Text style={styles.label}>Last name</Text>
-          <Controller
-            control={control}
-            render={({field: { onChange, onBlur, value }}) => (
-              <TextInput
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={value => onChange(value)}
-                value={value}
-              />
-            )}
-            name="lastName"
+            name="username"
             rules={{ required: true }}
           />
           <Text style={styles.label}>Password</Text>
@@ -76,58 +56,14 @@ export default function Login() {
             name="password"
             rules={{ required: true }}
           />
-        <Text style={styles.label}>Confirm Passwrod</Text>
-
-          <Controller
-            control={control}
-            render={({field: { onChange, onBlur, value }}) => (
-              <TextInput
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={value => onChange(value)}
-                value={value}
-              />
-            )}
-            name="confirmPassword"
-            rules={{ required: true }}
-          />
-          {/* <View style={styles.button}>
-            <Button
-              style={styles.buttonInner}
-              color
-              title="Reset"
-              onPress={() => {
-                reset({
-                  firstName: 'Bill',
-                  lastName: 'Luo'
-                })
-              }}
-            />
-          </View> */}
-
-          {/* <View style={styles.button}>
-            <Button
-              style={styles.buttonInner}
-              color
-              title="Sign Up"
-              onPress={handleSubmit(onSubmit)}
-            />
-
-          </View> */}
           <View style={styles.buttonContainer}>
             <AppButton
-                    title="Sign Up"
+                    title="Log In"
                     onPress={handleSubmit(onSubmit)}
+                    type="primary"
                 />
           </View>
 
-          <View style={styles.or_line_container}>
-            <View style={styles.or_line} />
-            <View>
-                <Text style={styles.or_text}>or</Text>
-            </View>
-            <View style={styles.or_line} />
-          </View>
           {/* <GoogleSigninButton
             style={{ width: 192, height: 48 }}
             size={GoogleSigninButton.Size.Wide}

@@ -2,7 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 
 import { useForm, Controller  } from "react-hook-form";
+import CreateAccount from './pages/CreateAccount.js';
+import Landing from './pages/Landing.js';
 import Login from './pages/Login.js';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   const { control, handleSubmit, formState: { errors } } = useForm();
@@ -10,11 +16,14 @@ export default function App() {
 
 
   return (
-    <View style={styles.container}>
-      <Login>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Landing">
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Landing" component={Landing} />
 
-      </Login>
-    </View>
+      </Stack.Navigator>
+    </NavigationContainer>
+
   );
 }
 

@@ -1,11 +1,13 @@
 import { StyleSheet } from "react-native"
 
 export default StyleSheet.create({
+
     createAccountLabel: {
         color: 'black',
         margin: 20,
         marginLeft: 0,
         fontSize: 30,
+        fontWeight: 'bold'
       },
       or_line_container: {
           flexDirection: 'row',
