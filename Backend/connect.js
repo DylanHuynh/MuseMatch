@@ -1,8 +1,19 @@
 const { MongoClient } = require('mongodb');
+const SpotifyWebApi = require('spotify-web-api-node');
 
 // Replace the following with your Atlas connection string
 const url = 'mongodb+srv://MuseMatch:musematch123@cluster0.6ip8o.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const client = new MongoClient(url);
+const spotifyApi = new SpotifyWebApi();
+
+spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE').then(
+    function(data) {
+      console.log('Artist albums', data.body);
+    },
+    function(err) {
+      console.error(err);
+    }
+  );
 
 async function write(userInfo) {
     MongoClient.connect(url, function(err, db) {
@@ -30,13 +41,13 @@ async function read(id) {
       });
 }
 
-write(
-    {
-        name: "Veronica",
-        genres: "Rock",
-        location: "Berkeley",
-        id: "3"
-    }
-)
+// write(
+//     {
+//         name: "Veronica",
+//         genres: "Rock",
+//         location: "Berkeley",
+//         id: "3"
+//     }
+// )
 
-console.log(read("3"));
+// console.log(read("3"));
