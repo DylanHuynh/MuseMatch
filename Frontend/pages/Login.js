@@ -5,7 +5,7 @@ import { useForm, Controller  } from "react-hook-form";
 import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
 
-export default function Login() {
+export default function Login({ navigation }) {
     const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
         defaultValues: {
           username: '',
@@ -14,6 +14,7 @@ export default function Login() {
       });
       const onSubmit = data => {
         console.log(data);
+        navigation.navigate("Homepage")
       };
 
       const onChange = arg => {
@@ -22,11 +23,10 @@ export default function Login() {
         };
       };
 
-      console.log('errors', errors);
-
       return (
         <View style={styles.container}>
           <Text style={styles.createAccountLabel}>Sign In</Text>
+
           <Text style={styles.label}>Username</Text>
           <Controller
             control={control}
@@ -41,8 +41,8 @@ export default function Login() {
             name="username"
             rules={{ required: true }}
           />
-          <Text style={styles.label}>Password</Text>
 
+          <Text style={styles.label}>Password</Text>
           <Controller
             control={control}
             render={({field: { onChange, onBlur, value }}) => (
@@ -56,6 +56,7 @@ export default function Login() {
             name="password"
             rules={{ required: true }}
           />
+
           <View style={styles.buttonContainer}>
             <AppButton
                     title="Log In"
@@ -63,14 +64,6 @@ export default function Login() {
                     type="primary"
                 />
           </View>
-
-          {/* <GoogleSigninButton
-            style={{ width: 192, height: 48 }}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={this._signIn}
-            disabled={this.state.isSigninInProgress}
-            /> */}
         </View>
       );
     };

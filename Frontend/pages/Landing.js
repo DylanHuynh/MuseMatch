@@ -34,13 +34,14 @@ export default function Landing({ navigation }) {
                 <View styles={styles.footer}>
                     <AppButton
                         title="Sign up"
-                        onPress={() => navigation.navigate("Login")}
+                        onPress={() => navigation.navigate("Create Account")}
                         type="secondary"
 
                     />
                     <AppButton
                         title="I already have an account"
                         type="transparent"
+                        onPress={() => navigation.navigate("Login")}
                     />
                 </View>
 

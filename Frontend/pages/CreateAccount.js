@@ -4,12 +4,8 @@ import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import { useForm, Controller  } from "react-hook-form";
 import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
-// import {
-//     GoogleSignin,
-//     GoogleSigninButton,
-//   } from '@react-native-google-signin/google-signin';
 
-export default function CreateAccount() {
+export default function CreateAccount({ navigation }) {
     const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
         defaultValues: {
           firstName: '',
@@ -20,6 +16,7 @@ export default function CreateAccount() {
       });
       const onSubmit = data => {
         console.log(data);
+        navigation.navigate("Homepage")
       };
 
       const onChange = arg => {
@@ -33,7 +30,7 @@ export default function CreateAccount() {
       return (
         <View style={styles.container}>
           <Text style={styles.createAccountLabel}>Create Account</Text>
-          <Text style={styles.label}>First name</Text>
+          <Text style={styles.label}>First Name</Text>
           <Controller
             control={control}
             render={({field: { onChange, onBlur, value }}) => (
@@ -47,7 +44,7 @@ export default function CreateAccount() {
             name="firstName"
             rules={{ required: true }}
           />
-          <Text style={styles.label}>Last name</Text>
+          <Text style={styles.label}>Last Name</Text>
           <Controller
             control={control}
             render={({field: { onChange, onBlur, value }}) => (
@@ -91,29 +88,7 @@ export default function CreateAccount() {
             name="confirmPassword"
             rules={{ required: true }}
           />
-          {/* <View style={styles.button}>
-            <Button
-              style={styles.buttonInner}
-              color
-              title="Reset"
-              onPress={() => {
-                reset({
-                  firstName: 'Bill',
-                  lastName: 'Luo'
-                })
-              }}
-            />
-          </View> */}
 
-          {/* <View style={styles.button}>
-            <Button
-              style={styles.buttonInner}
-              color
-              title="Sign Up"
-              onPress={handleSubmit(onSubmit)}
-            />
-
-          </View> */}
           <View style={styles.buttonContainer}>
             <AppButton
                     title="Sign Up"
@@ -128,13 +103,7 @@ export default function CreateAccount() {
             </View>
             <View style={styles.or_line} />
           </View>
-          {/* <GoogleSigninButton
-            style={{ width: 192, height: 48 }}
-            size={GoogleSigninButton.Size.Wide}
-            color={GoogleSigninButton.Color.Dark}
-            onPress={this._signIn}
-            disabled={this.state.isSigninInProgress}
-            /> */}
+
         </View>
       );
     };

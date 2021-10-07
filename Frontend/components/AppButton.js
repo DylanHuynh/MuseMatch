@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Button, StyleSheet, TouchableOpacity, Text } from "react-native";
 import styles from "../styles/AppButtonStyles.js";
-const AppButton = ({ onPress, title, type }) => {
+const AppButton = ({ onPress, title, type, height, width }) => {
     // types: primary, secondary, transparent
     // TODO: will be another property called height and width
     if (type == 'primary') {

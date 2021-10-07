@@ -41,7 +41,7 @@ export default StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         padding: 8,
-        width: "90%",
+        width: "100%",
         backgroundColor: '#FFFFFF',
       },
       input: {
