@@ -1,16 +1,17 @@
 'use strict'
 import { StyleSheet } from "react-native"
+import { useFonts } from "expo-font";
+import { GothamBold } from './App.js'
 
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5FCFF'
+        backgroundColor: '#8E67BE'
       },
       card: {
+        top: 40,
         flex: 1,
-        borderRadius: 4,
-        borderWidth: 2,
-        borderColor: '#E8E8E8',
+        borderRadius: 25,
         justifyContent: 'center',
         backgroundColor: 'white'
       },
@@ -26,8 +27,37 @@ export default StyleSheet.create({
         backgroundColor: 'transparent'
       },
       nameHeader: {
+          position: "relative",
           textAlign: 'center',
+          fontFamily: "GothamBold",
           fontSize: 30,
           color: "#404040",
+          paddingTop: 10,
+      },
+      genres: {
+          position: "relative",
+          textAlign: 'center', 
+          fontFamily: "GothamBold",
+          fontSize: 10, 
+          color: "#404040",
+          paddingTop: 5,
+      },
+      profilePicture: {
+          position: "relative",
+          width: 82,
+          height: 82,
+          left: 140,
+          borderRadius: 50,
+          borderColor: "black",
+          overflow: "hidden",
+
+          // shadowOffset: { width: 10, height: 10 },
+          // shadowColor: '#000',
+          // shadowOpacity: 1,
+          // elevation: 10,
+          
+      },
+      profileView: {
+        paddingBottom: 308,
       }
 });

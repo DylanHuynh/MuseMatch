@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native'
+import { Button, StyleSheet, Text, View, Image } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import styles from './homeStyle'
 
@@ -31,9 +31,11 @@ const Card = (name) => {
 
   return (
     <View style = {styles.card}>
-
-      <Text style = {styles.nameHeader}> test </Text>
-
+        <View style = {styles.profileView}>
+            <Image style = {styles.profilePicture} source= {require('./assets/ed.jpg')}/>
+            <Text style = {styles.nameHeader}> Johnny Smith </Text>
+            <Text style = {styles.genres}>Genres: Pop, Melodic Rap, Pop Rock</Text>
+        </View>
     </View>
   )
 
