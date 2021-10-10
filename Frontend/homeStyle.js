@@ -68,12 +68,13 @@ export default StyleSheet.create({
           backgroundColor:'#526ED5',
           borderRadius:50,
       },
-      circleImage: {
+      circleXImage: {
           alignItems:'center',
           justifyContent:'center',
           width:36,
           height:36,
           borderRadius:50,
+          tintColor: "#0B2070"
       },
       circlePlayImage: {
         alignItems:'center',
@@ -81,6 +82,15 @@ export default StyleSheet.create({
         width:25,
         height:25,
         left:2.5,
+        tintColor:"#F2F2F2",
+      },
+      circleHeartImage: {
+        alignItems:'center',
+        justifyContent:'center',
+        width:30,
+        height:30,
+        borderRadius:50,
+        tintColor:"#F35A5A"
     },
       buttonContainer: {
         flexDirection: "row",

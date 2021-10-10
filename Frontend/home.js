@@ -40,13 +40,13 @@ const Card = (name) => {
 
         <View style = {styles.buttonContainer}>
           <TouchableOpacity style = {styles.circleButton} onPress={() => swiperRef.current.swipeLeft()}>
-            <Image style = {styles.circleImage} source= {require('./assets/x-icon.png')}/>
+            <Image style = {styles.circleXImage} source= {require('./assets/x-icon.png')}/>
           </TouchableOpacity>
           <TouchableOpacity style = {styles.circleButton} onPress={() => {console.log('play is pressed')}}>
             <Image style = {styles.circlePlayImage} source= {require('./assets/play-icon.png')}/>
           </TouchableOpacity>
           <TouchableOpacity style = {styles.circleButton} onPress={() => swiperRef.current.swipeRight()}>
-            <Image style = {styles.circleImage} source= {require('./assets/heart-icon.png')}/>
+            <Image style = {styles.circleHeartImage} source= {require('./assets/heart-icon.png')}/>
           </TouchableOpacity>
         </View>
     </View>
