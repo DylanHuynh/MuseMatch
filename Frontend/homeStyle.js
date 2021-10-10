@@ -59,5 +59,31 @@ export default StyleSheet.create({
       },
       profileView: {
         paddingBottom: 308,
+      },
+      circleButton: {
+          alignItems:'center',
+          justifyContent:'center',
+          width:50,
+          height:50,
+          backgroundColor:'#526ED5',
+          borderRadius:50,
+      },
+      circleImage: {
+          alignItems:'center',
+          justifyContent:'center',
+          width:36,
+          height:36,
+          borderRadius:50,
+      },
+      circlePlayImage: {
+        alignItems:'center',
+        justifyContent:'center',
+        width:25,
+        height:25,
+        left:2.5,
+    },
+      buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-evenly",
       }
 });

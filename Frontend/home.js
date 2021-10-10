@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View, Image } from 'react-native'
+import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import styles from './homeStyle'
 
@@ -35,6 +35,18 @@ const Card = (name) => {
             <Image style = {styles.profilePicture} source= {require('./assets/ed.jpg')}/>
             <Text style = {styles.nameHeader}> Johnny Smith </Text>
             <Text style = {styles.genres}>Genres: Pop, Melodic Rap, Pop Rock</Text>
+        </View>
+
+        <View style = {styles.buttonContainer}>
+          <TouchableOpacity style = {styles.circleButton} onPress={() => {console.log('x is pressed')}}>
+            <Image style = {styles.circleImage} source= {require('./assets/x-icon.png')}/>
+          </TouchableOpacity>
+          <TouchableOpacity style = {styles.circleButton} onPress={() => {console.log('play is pressed')}}>
+            <Image style = {styles.circlePlayImage} source= {require('./assets/play-icon.png')}/>
+          </TouchableOpacity>
+          <TouchableOpacity style = {styles.circleButton} onPress={() => {console.log('heart is pressed')}}>
+            <Image style = {styles.circleImage} source= {require('./assets/heart-icon.png')}/>
+          </TouchableOpacity>
         </View>
     </View>
   )
