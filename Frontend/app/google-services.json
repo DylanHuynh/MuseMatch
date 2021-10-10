@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "504574125940",
+    "project_id": "musematch-c5205",
+    "storage_bucket": "musematch-c5205.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:504574125940:android:4abafe427b3c9560862e21",
+        "android_client_info": {
+          "package_name": "com.example.musematchtest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "504574125940-3kjl8o8tovu64nap1v9fbauv2don2jq0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKIpulxbkqvgjfnTJ97ASS3sSscHMZFAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "504574125940-3kjl8o8tovu64nap1v9fbauv2don2jq0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
