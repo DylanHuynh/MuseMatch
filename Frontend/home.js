@@ -2,40 +2,63 @@ import React from 'react';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import styles from './homeStyle'
+import data from './testData'
+
+
+var index = 0;
+var swipedYes = [];
+var swipedNo = [];
+const swiperRef = React.createRef();
+const onSwiped = () => {
+  index = (index + 1) % data.length;
+  console.log("index: ", index);
+  console.log(data[index]);
+  console.log("_______");
+}
+const onSwipedLeft = () => {
+  swipedNo.push(data[index-1]);
+
+}
+const onSwipedRight = () => {
+  swipedYes.push(data[index-1]);
+
+}
+const onSwipedAll = () => {
+  console.log('Done Swiping!');
+  console.log("swiped right: ", swipedYes);
+  console.log("swiped left: ", swipedNo);  
+}
 
 const home = ({ navigation }) => {
   return (
     <Swiper
       ref={swiperRef}
-      cards={['DO', 'MORE', 'OF', 'WHAT', 'MAKES', 'YOU', 'HAPPY']}
-      renderCard={(card) => {
+      cards={data}
+      renderCard={(card, index) => {
           return (
               <Card/>
           )
       }}
-      onSwiped={(cardIndex) => {console.log(cardIndex)}}
-      onSwipedAll={() => {console.log('onSwipedAll')}}
+      onSwiped={onSwiped}
+      onSwipedLeft={onSwipedLeft}
+      onSwipedRight={onSwipedRight}
+      onSwipedAll={onSwipedAll}
       cardIndex={0}
-      backgroundColor={'#4FD0E9'}
-      stackSize= {3}>
-      <Button
-          onPress={() => {console.log('oulala')}}
-          title="Press me">
-          You can press me
-      </Button>
+      backgroundColor={'#546DD3'}
+      stackSize= {3}
+      cardHorizontalMargin={30}
+      marginTop={0}>
     </Swiper>
   )
 }
 
-const swiperRef = React.createRef();
-
-const Card = (name) => {
+const Card = () => {
   return (
     <View style = {styles.card}>
         <View style = {styles.profileView}>
-            <Image style = {styles.profilePicture} source= {require('./assets/ed.jpg')}/>
-            <Text style = {styles.nameHeader}> Johnny Smith </Text>
-            <Text style = {styles.genres}>Genres: Pop, Melodic Rap, Pop Rock</Text>
+            <Image style = {styles.profilePicture} source={{uri: data[index].image}}/>
+            <Text style = {styles.nameHeader}>{data[index].name}</Text>
+            <Text style = {styles.genres}>{data[index].genres}</Text>
         </View>
 
         <View style = {styles.buttonContainer}>

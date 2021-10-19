@@ -6,14 +6,14 @@ import { GothamBold } from './App.js'
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#8E67BE'
+        backgroundColor: "#E2E2FC"
       },
       card: {
-        top: 40,
+        top: 25,
         flex: 1,
         borderRadius: 25,
         justifyContent: 'center',
-        backgroundColor: 'white'
+        backgroundColor: "#F3F3FF"
       },
       text: {
         textAlign: 'center',
@@ -46,7 +46,7 @@ export default StyleSheet.create({
           position: "relative",
           width: 82,
           height: 82,
-          left: 140,
+          left: 130,
           borderRadius: 50,
           borderColor: "black",
           overflow: "hidden",
