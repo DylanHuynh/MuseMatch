@@ -58,7 +58,7 @@ const Card = () => {
         <View style = {styles.profileView}>
             <Image style = {styles.profilePicture} source={{uri: data[index].image}}/>
             <Text style = {styles.nameHeader}>{data[index].name}</Text>
-            <Text style = {styles.genres}>{data[index].genres}</Text>
+            <Text style = {styles.genres}>Genres: {data[index].genres}</Text>
         </View>
 
         <View style = {styles.buttonContainer}>
