@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
-import styles from './homeStyle'
-import data from './testData'
+import styles from '../styles/SwipeViewStyles'
+import data from './SwipeTestData'
 
 
 var index = 0;
@@ -26,10 +26,10 @@ const onSwipedRight = () => {
 const onSwipedAll = () => {
   console.log('Done Swiping!');
   console.log("swiped right: ", swipedYes);
-  console.log("swiped left: ", swipedNo);  
+  console.log("swiped left: ", swipedNo);
 }
 
-const home = ({ navigation }) => {
+const SwipeView = ({ navigation }) => {
   return (
     <Swiper
       ref={swiperRef}
@@ -63,17 +63,17 @@ const Card = () => {
 
         <View style = {styles.buttonContainer}>
           <TouchableOpacity style = {styles.circleButton} onPress={() => swiperRef.current.swipeLeft()}>
-            <Image style = {styles.circleXImage} source= {require('./assets/x-icon.png')}/>
+            <Image style = {styles.circleXImage} source= {require('../assets/x-icon.png')}/>
           </TouchableOpacity>
           <TouchableOpacity style = {styles.circleButton} onPress={() => {console.log('play is pressed')}}>
-            <Image style = {styles.circlePlayImage} source= {require('./assets/play-icon.png')}/>
+            <Image style = {styles.circlePlayImage} source= {require('../assets/play-icon.png')}/>
           </TouchableOpacity>
           <TouchableOpacity style = {styles.circleButton} onPress={() => swiperRef.current.swipeRight()}>
-            <Image style = {styles.circleHeartImage} source= {require('./assets/heart-icon.png')}/>
+            <Image style = {styles.circleHeartImage} source= {require('../assets/heart-icon.png')}/>
           </TouchableOpacity>
         </View>
     </View>
   )
 }
 
-export default home
+export default SwipeView

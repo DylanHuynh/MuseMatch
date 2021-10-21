@@ -1,7 +1,7 @@
 'use strict'
 import { StyleSheet } from "react-native"
 import { useFonts } from "expo-font";
-import { GothamBold } from './App.js'
+import { GothamBold } from '../App.js'
 
 export default StyleSheet.create({
     container: {
@@ -36,9 +36,9 @@ export default StyleSheet.create({
       },
       genres: {
           position: "relative",
-          textAlign: 'center', 
+          textAlign: 'center',
           fontFamily: "GothamBold",
-          fontSize: 10, 
+          fontSize: 10,
           color: "#404040",
           paddingTop: 5,
       },
@@ -55,7 +55,7 @@ export default StyleSheet.create({
           // shadowColor: '#000',
           // shadowOpacity: 1,
           // elevation: 10,
-          
+
       },
       profileView: {
         paddingBottom: 308,

@@ -14,7 +14,7 @@ export default function Login({ navigation }) {
       });
       const onSubmit = data => {
         console.log(data);
-        navigation.navigate("Home")
+        navigation.navigate("SwipeView")
       };
 
       const onChange = arg => {
