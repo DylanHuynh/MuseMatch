@@ -1,19 +1,20 @@
 const { MongoClient } = require('mongodb');
 const SpotifyWebApi = require('spotify-web-api-node');
 
+/*** User Info
+ * 
+ *{
+    id: "Unique ID of the user",
+    name: "Name of the user",
+    genres: [List of fav genres],
+    swipedRight: [List of the id of people swiped right by them]
+    swipedLeft: [List of the id of people swiped left by them]
+}
+ */
+
 // Replace the following with your Atlas connection string
 const url = 'mongodb+srv://MuseMatch:musematch123@cluster0.6ip8o.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const client = new MongoClient(url);
-// const spotifyApi = new SpotifyWebApi();
-
-// spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE').then(
-//     function(data) {
-//       console.log('Artist albums', data.body);
-//     },
-//     function(err) {
-//       console.error(err);
-//     }
-//   );
 
 async function write(userInfo) {
     MongoClient.connect(url, function(err, db) {
@@ -56,10 +57,10 @@ async function deleteByID(id) {
 }
 
 async function swipeRight(swiperID, swipeeID) {
-  // let swiper = readByID(swiperID);
-  // swiper.rightSwipped.push(swipeeID);
-  // deleteByID(swiperID);
-  // write(swiper);
+  let swiper = readByID(swiperID);
+  swiper.rightSwipped.push(swipeeID);
+  deleteByID(swiperID);
+  write(swiper);
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
     var dbo = db.db("beta");
@@ -71,5 +72,3 @@ async function swipeRight(swiperID, swipeeID) {
     return;
   });
 }
-
-swipeRight("3", "4");
