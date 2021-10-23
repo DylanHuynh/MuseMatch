@@ -7,8 +7,8 @@ const SpotifyWebApi = require('spotify-web-api-node');
     id: "Unique ID of the user",
     name: "Name of the user",
     genres: [List of fav genres],
-    swipedRight: [List of the id of people swiped right by them]
-    swipedLeft: [List of the id of people swiped left by them]
+    rightSwipped: [List of the id of people swiped right by them]
+    leftSwipped: [List of the id of people swiped left by them]
 }
  */
 
@@ -61,14 +61,11 @@ async function swipeRight(swiperID, swipeeID) {
   swiper.rightSwipped.push(swipeeID);
   deleteByID(swiperID);
   write(swiper);
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("beta");
-    dbo.collection("user").updateOne({
-        id: swiperID
-    }, {
-      $set: {"id": 4}
-    });
-    return;
-  });
+}
+
+async function swipeLeft(swiperID, swipeeID) {
+  let swiper = readByID(swiperID);
+  swiper.leftSwipped.push(swipeeID);
+  deleteByID(swiperID);
+  write(swiper);
 }
