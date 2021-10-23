@@ -4,16 +4,16 @@ const SpotifyWebApi = require('spotify-web-api-node');
 // Replace the following with your Atlas connection string
 const url = 'mongodb+srv://MuseMatch:musematch123@cluster0.6ip8o.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const client = new MongoClient(url);
-const spotifyApi = new SpotifyWebApi();
+// const spotifyApi = new SpotifyWebApi();
 
-spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE').then(
-    function(data) {
-      console.log('Artist albums', data.body);
-    },
-    function(err) {
-      console.error(err);
-    }
-  );
+// spotifyApi.getArtistAlbums('43ZHCT0cAZBISjO8DG9PnE').then(
+//     function(data) {
+//       console.log('Artist albums', data.body);
+//     },
+//     function(err) {
+//       console.error(err);
+//     }
+//   );
 
 async function write(userInfo) {
     MongoClient.connect(url, function(err, db) {
@@ -21,13 +21,13 @@ async function write(userInfo) {
         var dbo = db.db("beta");
         dbo.collection("user").insertOne(userInfo, function(err, res) {
           if (err) throw err;
-          console.log("1 document inserted");
           db.close();
+          return;
         });
       });
 }
 
-async function read(id) {
+async function readByID(id) {
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
         var dbo = db.db("beta");
@@ -35,19 +35,41 @@ async function read(id) {
             id: id
         }, function(err, result) {
           if (err) throw err;
-          console.log(result.name, result.genres);
           db.close();
+          return result;
         });
       });
 }
 
-// write(
-//     {
-//         name: "Veronica",
-//         genres: "Rock",
-//         location: "Berkeley",
-//         id: "3"
-//     }
-// )
+async function deleteByID(id) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("beta");
+    dbo.collection("user").deleteOne({
+        id: id
+    }, function(err, result) {
+      if (err) throw err;
+      db.close();
+      return;
+    });
+  });
+}
 
-// console.log(read("3"));
+async function swipeRight(swiperID, swipeeID) {
+  // let swiper = readByID(swiperID);
+  // swiper.rightSwipped.push(swipeeID);
+  // deleteByID(swiperID);
+  // write(swiper);
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("beta");
+    dbo.collection("user").updateOne({
+        id: swiperID
+    }, {
+      $set: {"id": 4}
+    });
+    return;
+  });
+}
+
+swipeRight("3", "4");
