@@ -30,27 +30,25 @@ const onSwipedAll = () => {
 }
 
 const SwipeView = ({ navigation }) => {
-  console.log(navigation);
   return (
-      <Swiper
-        ref={swiperRef}
-        cards={data}
-        renderCard={(card, index) => {
-            return (
+    <Swiper
+      ref={swiperRef}
+      cards={data}
+      renderCard={(card, index) => {
+          return (
               <Card/>
-            )
-        }}
-        onSwiped={onSwiped}
-        onSwipedLeft={onSwipedLeft}
-        onSwipedRight={onSwipedRight}
-        onSwipedAll={onSwipedAll}
-        cardIndex={0}
-        backgroundColor={'#546DD3'}
-        stackSize= {3}
-        cardHorizontalMargin={30}
-        marginTop={0}>
-      </Swiper>
-
+          )
+      }}
+      onSwiped={onSwiped}
+      onSwipedLeft={onSwipedLeft}
+      onSwipedRight={onSwipedRight}
+      onSwipedAll={onSwipedAll}
+      cardIndex={0}
+      backgroundColor={'#546DD3'}
+      stackSize= {3}
+      cardHorizontalMargin={30}
+      marginTop={0}>
+    </Swiper>
   )
 }
 
