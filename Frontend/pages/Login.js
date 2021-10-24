@@ -38,14 +38,6 @@ const getAuthorizationCode = async () => {
 
     const redirectUrl = AuthSession.getRedirectUrl('redirect'); //this will be something like https://auth.expo.io/@your-username/your-app-slug
 
-    const authUrl = 'https://accounts.spotify.com/authorize' +
-      '?response_type=code' +
-      '&client_id=' +
-      credentials.clientId +
-      (scopes ? '&scope=' + encodeURIComponent(scopes) : '') +
-      '&redirect_uri=' +
-      encodeURIComponent(redirectUrl)
-    console.log(authUrl)
     result = await AuthSession.startAsync({
       authUrl:
         'https://accounts.spotify.com/authorize' +
