@@ -102,7 +102,7 @@ export default function Login({ navigation }) {
   });
   const onSubmit = data => {
     const token = await getTokens();
-    console.log(tokens)
+    //THIS IS OUR AUTH TOKEN --> use for all api calls
 
     navigation.navigate("Homepage", {
       authToken: token
