@@ -6,31 +6,43 @@ const spotifyApi = new SpotifyWebApi({
   });
   
 // Retrieve an access token using your credentials
-spotifyApi.clientCredentialsGrant().
-    then(function(result) {
-        console.log('It worked! Your access token is: ' + result.body.access_token); 
-        spotifyApi.setAccessToken(result.body.access_token);
-        console.log(result.body);
 
-        // All requests w/ authorized API
-        spotifyApi.getRecommendations({
-            min_energy: 0.4,
-            seed_artists: ['1Xyo4u8uXC1ZmMpatF05PJ', '246dkjvS1zLTtiykXe5h60'],
-            seed_genres: ['pop', 'hip_hop'],
-            min_popularity: 75,
-            limit: 3
-          })
-        .then(function(data) {
-          let recommendations = data.body;
-          console.log(recommendations);
-        }, function(err) {
-          console.log("Something went wrong!", err);
-        });
-      
-    }).catch(function(err) {
-        console.log('If this is printed, it probably means that you used invalid ' +
-        'clientId and clientSecret values. Please check!');
-        console.log('Hint: ');
+async function credentialsRefresh(spotifyApi) {
+  const error = 0;
+  await spotifyApi.clientCredentialsGrant().
+    then(function(result) {
+        spotifyApi.setAccessToken(result.body.access_token);
+      }).catch(function(err) {
         console.log(err);
+        error = 1;
     }
-);
+  );
+  return error;
+}
+
+async function getRecommendations(
+  spotifyApi, 
+  seed_artists_, 
+  seed_genres_, 
+  min_energy_ = 0.4, 
+  min_popularity_ = 75,
+  limit_ = 3) {
+    const didRefresh = await credentialsRefresh(spotifyApi);
+    if (didRefresh == 0) {
+      spotifyApi.getRecommendations({
+        min_energy: min_energy_,
+        seed_artists: seed_artists_,
+        seed_genres: seed_genres_,
+        min_popularity: min_popularity_,
+        limit: limit_
+      }).then(function(data) {
+        let recommendations = data.body;
+        console.log(recommendations);
+      }, function(err) {
+          console.log("Something went wrong!", err);
+        }
+      );
+    }
+}
+
+getRecommendations(spotifyApi, ['1Xyo4u8uXC1ZmMpatF05PJ', '246dkjvS1zLTtiykXe5h60'], ['pop', 'hip_hop'])
