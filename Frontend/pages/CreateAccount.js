@@ -1,11 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 
 import { useForm, Controller  } from "react-hook-form";
 import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
+import Firebase from '../config/firebase';
+import LoginErrorMessage from '../components/LoginErrorMessage.js';
+
+// Import the functions you need from the SDKs you need
+//import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+const auth = Firebase.auth();
+
+
 
 export default function CreateAccount({ navigation }) {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [passwordVisibility, setPasswordVisibility] = useState(true);
+    const [rightIcon, setRightIcon] = useState('eye');
+    const [signupError, setSignupError] = useState('');
     const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
         defaultValues: {
           firstName: '',
@@ -14,11 +30,25 @@ export default function CreateAccount({ navigation }) {
           confirmPassword: '',
         }
       });
-      const onSubmit = data => {
-        console.log(data);
+      const onHandleSignup = async () => {
+        try {
+          if (email !== '' && password !== '') {
+            await auth.createUserWithEmailAndPassword(email, password);
+          }
+        } catch (error) {
+          setSignupError(error.message);
+        }
         navigation.navigate("Homepage")
       };
-
+      const handlePasswordVisibility = () => {
+        if (rightIcon === 'eye') {
+          setRightIcon('eye-off');
+          setPasswordVisibility(!passwordVisibility);
+        } else if (rightIcon === 'eye-off') {
+          setRightIcon('eye');
+          setPasswordVisibility(!passwordVisibility);
+        }
+      };
       const onChange = arg => {
         return {
           value: arg.nativeEvent.text,
@@ -64,10 +94,14 @@ export default function CreateAccount({ navigation }) {
             control={control}
             render={({field: { onChange, onBlur, value }}) => (
               <TextInput
+                placeholder='Enter email'
+                autoCapitalize='none'
+                keyboardType='email-address'
+                textContentType='emailAddress'
                 style={styles.input}
                 onBlur={onBlur}
-                onChangeText={value => onChange(value)}
-                value={value}
+                onChangeText={text => setEmail(text)}
+                value={email}
               />
             )}
             name="password"
@@ -79,20 +113,27 @@ export default function CreateAccount({ navigation }) {
             control={control}
             render={({field: { onChange, onBlur, value }}) => (
               <TextInput
+                placeholder='Enter password'
+                autoCapitalize='none'
+                autoCorrect={false}
+                secureTextEntry={passwordVisibility}
+                textContentType='password'
                 style={styles.input}
                 onBlur={onBlur}
-                onChangeText={value => onChange(value)}
-                value={value}
+                value={password}
+                onChangeText={text => setPassword(text)}
+                handlePasswordVisibility={handlePasswordVisibility}
               />
             )}
             name="confirmPassword"
             rules={{ required: true }}
           />
+          {signupError ? <LoginErrorMessage error={signupError} visible={true} /> : null}
 
           <View style={styles.buttonContainer}>
             <AppButton
                     title="Sign Up"
-                    onPress={handleSubmit(onSubmit)}
+                    onPress={onHandleSignup}
                     type="primary"
                 />
           </View>
