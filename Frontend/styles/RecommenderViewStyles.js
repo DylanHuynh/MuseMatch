@@ -6,14 +6,14 @@ import { GothamBold } from '../App.js'
 export default StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'black',
+        backgroundColor: "#E2E2FC"
       },
       card: {
         top: 25,
         flex: 1,
         borderRadius: 25,
         justifyContent: 'center',
-        backgroundColor: "#F3F3FF",
+        backgroundColor: "#F3F3FF"
       },
       text: {
         textAlign: 'center',
@@ -26,28 +26,38 @@ export default StyleSheet.create({
         color: 'white',
         backgroundColor: 'transparent'
       },
-      nameHeader: {
+      songCounter: {
+        textAlign: 'center',
+        fontFamily: "GothamBold",
+        fontSize: 20,
+        color: "#404040",
+      },
+      songView: {
+        paddingTop: 100,
+      },
+      songName: {
           position: "relative",
-          textAlign: 'center',
+          textAlign: 'left',
           fontFamily: "GothamBold",
-          fontSize: 30,
+          fontSize: 25,
           color: "#404040",
           paddingTop: 10,
+          paddingLeft: 45,
       },
-      genres: {
+      artist: {
           position: "relative",
-          textAlign: 'center',
+          textAlign: 'left',
           fontFamily: "GothamBold",
           fontSize: 10,
           color: "#404040",
-          paddingTop: 5,
+          paddingLeft: 45,
       },
-      profilePicture: {
+      albumCover: {
           position: "relative",
-          width: 82,
-          height: 82,
-          left: 130,
-          borderRadius: 50,
+          width: 254,
+          height: 254,
+          marginRight: 'auto',
+          marginLeft: 'auto',
           borderColor: "black",
           overflow: "hidden",
 
@@ -57,9 +67,7 @@ export default StyleSheet.create({
           // elevation: 10,
 
       },
-      profileView: {
-        paddingBottom: 308,
-      },
+      // SWIPE BUTTON STYLES
       circleButton: {
           alignItems:'center',
           justifyContent:'center',
@@ -95,5 +103,6 @@ export default StyleSheet.create({
       buttonContainer: {
         flexDirection: "row",
         justifyContent: "space-evenly",
+        paddingTop: 50,
       }
 });

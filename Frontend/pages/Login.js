@@ -101,12 +101,10 @@ export default function Login({ navigation }) {
     }
   });
   const onSubmit = data => {
-    const token = await getTokens();
+    //const token = await getTokens();
     //THIS IS OUR AUTH TOKEN --> use for all api calls
 
-    navigation.navigate("Homepage", {
-      authToken: token
-    })
+    navigation.navigate("RecommenderView");
   };
 
   const onChange = arg => {

@@ -8,6 +8,7 @@ import Login from './pages/Login.js';
 import CreateAccount from './pages/CreateAccount.js';
 import Homepage from './pages/Homepage.js';
 import SwipeView from './pages/SwipeView.js';
+import RecommenderView from './pages/RecommenderView.js'
 
 
 const Stack = createNativeStackNavigator();
@@ -32,6 +33,7 @@ export default function App() {
         <Stack.Screen name="Create Account" component={CreateAccount} />
         <Stack.Screen name="Homepage" component={Homepage} />
         <Stack.Screen name="SwipeView" component={SwipeView}/>
+        <Stack.Screen name="RecommenderView" component={RecommenderView}/>
 
       </Stack.Navigator>
     </NavigationContainer>
