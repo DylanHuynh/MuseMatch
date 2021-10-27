@@ -34,11 +34,12 @@ export default function CreateAccount({ navigation }) {
         try {
           if (email !== '' && password !== '') {
             await auth.createUserWithEmailAndPassword(email, password);
+            await auth.signInWithEmailAndPassword(email, password); //Added this so it creates then signs in
+            navigation.navigate("Homepage")
           }
         } catch (error) {
           setSignupError(error.message);
         }
-        navigation.navigate("Homepage")
       };
       const handlePasswordVisibility = () => {
         if (rightIcon === 'eye') {
@@ -88,7 +89,7 @@ export default function CreateAccount({ navigation }) {
             name="lastName"
             rules={{ required: true }}
           />
-          <Text style={styles.label}>Password</Text>
+          <Text style={styles.label}>Email</Text>
 
           <Controller
             control={control}
@@ -104,10 +105,10 @@ export default function CreateAccount({ navigation }) {
                 value={email}
               />
             )}
-            name="password"
+            name="email"
             rules={{ required: true }}
           />
-        <Text style={styles.label}>Confirm Password</Text>
+        <Text style={styles.label}>Password</Text>
 
           <Controller
             control={control}
@@ -125,7 +126,7 @@ export default function CreateAccount({ navigation }) {
                 handlePasswordVisibility={handlePasswordVisibility}
               />
             )}
-            name="confirmPassword"
+            name="password"
             rules={{ required: true }}
           />
           {signupError ? <LoginErrorMessage error={signupError} visible={true} /> : null}

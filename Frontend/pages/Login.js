@@ -117,14 +117,14 @@ export default function Login({ navigation }) {
     try {
       if (email !== '' && password !== '') {
         await auth.signInWithEmailAndPassword(email, password);
+        const token = await getTokens();
+        navigation.navigate("Homepage", {
+          authToken: token
+        })
       }
     } catch (error) {
       setLoginError(error.message);
     }
-    const token = await getTokens();
-    navigation.navigate("Homepage", {
-      authToken: token
-    })
   };
   const handlePasswordVisibility = () => {
     if (rightIcon === 'eye') {
