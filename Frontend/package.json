@@ -10,6 +10,7 @@
   "dependencies": {
     "@expo/ngrok": "^2.4.3",
     "@react-native-google-signin/google-signin": "^7.0.1",
+    "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
     "axios": "^0.23.0",
