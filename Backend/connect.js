@@ -6,7 +6,9 @@ const SpotifyWebApi = require('spotify-web-api-node');
  *{
     id: "Unique ID of the user",
     name: "Name of the user",
-    genres: [List of fav genres],
+    genres: [],
+    songs: [],
+    artists: [],
     rightSwipped: [List of the id of people swiped right by them]
     leftSwipped: [List of the id of people swiped left by them]
 }
