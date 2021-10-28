@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import { encode as btoa } from 'base-64';
 import { useForm, Controller } from "react-hook-form";
@@ -8,9 +8,15 @@ import styles from '../styles/FormStyles.js';
 import * as AuthSession from 'expo-auth-session'
 import * as Linking from 'expo-linking';
 
+import LoginErrorMessage from '../components/LoginErrorMessage.js';
+import Firebase from '../config/firebase';
+
 import axios from 'axios'
 
 
+const auth = Firebase.auth()
+
+  //Spotify
 export const spotifyCredentials = {
   clientId: 'a2ecb5b0a2154d4f9fb99f632ecdd889',
   clientSecret: 'bc26c22208f142b1b5933db834fb686f',
@@ -94,26 +100,46 @@ const getTokens = async () => {
 }
 
 export default function Login({ navigation }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordVisibility, setPasswordVisibility] = useState(true);
+  const [rightIcon, setRightIcon] = useState('eye');
+  const [loginError, setLoginError] = useState('');
+
   const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
     defaultValues: {
       username: '',
       password: '',
     }
   });
-  const onSubmit = data => {
-    const token = await getTokens();
-    //THIS IS OUR AUTH TOKEN --> use for all api calls
 
-    navigation.navigate("Homepage", {
-      authToken: token
-    })
+  const onLogin = async () => {
+    try {
+      if (email !== '' && password !== '') {
+        await auth.signInWithEmailAndPassword(email, password);
+        const token = await getTokens();
+        navigation.navigate("Homepage", {
+          authToken: token
+        })
+      }
+    } catch (error) {
+      setLoginError(error.message);
+    }
   };
-
-  const onChange = arg => {
-    return {
-      value: arg.nativeEvent.text,
-    };
+  const handlePasswordVisibility = () => {
+    if (rightIcon === 'eye') {
+      setRightIcon('eye-off');
+      setPasswordVisibility(!passwordVisibility);
+    } else if (rightIcon === 'eye-off') {
+      setRightIcon('eye');
+      setPasswordVisibility(!passwordVisibility);
+    }
   };
+  // const onChange = arg => {
+  //   return {
+  //     value: arg.nativeEvent.text,
+  //   };
+  // };
 
   return (
     <View style={styles.container}>
@@ -122,13 +148,18 @@ export default function Login({ navigation }) {
       <Text style={styles.label}>Username</Text>
       <Controller
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({ field: { onBlur, value } }) => (
           <TextInput
+            placeholder='Enter email'
+            autoCapitalize='none'
+            keyboardType='email-address'
+            textContentType='emailAddress'
             style={styles.input}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
+            onChangeText={text => setEmail(text)}
+            value={email}
           />
+
         )}
         name="username"
         rules={{ required: true }}
@@ -137,22 +168,29 @@ export default function Login({ navigation }) {
       <Text style={styles.label}>Password</Text>
       <Controller
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({ field: { onBlur, value } }) => (
           <TextInput
+            placeholder='Enter password'
+            autoCapitalize='none'
+            autoCorrect={false}
+            secureTextEntry={passwordVisibility}
+            textContentType='password'
             style={styles.input}
             onBlur={onBlur}
-            onChangeText={value => onChange(value)}
-            value={value}
+            value={password}
+            onChangeText={text => setPassword(text)}
+            handlePasswordVisibility={handlePasswordVisibility}
           />
         )}
         name="password"
         rules={{ required: true }}
       />
+      {loginError ? <LoginErrorMessage error={loginError} visible={true} /> : null}
 
       <View style={styles.buttonContainer}>
         <AppButton
           title="Log In"
-          onPress={handleSubmit(onSubmit)}
+          onPress={onLogin}
           type="primary"
         />
       </View>
