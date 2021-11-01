@@ -41,7 +41,7 @@ export default function Landing({ navigation }) {
                     <AppButton
                         title="I already have an account"
                         type="transparent"
-                        onPress={() => navigation.navigate("Login")}
+                        onPress={() => navigation.navigate("CreateProfile")}
                     />
                 </View>
 

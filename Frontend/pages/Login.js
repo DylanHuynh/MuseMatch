@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import { encode as btoa } from 'base-64';
 import { useForm, Controller } from "react-hook-form";
+import {SecureStore} from 'expo';
 
 import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
@@ -118,6 +119,7 @@ export default function Login({ navigation }) {
       if (email !== '' && password !== '') {
         await auth.signInWithEmailAndPassword(email, password);
         const token = await getTokens();
+        await SecureStore.setItemAsync('secure_token', token);
         navigation.navigate("Homepage", {
           authToken: token
         })
