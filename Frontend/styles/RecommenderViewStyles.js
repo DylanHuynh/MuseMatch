@@ -13,7 +13,7 @@ export default StyleSheet.create({
         flex: 1,
         borderRadius: 25,
         justifyContent: 'center',
-        backgroundColor: "#F3F3FF"
+        backgroundColor: "#F3F3FF",
       },
       text: {
         textAlign: 'center',
@@ -104,5 +104,9 @@ export default StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-evenly",
         paddingTop: 50,
+      },
+      bar: {
+        marginTop: 700,
+        marginLeft: 45,
       }
 });
