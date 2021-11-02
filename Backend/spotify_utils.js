@@ -4,10 +4,10 @@ const spotifyApi = new SpotifyWebApi({
     clientId: '2dc1d1cc4a344030a74de9fa03c8f4a8',
     clientSecret: '86f81ff134f5491185034228dcf50c1e'
   });
-  
+
 // Retrieve an access token using your credentials
 
-async function credentialsRefresh(spotifyApi) {
+async function credentialsRefresh() {
   const error = 0;
   await spotifyApi.clientCredentialsGrant().
     then(function(result) {
@@ -20,24 +20,21 @@ async function credentialsRefresh(spotifyApi) {
   return error;
 }
 
-async function getArtistByID(spotifyApi, artistID) {
-    await credentialsRefresh(spotifyApi);
-    spotifyApi.getArtist(artistID)
-        .then(function(data) {
-            return data.body;
-        }, function(err) {
-            console.error(err);
-        }
-    );
+async function getArtistByID(artistID) {
+    const didRefresh = await credentialsRefresh(spotifyApi);
+    if (didRefresh == 0) {
+        const artistData = await spotifyApi.getArtist(artistID);
+        return artistData.body;
+    }   
 }
 
-async function getSongByID(spotifyApi, songID) {
-    await credentialsRefresh(spotifyApi);
-    spotifyApi.getAlbum(songID)
-        .then(function(data) {
-            console.log('Album information', data.body);
-        }, function(err) {
-            console.error(err);
-        }
-    );
+async function getSongByID(songID) {
+    const didRefresh = await credentialsRefresh(spotifyApi);
+    if (didRefresh == 0) {
+        const songData = await spotifyApi.getAlbum(songID);
+        return songData.body;
+    }
 }
+
+exports.getArtistByID = getArtistByID;
+exports.getSongByID = getSongByID;
