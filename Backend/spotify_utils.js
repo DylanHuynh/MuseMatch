@@ -4,11 +4,10 @@ const spotifyApi = new SpotifyWebApi({
     clientId: '2dc1d1cc4a344030a74de9fa03c8f4a8',
     clientSecret: '86f81ff134f5491185034228dcf50c1e'
   });
-  
 // Retrieve an access token using your credentials
 
 async function credentialsRefresh(spotifyApi) {
-  const error = 0;
+  let error = 0;
   await spotifyApi.clientCredentialsGrant().
     then(function(result) {
         spotifyApi.setAccessToken(result.body.access_token);
@@ -41,3 +40,17 @@ async function getSongByID(spotifyApi, songID) {
         }
     );
 }
+
+async function searchByArtist(search) {
+  await credentialsRefresh(spotifyApi)
+  let data = await spotifyApi.searchArtists(search)
+  return data.body;
+}
+
+async function searchBySong(search) {
+    await credentialsRefresh(spotifyApi)
+    let data = await spotifyApi.searchTracks(search)
+    return data.body;
+  }
+
+module.exports = {searchByArtist, searchBySong}

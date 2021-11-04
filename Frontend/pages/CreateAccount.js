@@ -35,7 +35,7 @@ export default function CreateAccount({ navigation }) {
           if (email !== '' && password !== '') {
             await auth.createUserWithEmailAndPassword(email, password);
             await auth.signInWithEmailAndPassword(email, password); //Added this so it creates then signs in
-            navigation.navigate("Homepage")
+            navigation.navigate("CreateProfile")
           }
         } catch (error) {
           setSignupError(error.message);

@@ -2,12 +2,11 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import { encode as btoa } from 'base-64';
 import { useForm, Controller } from "react-hook-form";
+import * as SecureStore from 'expo-secure-store';
 
 import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
 import * as AuthSession from 'expo-auth-session'
-import * as Linking from 'expo-linking';
-
 import LoginErrorMessage from '../components/LoginErrorMessage.js';
 import Firebase from '../config/firebase';
 
@@ -24,11 +23,6 @@ export const spotifyCredentials = {
 }
 
 
-const getSpotifyCredentials = async () => {
-  const res = await axios.get('http://10.0.2.2:3000/api/spotify-credentials')
-  const spotifyCredentials = res.data
-  return spotifyCredentials
-}
 
 
 const scopesArr = ['user-modify-playback-state', 'user-read-currently-playing', 'user-read-playback-state', 'user-library-modify',
@@ -40,7 +34,7 @@ const getAuthorizationCode = async () => {
   let result;
   try {
 
-    const credentials = await getSpotifyCredentials() //we wrote this function above
+    const credentials = spotifyCredentials//we wrote this function above
 
     const redirectUrl = AuthSession.getRedirectUrl('redirect'); //this will be something like https://auth.expo.io/@your-username/your-app-slug
 
@@ -58,14 +52,13 @@ const getAuthorizationCode = async () => {
     console.error(err)
   }
   console.log(result)
-  debugger;
   return result.params.code
 }
 
 const getTokens = async () => {
   try {
     const authorizationCode = await getAuthorizationCode() //we wrote this function above
-    const credentials = await getSpotifyCredentials() //we wrote this function above (could also run this outside of the functions and store the credentials in local scope)
+    const credentials = spotifyCredentials; //we wrote this function above (could also run this outside of the functions and store the credentials in local scope)
     const credsB64 = btoa(`${credentials.clientId}:${credentials.clientSecret}`);
     const response = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
@@ -91,7 +84,6 @@ const getTokens = async () => {
       refreshToken,
       expiresIn
     }
-    console.log({responseJson});
     return accessToken;
   } catch (err) {
     console.error(err);
@@ -114,13 +106,13 @@ export default function Login({ navigation }) {
   });
 
   const onLogin = async () => {
+
     try {
       if (email !== '' && password !== '') {
         await auth.signInWithEmailAndPassword(email, password);
         const token = await getTokens();
-        navigation.navigate("Homepage", {
-          authToken: token
-        })
+        await SecureStore.setItemAsync('secure_token', token);
+        navigation.navigate("CreateProfile");
       }
     } catch (error) {
       setLoginError(error.message);

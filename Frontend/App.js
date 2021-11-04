@@ -9,6 +9,7 @@ import Login from './pages/Login.js';
 import CreateAccount from './pages/CreateAccount.js';
 import Homepage from './pages/Homepage.js';
 import SwipeView from './pages/SwipeView.js';
+import CreateProfile from './pages/CreateProfile.js';
 import Home from './pages/Home'
 import { Tab } from 'react-native-elements/dist/tab/Tab';
 
@@ -34,6 +35,7 @@ export default function App() {
         <Stack.Screen name="Landing" component={Landing} />
         <Stack.Screen name="Create Account" component={CreateAccount} />
         <Stack.Screen name="Home" component = {Home} />
+        <Stack.Screen name="CreateProfile" component = {CreateProfile} />
       </Stack.Navigator>
     </NavigationContainer>
 
