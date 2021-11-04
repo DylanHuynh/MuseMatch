@@ -53,12 +53,6 @@ export default function CreateAccount({ navigation }) {
             artist,
         }
     });
-
-    const onChange = arg => {
-        return {
-            value: arg.nativeEvent.text,
-        };
-    };
     const onHandleCreateProfile = () => {
         const resp = {
             username: username,
