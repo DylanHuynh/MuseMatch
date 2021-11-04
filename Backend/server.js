@@ -42,7 +42,6 @@ app.get('/api/search-by-song', async (req, res, next) => {
     will pass it to next() and express will handle the error;
   */
   searchBySong(req.query.search).then((songs)=>{
-    console.log(songs)
     res.send(songs)
 
     }
