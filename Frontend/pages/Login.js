@@ -52,7 +52,6 @@ const getAuthorizationCode = async () => {
     console.error(err)
   }
   console.log(result)
-  debugger;
   return result.params.code
 }
 
@@ -85,7 +84,6 @@ const getTokens = async () => {
       refreshToken,
       expiresIn
     }
-    console.log({responseJson});
     return accessToken;
   } catch (err) {
     console.error(err);
@@ -112,12 +110,8 @@ export default function Login({ navigation }) {
     try {
       if (email !== '' && password !== '') {
         await auth.signInWithEmailAndPassword(email, password);
-        console.log(email);
-        console.log(password);
         const token = await getTokens();
-        console.log("here")
         await SecureStore.setItemAsync('secure_token', token);
-        console.log("here2")
         navigation.navigate("CreateProfile");
       }
     } catch (error) {

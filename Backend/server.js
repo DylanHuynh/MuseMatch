@@ -23,18 +23,13 @@ app.get('/api/spotify-credentials', (req, res, next) => {
   res.send(spotifyCredentials)
 });
 
-const asyncMiddleware = fn =>
-  (req, res, next) => {
-    Promise.resolve(fn(req, res, next))
-      .catch(next);
-  };
 
 app.get('/api/search-by-artist', async (req, res, next) => {
   /*
     if there is an error thrown in getUserFromDb, asyncMiddleware
     will pass it to next() and express will handle the error;
   */
-  const artists = searchByArtist(req.query.search).then((artists)=>{
+  searchByArtist(req.query.search).then((artists)=>{
     res.send(artists)
 
     }
@@ -46,7 +41,7 @@ app.get('/api/search-by-song', async (req, res, next) => {
     if there is an error thrown in getUserFromDb, asyncMiddleware
     will pass it to next() and express will handle the error;
   */
-  const songs = searchBySong(req.query.search).then((songs)=>{
+  searchBySong(req.query.search).then((songs)=>{
     console.log(songs)
     res.send(songs)
 

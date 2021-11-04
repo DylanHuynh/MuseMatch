@@ -10,16 +10,6 @@ import { spotifyCredentials } from '../spotify_utils.js';
 import axios from 'axios';
 import Firebase from '../config/firebase';
 
-const auth = Firebase.auth();
-
-
-// Import the functions you need from the SDKs you need
-//import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-
-
 export default function CreateAccount({ navigation }) {
     const [bio, setBio] = useState("")
     const [username, setUsername] = useState("")
@@ -35,7 +25,6 @@ export default function CreateAccount({ navigation }) {
     const [songList, setSongList] = useState([]);
 
     const getArtists = async (searchStr) => {
-        const token = await SecureStore.getItemAsync('secure_token');
         const response = await axios.get('http://10.0.2.2:3000/api/search-by-artist', { params: { search: searchStr } });
 
         let artists = response.data.artists.items.map(item => ({
@@ -43,30 +32,19 @@ export default function CreateAccount({ navigation }) {
             name: item.name,
         }))
         return artists.slice(0, 10);
-        // const artistList = responseJson.data.items.map(item => item.name);
-        // console.log("these are my artists")
-        // console.log(artistList);
-
     }
 
     const getSongs = async (searchStr) => {
-        const token = await SecureStore.getItemAsync('secure_token');
+        // USE THIS BELOW LINE TO GRAB A TOKEN IF NECESSARY
+        // const token = await SecureStore.getItemAsync('secure_token');
         const response = await axios.get('http://10.0.2.2:3000/api/search-by-song', { params: { search: searchStr } });
-        // console.log(response.data.tracks.items)
         let songs = response.data.tracks.items.map(item => ({
             id: item.id,
             name: item.name,
         }))
-        console.log(songs)
         return songs.slice(0, 10);
-        // const artistList = responseJson.data.items.map(item => item.name);
-        // console.log("these are my artists")
-        // console.log(artistList);
-
     }
-    // useEffect(() => {
 
-    // });
 
     const { register, setValue, handleSubmit, control, reset, formState: { errors } } = useForm({
         defaultValues: {
@@ -82,7 +60,6 @@ export default function CreateAccount({ navigation }) {
         };
     };
     const onHandleCreateProfile = () => {
-        console.log("here")
         const resp = {
             username: username,
             artist: artist.name,
@@ -92,14 +69,10 @@ export default function CreateAccount({ navigation }) {
             bio: bio,
             uid: Firebase.auth().currentUser.uid
         }
-        console.log(resp)
         axios.post('http://10.0.2.2:3000/api/create-account', resp)
         navigation.navigate('Home')
 
     }
-
-    console.log('errors', errors);
-
     return (
         <View style={styles.container}>
             <Text style={styles.label}>Username</Text>
@@ -214,7 +187,6 @@ export default function CreateAccount({ navigation }) {
                             },
                             onTextChange: text => {
                                 if (text) {
-                                    // setSearch(text)
                                     getSongs(text).then((songList) => {
                                         setSongList(songList)
                                     });
@@ -230,11 +202,6 @@ export default function CreateAccount({ navigation }) {
                     }
                 />
 
-
-
-
-
-
                 <View style={styles.buttonContainer}>
                     <AppButton
                         title="Create Profile"
@@ -242,8 +209,6 @@ export default function CreateAccount({ navigation }) {
                         type="primary"
                     />
                 </View>
-
-
 
             </SafeAreaView>
 
