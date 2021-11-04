@@ -8,6 +8,7 @@ import Login from './pages/Login.js';
 import CreateAccount from './pages/CreateAccount.js';
 import Homepage from './pages/Homepage.js';
 import SwipeView from './pages/SwipeView.js';
+import Chat from './pages/Chat.js';
 
 
 const Stack = createNativeStackNavigator();
@@ -24,7 +25,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Landing" screenOptions={{
+      <Stack.Navigator initialRouteName="Chat" screenOptions={{
         headerShown: false
       }}>
         <Stack.Screen name="Login" component={Login} />
@@ -32,7 +33,7 @@ export default function App() {
         <Stack.Screen name="Create Account" component={CreateAccount} />
         <Stack.Screen name="Homepage" component={Homepage} />
         <Stack.Screen name="SwipeView" component={SwipeView}/>
-
+        <Stack.Screen name="Chat" component={Chat}/>
       </Stack.Navigator>
     </NavigationContainer>
 
