@@ -31,9 +31,10 @@ export default StyleSheet.create({
         fontFamily: "GothamBold",
         fontSize: 20,
         color: "#404040",
+        // marginTop: 50,
       },
       songView: {
-        paddingTop: 100,
+        paddingTop: 40,
       },
       songName: {
           position: "relative",
@@ -48,7 +49,7 @@ export default StyleSheet.create({
           position: "relative",
           textAlign: 'left',
           fontFamily: "GothamBold",
-          fontSize: 10,
+          fontSize: 15,
           color: "#404040",
           paddingLeft: 45,
       },

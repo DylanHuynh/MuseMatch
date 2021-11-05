@@ -28,10 +28,11 @@ const onSwipedRight = () => {
   swipedYes.push(data[index-1]);
 
 }
-const onSwipedAll = () => {
+const onSwipedAll = ({ navigation }) => {
   console.log('Done Swiping!');
-  console.log("swiped right: ", swipedYes);
+  console.log("swiped right: ", swipedYes); // send info to backend
   console.log("swiped left: ", swipedNo);
+  navigation.navigate("Homepage");
 }
 
 const progressBar = () => {
@@ -53,7 +54,12 @@ const SwipeView = ({ navigation }) => {
         onSwiped={onSwiped}
         onSwipedLeft={onSwipedLeft}
         onSwipedRight={onSwipedRight}
-        onSwipedAll={onSwipedAll}
+        onSwipedAll={() => {
+          console.log('Done Swiping!');
+          console.log("swiped right: ", swipedYes); // send info to backend
+          console.log("swiped left: ", swipedNo);
+          navigation.navigate("Homepage");
+          }}
         cardIndex={0}
         backgroundColor={'#546DD3'}
         stackSize= {3}
@@ -70,7 +76,7 @@ const Card = () => {
   return (
     <>
       <View style = {styles.card}>
-          <Text style = {styles.songCounter}>Song {index} of {data.length}</Text>
+          <Text style = {styles.songCounter}>Song {index+1} of {data.length}</Text>
           <View style = {styles.songView}>
               <Image style = {styles.albumCover} source={{uri: data[index].album_cover}}/>
               <Text style = {styles.songName}>{data[index].song_name}</Text>

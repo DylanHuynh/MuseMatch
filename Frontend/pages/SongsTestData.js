@@ -69,11 +69,4 @@ export default [
       album_cover:
       'https://media.pitchfork.com/photos/5f3171dc4a81119dc842fba1/1:1/w_600/What%20Could%20Possibly%20Go%20Wrong_dominic%20fike.jpg'
     },
-    {
-      id: '10',
-      artist: 'Taylor',
-      song_name: 'Song Name',
-      album_cover:
-      'https://media.pitchfork.com/photos/5f3171dc4a81119dc842fba1/1:1/w_600/What%20Could%20Possibly%20Go%20Wrong_dominic%20fike.jpg'
-    }
   ];
