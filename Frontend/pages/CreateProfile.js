@@ -6,7 +6,6 @@ import { useForm, Controller } from "react-hook-form";
 import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
 import SearchableDropdown from 'react-native-searchable-dropdown';
-import { spotifyCredentials } from '../spotify_utils.js';
 import axios from 'axios';
 import Firebase from '../config/firebase';
 

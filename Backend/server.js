@@ -1,6 +1,8 @@
 const express = require('express')
 const cors=require("cors");
+const bodyParser = require("body-parser")
 var {searchByArtist, searchBySong} = require('./spotify_utils.js');
+const { write } = require('./mongodb.js');
 
 const corsOptions ={
    origin:'*',
@@ -10,7 +12,7 @@ const corsOptions ={
 
 const app = express()
 app.use(cors(corsOptions)) // Use this after the variable declaration
-
+app.use(bodyParser.json())
 const port = 3000
 
 app.get('/api/spotify-credentials', (req, res, next) => {
@@ -53,9 +55,41 @@ app.post('/api/create-account', async (req, res, next) => {
     if there is an error thrown in getUserFromDb, asyncMiddleware
     will pass it to next() and express will handle the error;
   */
+  console.log(req)
   console.log(req.body)
+  const resp = req.body
+
+  // {
+  //   username: "Justin Bieber",
+  //   artist: "Justin Timberlake",
+  //   artist_id: 1234323,
+  //   song: "Stay",
+  //   song_id: 23483,
+  //   bio: "Hello my name is ___",
+  //   uid: 43283
+  // }
+
+  const dummy_req = {
+    uid: resp.uid,
+    username: resp.username,
+    favorite_artist: resp.artist,
+    artist_id: resp.artist_id,
+    favorite_song: resp.song,
+    song_id: resp.song_id,
+    bio: resp.bio,
+    genres: [],
+    songs: [],
+    artists: [],
+    rightSwipped: [],
+    leftSwipped: []
+}
+  write(dummy_req)
+  console.log(dummy_req)
+  console.log("done")
+  return "hi!"
   //TODO: we will pass the account info to make an account in the backend (primary key is user id)
 })
+
 
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
