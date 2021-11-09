@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import Homepage from '../pages/Homepage';
 import SwipeView from '../pages/SwipeView';
+import RecommenderView from '../pages/RecommenderView';
 
 
 const Tab = createBottomTabNavigator();
@@ -43,7 +44,7 @@ const H = () => {
             >
                 <Stack.Screen name="Discover" component={Homepage} />
                 <Stack.Screen name="Make a Match" component={SwipeView} />
-                <Stack.Screen name="Recommender" component={Homepage} />
+                <Stack.Screen name="Recommender" component={RecommenderView} />
                 <Stack.Screen name="Messaging" component={Homepage} />
                 <Stack.Screen name="Settings" component={Homepage} />
 
