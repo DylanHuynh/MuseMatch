@@ -2,7 +2,7 @@ const express = require('express')
 const cors=require("cors");
 const bodyParser = require("body-parser")
 var {searchByArtist, searchBySong} = require('./spotify_utils.js');
-const { write } = require('./mongodb.js');
+const { write, readByUID } = require('./mongodb.js');
 
 const corsOptions ={
    origin:'*',
@@ -31,9 +31,9 @@ app.get('/api/search-by-artist', async (req, res, next) => {
     if there is an error thrown in getUserFromDb, asyncMiddleware
     will pass it to next() and express will handle the error;
   */
+  console.log("here")
   searchByArtist(req.query.search).then((artists)=>{
     res.send(artists)
-
     }
   )
 })
@@ -48,6 +48,17 @@ app.get('/api/search-by-song', async (req, res, next) => {
 
     }
   )
+})
+
+app.get('/api/get-user', async (req, res, next) => {
+  /*
+    if there is an error thrown in getUserFromDb, asyncMiddleware
+    will pass it to next() and express will handle the error;
+  */
+  console.log(req.query.uid)
+  const temp = await readByUID(req.query.uid)
+  console.log(temp)
+  res.send(temp)
 })
 
 app.post('/api/create-account', async (req, res, next) => {

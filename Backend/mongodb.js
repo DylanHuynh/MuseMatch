@@ -19,38 +19,73 @@ const url = 'mongodb+srv://MuseMatch:musematch123@cluster0.6ip8o.mongodb.net/myF
 const client = new MongoClient(url);
 
 async function write(userInfo) {
-    MongoClient.connect(url, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("musematch");
-        dbo.collection("account_info").insertOne(userInfo, function(err, res) {
-          if (err) throw err;
-          db.close();
-          return;
-        });
-      });
+  MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("musematch");
+    dbo.collection("account_info").insertOne(userInfo, function (err, res) {
+      if (err) throw err;
+      db.close();
+      return;
+    });
+  });
 }
 
 async function readByID(id) {
-    MongoClient.connect(url, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("musematch");
-        dbo.collection("account_info").findOne({
-            id: id
-        }, function(err, result) {
-          if (err) throw err;
-          db.close();
-          return result;
-        });
-      });
+  MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("musematch");
+    dbo.collection("account_info").findOne({
+      id: id
+    }, function (err, result) {
+      if (err) throw err;
+      db.close();
+      return result;
+    });
+  });
+}
+
+async function readByUID(uid) {
+  const client = await MongoClient.connect(url, { useNewUrlParser: true })
+    .catch(err => { console.log(err); });
+  if (!client) {
+    return;
+  }
+
+  try {
+
+    const db = client.db("musematch");
+
+    let collection = db.collection('account_info');
+
+    let query = { uid: uid }
+
+    let res = await collection.findOne(query);
+    console.log({res})
+    if (res == null) {
+      return {
+        uid: -1
+      }
+    }
+
+    return res
+
+  } catch (err) {
+
+    console.log(err);
+  } finally {
+
+    client.close();
+  }
+
 }
 
 async function deleteByID(id) {
-  MongoClient.connect(url, function(err, db) {
+  MongoClient.connect(url, function (err, db) {
     if (err) throw err;
     var dbo = db.db("musematch");
     dbo.collection("account_info").deleteOne({
-        id: id
-    }, function(err, result) {
+      id: id
+    }, function (err, result) {
       if (err) throw err;
       db.close();
       return;
@@ -72,4 +107,4 @@ async function swipeLeft(swiperID, swipeeID) {
   write(swiper);
 }
 
-module.exports = {write}
+module.exports = { write, readByUID }
