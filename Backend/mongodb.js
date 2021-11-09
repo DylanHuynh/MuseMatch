@@ -2,11 +2,13 @@ const { MongoClient } = require('mongodb');
 const SpotifyWebApi = require('spotify-web-api-node');
 
 /*** User Info
- * 
+ *
  *{
     id: "Unique ID of the user",
     name: "Name of the user",
-    genres: [List of fav genres],
+    genres: [],
+    songs: [],
+    artists: [],
     rightSwipped: [List of the id of people swiped right by them]
     leftSwipped: [List of the id of people swiped left by them]
 }
@@ -19,8 +21,8 @@ const client = new MongoClient(url);
 async function write(userInfo) {
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
-        var dbo = db.db("beta");
-        dbo.collection("user").insertOne(userInfo, function(err, res) {
+        var dbo = db.db("musematch");
+        dbo.collection("account_info").insertOne(userInfo, function(err, res) {
           if (err) throw err;
           db.close();
           return;
@@ -31,8 +33,8 @@ async function write(userInfo) {
 async function readByID(id) {
     MongoClient.connect(url, function(err, db) {
         if (err) throw err;
-        var dbo = db.db("beta");
-        dbo.collection("user").findOne({
+        var dbo = db.db("musematch");
+        dbo.collection("account_info").findOne({
             id: id
         }, function(err, result) {
           if (err) throw err;
@@ -45,8 +47,8 @@ async function readByID(id) {
 async function deleteByID(id) {
   MongoClient.connect(url, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("beta");
-    dbo.collection("user").deleteOne({
+    var dbo = db.db("musematch");
+    dbo.collection("account_info").deleteOne({
         id: id
     }, function(err, result) {
       if (err) throw err;
@@ -69,3 +71,5 @@ async function swipeLeft(swiperID, swipeeID) {
   deleteByID(swiperID);
   write(swiper);
 }
+
+module.exports = {write}
