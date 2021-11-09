@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import { useForm, Controller  } from "react-hook-form";
 import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
-import Firebase from '../config/firebase';
+import { auth } from '../config/firebase';
 import LoginErrorMessage from '../components/LoginErrorMessage.js';
 
 // Import the functions you need from the SDKs you need
@@ -12,7 +12,7 @@ import LoginErrorMessage from '../components/LoginErrorMessage.js';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-const auth = Firebase.auth();
+//const auth = Firebase.auth();
 
 
 

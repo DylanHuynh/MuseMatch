@@ -1,11 +1,21 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
-import Firebase from '../config/firebase';
+import { auth } from '../config/firebase';
+import styles from '../styles/LandingStyles.js';
+import AppButton from '../components/AppButton.js';
 
-const auth = Firebase.auth();
+//const auth = Firebase.auth();
 
 export default function Homepage({navigation}) {
     return (
-        <Text>Test: {Firebase.auth().currentUser.uid}</Text>
+        <View style={styles.container}>
+                    <Text>Test: {auth.currentUser.uid}</Text>
+                    <AppButton
+                        title="Chat"
+                        onPress={() => navigation.navigate("Chat")}
+                        type="secondary"
+
+                    />
+        </View>
     )
 }

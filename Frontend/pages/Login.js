@@ -9,12 +9,12 @@ import * as AuthSession from 'expo-auth-session'
 import * as Linking from 'expo-linking';
 
 import LoginErrorMessage from '../components/LoginErrorMessage.js';
-import Firebase from '../config/firebase';
+import { auth } from '../config/firebase';
 
 import axios from 'axios'
 
 
-const auth = Firebase.auth()
+//const auth = Firebase.auth()
 
   //Spotify
 export const spotifyCredentials = {
@@ -117,10 +117,13 @@ export default function Login({ navigation }) {
     try {
       if (email !== '' && password !== '') {
         await auth.signInWithEmailAndPassword(email, password);
-        const token = await getTokens();
-        navigation.navigate("Homepage", {
-          authToken: token
-        })
+        console.log("hello")
+
+        //const token = await getTokens();
+        // navigation.navigate("Homepage", {
+        //   authToken: token
+        // })
+        navigation.navigate("Homepage")
       }
     } catch (error) {
       setLoginError(error.message);
