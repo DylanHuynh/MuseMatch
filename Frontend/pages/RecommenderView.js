@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProgressBar from 'react-native-progress/Bar';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
@@ -7,39 +7,27 @@ import data from './SongsTestData'
 
 
 
-
 var index = 0;
 var swipedYes = [];
 var swipedNo = [];
-var progress = 0;
 const swiperRef = React.createRef();
-const onSwiped = () => {
-  index = (index + 1) % data.length;
-  console.log("index: ", index);
-  console.log(data[index]);
-  console.log("_______");
-  progress = index / data.length;
-}
+
 const onSwipedLeft = () => {
   swipedNo.push(data[index-1]);
-
 }
 const onSwipedRight = () => {
   swipedYes.push(data[index-1]);
-
-}
-const onSwipedAll = ({ navigation }) => {
-  console.log('Done Swiping!');
-  console.log("swiped right: ", swipedYes); // send info to backend
-  console.log("swiped left: ", swipedNo);
-  navigation.navigate("Homepage");
 }
 
-const progressBar = () => {
-
-}
-
-const SwipeView = ({ navigation }) => {
+const SwipeView = ({ navigation }, state) => {
+  const [count, setCount] = useState(1);
+  const onSwiped = () => {
+    index = (index + 1) % data.length;
+    console.log("index: ", index);
+    console.log(data[index]);
+    console.log("_______");
+    setCount(prevCount => prevCount+1);
+  }
   return (
     <>
       
@@ -66,8 +54,7 @@ const SwipeView = ({ navigation }) => {
         cardHorizontalMargin={30}
         marginTop={0}>
       </Swiper>
-      {/* right now the progress bar is only inputting the value for progress once (i think), but we want it to change and update every time we swipe. */}
-      <ProgressBar style={styles.bar} progress={progress} width={300} color={'rgba(228, 215, 255, 0.8)'} height={10}/>
+      <ProgressBar style={styles.bar} progress={count / data.length} width={300} color={'rgba(228, 215, 255, 0.8)'} height={10}/>
     </>
   )
 }
