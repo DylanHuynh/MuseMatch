@@ -45,10 +45,12 @@ export default StyleSheet.create({
         backgroundColor: '#FFFFFF',
       },
       input: {
-        backgroundColor: 'rgba(186, 186, 186,.5)',
-        height: 40,
+        backgroundColor: 'rgba(255, 255, 255,.5)',
+        height: 52,
         padding: 10,
         borderRadius: 4,
+        borderColor: 'rgba(100,100,100,.35)',
+        borderWidth: 1,
       },
       buttonContainer: {
           alignItems: "center",

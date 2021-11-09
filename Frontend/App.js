@@ -9,6 +9,9 @@ import CreateAccount from './pages/CreateAccount.js';
 import Homepage from './pages/Homepage.js';
 import SwipeView from './pages/SwipeView.js';
 import Chat from './pages/Chat.js';
+import CreateProfile from './pages/CreateProfile.js';
+import Home from './pages/Home'
+import { Tab } from 'react-native-elements/dist/tab/Tab';
 
 
 const Stack = createNativeStackNavigator();
@@ -31,9 +34,9 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Landing" component={Landing} />
         <Stack.Screen name="Create Account" component={CreateAccount} />
-        <Stack.Screen name="Homepage" component={Homepage} />
-        <Stack.Screen name="SwipeView" component={SwipeView}/>
         <Stack.Screen name="Chat" component={Chat}/>
+        <Stack.Screen name="Home" component = {Home} />
+        <Stack.Screen name="CreateProfile" component = {CreateProfile} />
       </Stack.Navigator>
     </NavigationContainer>
 
