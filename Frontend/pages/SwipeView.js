@@ -56,8 +56,7 @@ const SwipeView = ({ navigation }) => {
 
 const Card = () => {
 
-  const [selectedIndex, setSelectedIndex] = useState(undefined);
-  const [currPage] = useState(0)
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   return (
     <View style = {styles.card}>
@@ -75,7 +74,10 @@ const Card = () => {
           }}
         />
 
-        <PagerView style = {{flex: 1}}> 
+        <PagerView 
+          style = {{flex: 1}}
+          ref={(viewPager) => {this.viewPager = viewPager}}
+          > 
           <View key="1">
             <Text>
               "First Page"
