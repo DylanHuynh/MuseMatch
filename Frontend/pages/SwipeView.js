@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
+import PagerView from 'react-native-pager-view';
 import styles from '../styles/SwipeViewStyles'
 import data from './SwipeTestData'
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
 
 var index = 0;
@@ -53,6 +55,10 @@ const SwipeView = ({ navigation }) => {
 }
 
 const Card = () => {
+
+  const [selectedIndex, setSelectedIndex] = useState(undefined);
+  const [currPage] = useState(0)
+
   return (
     <View style = {styles.card}>
         <View style = {styles.profileView}>
@@ -60,6 +66,28 @@ const Card = () => {
             <Text style = {styles.nameHeader}>{data[index].name}</Text>
             <Text style = {styles.genres}>Genres: {data[index].genres}</Text>
         </View>
+
+        <SegmentedControl
+          values={['One', 'Two']}
+          selectedIndex={selectedIndex}
+          onChange={(event) => {
+            setState({selectedIndex: event.nativeEvent.selectedSegmentIndex});
+          }}
+        />
+
+        <PagerView style = {{flex: 1}}> 
+          <View key="1">
+            <Text>
+              "First Page"
+            </Text>
+          </View>
+
+          <View key="2">
+            <Text>
+                "Second Page"
+            </Text>  
+          </View>
+        </PagerView>
 
         <View style = {styles.buttonContainer}>
           <TouchableOpacity style = {styles.circleButton} onPress={() => swiperRef.current.swipeLeft()}>

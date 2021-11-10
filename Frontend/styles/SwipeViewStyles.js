@@ -9,7 +9,7 @@ export default StyleSheet.create({
       },
       card: {
         top: 25,
-        flex: 1,
+        height: '90%',
         borderRadius: 25,
         justifyContent: 'center',
         backgroundColor: "#F3F3FF",
