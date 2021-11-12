@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ProgressBar from 'react-native-progress/Bar';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
+import Firebase from '../config/firebase';
 import styles from '../styles/RecommenderViewStyles'
 import data from './SongsTestData'
 
@@ -11,6 +12,7 @@ var index = 0;
 var swipedYes = [];
 var swipedNo = [];
 const swiperRef = React.createRef();
+const auth = Firebase.auth();
 
 const onSwipedLeft = () => {
   swipedNo.push(data[index-1]);
@@ -20,6 +22,7 @@ const onSwipedRight = () => {
 }
 
 const SwipeView = ({ navigation }, state) => {
+  var newData = getSongs(auth.currentUser.uid);
   const [count, setCount] = useState(1);
   const onSwiped = () => {
     index = (index + 1) % data.length;
@@ -44,8 +47,8 @@ const SwipeView = ({ navigation }, state) => {
         onSwipedRight={onSwipedRight}
         onSwipedAll={() => {
           console.log('Done Swiping!');
-          console.log("swiped right: ", swipedYes); // send info to backend
-          console.log("swiped left: ", swipedNo);
+          songList = getNewRecs(auth.currentUser.uid, swipedYes, swipedNo);
+          console.log("new song recs: ", songList);
           navigation.navigate("Homepage");
           }}
         cardIndex={0}

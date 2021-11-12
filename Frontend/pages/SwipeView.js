@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
+import Firebase from '../config/firebase';
 import styles from '../styles/SwipeViewStyles'
 import data from './SwipeTestData'
 
@@ -9,6 +10,8 @@ var index = 0;
 var swipedYes = [];
 var swipedNo = [];
 const swiperRef = React.createRef();
+const auth = Firebase.auth();
+
 const onSwiped = () => {
   index = (index + 1) % data.length;
   console.log("index: ", index);
@@ -17,11 +20,15 @@ const onSwiped = () => {
 }
 const onSwipedLeft = () => {
   swipedNo.push(data[index-1]);
-
+  swipedLeftOn(auth.currentUser.uid, data[index-1].id);
 }
 const onSwipedRight = () => {
   swipedYes.push(data[index-1]);
-
+  swipedRightOn(auth.currentUser.uid, data[index-1].id);
+  if (isMatch(auth.currentUser.uid, data[index-1].id)) {
+      // show popup, show match in messages
+      console.log("Match found!")
+  }
 }
 const onSwipedAll = () => {
   console.log('Done Swiping!');
