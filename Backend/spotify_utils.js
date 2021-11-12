@@ -53,4 +53,36 @@ async function searchBySong(search) {
     return data.body;
   }
 
-module.exports = {searchByArtist, searchBySong}
+async function getUserProfileInfo(userAccessToken) {
+    let apiConnection = new SpotifyWebApi();
+    apiConnection.setAccessToken(userAccessToken);
+    let tracksResponse = await apiConnection.getMyTopTracks();
+    var tracksData = tracksResponse.body.items;
+    // Get top 10 songs
+    var top10songs = [];
+    for (song of tracksData.slice(0, 10)) {
+      top10songs.push({"name": song.name, "id": song.id});
+    }
+    // Get top 3 songs images
+    var top3songimages = [];
+    for (song of tracksData.slice(0, 3)) {
+      top3songimages.push(song.album.images[0].url);
+    }
+    // Get favorite artist information
+    let artistResponse = await apiConnection.getMyTopArtists();
+    var favArtist = artistResponse.body.items[0];
+    var favArtistData = {
+      "name": favArtist.name,
+      "id": favArtist.id,
+      "image": favArtist.images[0].url
+    };
+    // Return accumulated profile data
+    let profileInfo = {
+      "Top 10 Songs": top10songs,
+      "Top 3 Songs' Images": top3songimages,
+      "Favorite Artist Data": favArtistData
+    };
+    return profileInfo;
+}
+
+module.exports = {searchByArtist, searchBySong, getUserProfileInfo};
