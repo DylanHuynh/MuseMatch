@@ -5,6 +5,35 @@ import Firebase from '../config/firebase';
 import styles from '../styles/SwipeViewStyles'
 import data from './SwipeTestData'
 
+const isMatch = async (currentUserId, swipedUserId) => {
+  axios.get(url, currentUserId, swipedUserId)
+  .then(response => {
+    console.log(response)
+  })
+  .catch(error => {
+    console.log(error)
+  })
+}
+
+const swipedLeftOn = async (currentUserId, swipedUserId) => {
+  axios.post(url, currentUserId, swipedUserId)
+  .then(response => {
+    console.log(response)
+  })
+  .catch(error => {
+    console.log(error)
+  })
+}
+
+const swipedRightOn = async (currentUserId, swipedUserId) => {
+  axios.post(url, currentUserId, swipedUserId)
+  .then(response => {
+    console.log(response)
+  })
+  .catch(error => {
+    console.log(error)
+  })
+}
 
 var index = 0;
 var swipedYes = [];

@@ -4,25 +4,38 @@ import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'r
 import Swiper from 'react-native-deck-swiper'
 import Firebase from '../config/firebase';
 import styles from '../styles/RecommenderViewStyles'
-import data from './SongsTestData'
+// import data from './SongsTestData'
+import axios from 'axios';
 
+const getSongs = async (userId) => {
+  axios.get(url, userId)
+  .then(response => {
+    console.log(response)
+  })
+  .catch(error => {
+    console.log(error)
+  })
+}
+
+const getNewRecs = async (userId, swipedYes, swipedNo) => {
+  axios.post(url, userId, swipedYes, swipedNo)
+  .then(response => {
+    console.log(response)
+  })
+  .catch(error => {
+    console.log(error)
+  })
+}
 
 
 var index = 0;
 var swipedYes = [];
 var swipedNo = [];
+var data = getSongs(auth.currentUser.uid);
 const swiperRef = React.createRef();
 const auth = Firebase.auth();
 
-const onSwipedLeft = () => {
-  swipedNo.push(data[index-1]);
-}
-const onSwipedRight = () => {
-  swipedYes.push(data[index-1]);
-}
-
 const SwipeView = ({ navigation }, state) => {
-  var newData = getSongs(auth.currentUser.uid);
   const [count, setCount] = useState(1);
   const onSwiped = () => {
     index = (index + 1) % data.length;
@@ -43,8 +56,12 @@ const SwipeView = ({ navigation }, state) => {
             )
         }}
         onSwiped={onSwiped}
-        onSwipedLeft={onSwipedLeft}
-        onSwipedRight={onSwipedRight}
+        onSwipedLeft={() => {
+          swipedNo.push(data[index-1]);
+        }}
+        onSwipedRight={() => {
+          swipedYes.push(data[index-1]);
+        }}
         onSwipedAll={() => {
           console.log('Done Swiping!');
           songList = getNewRecs(auth.currentUser.uid, swipedYes, swipedNo);
