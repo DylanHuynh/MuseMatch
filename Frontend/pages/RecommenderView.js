@@ -9,7 +9,7 @@ import axios from 'axios';
 
 
 const getTenSongs = async (userId) => {
-  axios.get("http://10.0.2.2:3000/api/get-daily-recs", userId)
+  axios.get("http://10.0.2.2:3000/api/get-daily-recs", {userId})
   .then(response => {
     console.log(response)
   })
@@ -19,7 +19,7 @@ const getTenSongs = async (userId) => {
 }
 
 const getNewRecs = async (userId) => {
-  axios.get("http://10.0.2.2:3000/api/get-new-recs", userId)
+  axios.get("http://10.0.2.2:3000/api/get-new-recs", {userId})
   .then(response => {
     console.log(response)
   })
@@ -29,11 +29,19 @@ const getNewRecs = async (userId) => {
 }
 
 const addSwipedLeft = async (userId, song) => {
-  axios.post("http://10.0.2.2:3000/api/post-swiped-left", userId, song)
+  const body = {
+    userId,
+    song
+  }
+  axios.post("http://10.0.2.2:3000/api/post-swiped-left", body)
 }
 
 const addSwipedRight = async (userId, song) => {
-  axios.post("http://10.0.2.2:3000/api/post-swiped-right", userId, song)
+  const body = {
+    userId,
+    song
+  }
+  axios.post("http://10.0.2.2:3000/api/post-swiped-right", body)
 }
 
 const auth = Firebase.auth();
@@ -52,7 +60,7 @@ const SwipeView = ({ navigation }, state) => {
   }
   return (
     <>
-      
+
       <Swiper
         ref={swiperRef}
         cards={data}
