@@ -33,7 +33,7 @@ const addSwipedLeft = async (userId, song) => {
     userId,
     song
   }
-  axios.post("http://10.0.2.2:3000/api/post-swiped-left", body)
+  axios.post("http://10.0.2.2:3000/api/swiped-left-music", body)
 }
 
 const addSwipedRight = async (userId, song) => {
@@ -41,7 +41,7 @@ const addSwipedRight = async (userId, song) => {
     userId,
     song
   }
-  axios.post("http://10.0.2.2:3000/api/post-swiped-right", body)
+  axios.post("http://10.0.2.2:3000/api/swiped-right-music", body)
 }
 
 const auth = Firebase.auth();

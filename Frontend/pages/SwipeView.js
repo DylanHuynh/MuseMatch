@@ -6,7 +6,11 @@ import styles from '../styles/SwipeViewStyles'
 import data from './SwipeTestData'
 
 const isMatch = async (currentUserId, swipedUserId) => {
-  axios.get("http://10.0.2.2:3000/api/get-is-match", currentUserId, swipedUserId)
+  const body = {
+    currentUserId,
+    swipedUserId
+  }
+  axios.get("http://10.0.2.2:3000/api/get-is-match", body)
   .then(response => {
     console.log(response)
   })
@@ -16,7 +20,11 @@ const isMatch = async (currentUserId, swipedUserId) => {
 }
 
 const swipedLeftOn = async (currentUserId, swipedUserId) => {
-  axios.post("http://10.0.2.2:3000/api/post-swiped-left", currentUserId, swipedUserId)
+  const body = {
+    currentUserId,
+    swipedUserId
+  }
+  axios.post("http://10.0.2.2:3000/api/swiped-left-person", body)
   .then(response => {
     console.log(response)
   })
@@ -26,7 +34,11 @@ const swipedLeftOn = async (currentUserId, swipedUserId) => {
 }
 
 const swipedRightOn = async (currentUserId, swipedUserId) => {
-  axios.post("http://10.0.2.2:3000/api/post-swiped-right", currentUserId, swipedUserId)
+  const body = {
+    currentUserId,
+    swipedUserId
+  }
+  axios.post("http://10.0.2.2:3000/api/swiped-right-person", body)
   .then(response => {
     console.log(response)
   })
