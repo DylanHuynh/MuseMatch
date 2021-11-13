@@ -2,22 +2,52 @@ import React, { useState } from 'react';
 import ProgressBar from 'react-native-progress/Bar';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
+import Firebase from '../config/firebase';
 import styles from '../styles/RecommenderViewStyles'
-import data from './SongsTestData'
+// import data from './SongsTestData'
+import axios from 'axios';
 
 
+const getTenSongs = async (userId) => {
+  axios.get("http://10.0.2.2:3000/api/get-daily-recs", {userId})
+  .then(response => {
+    console.log(response)
+  })
+  .catch(error => {
+    console.log(error)
+  })
+}
 
+const getNewRecs = async (userId) => {
+  axios.get("http://10.0.2.2:3000/api/get-new-recs", {userId})
+  .then(response => {
+    console.log(response)
+  })
+  .catch(error => {
+    console.log(error)
+  })
+}
+
+const addSwipedLeft = async (userId, song) => {
+  const body = {
+    userId,
+    song
+  }
+  axios.post("http://10.0.2.2:3000/api/swiped-left-music", body)
+}
+
+const addSwipedRight = async (userId, song) => {
+  const body = {
+    userId,
+    song
+  }
+  axios.post("http://10.0.2.2:3000/api/swiped-right-music", body)
+}
+
+const auth = Firebase.auth();
 var index = 0;
-var swipedYes = [];
-var swipedNo = [];
+var data = getTenSongs(auth.currentUser.uid);
 const swiperRef = React.createRef();
-
-const onSwipedLeft = () => {
-  swipedNo.push(data[index-1]);
-}
-const onSwipedRight = () => {
-  swipedYes.push(data[index-1]);
-}
 
 const SwipeView = ({ navigation }, state) => {
   const [count, setCount] = useState(1);
@@ -30,7 +60,7 @@ const SwipeView = ({ navigation }, state) => {
   }
   return (
     <>
-      
+
       <Swiper
         ref={swiperRef}
         cards={data}
@@ -40,12 +70,16 @@ const SwipeView = ({ navigation }, state) => {
             )
         }}
         onSwiped={onSwiped}
-        onSwipedLeft={onSwipedLeft}
-        onSwipedRight={onSwipedRight}
+        onSwipedLeft={() => {
+          addSwipedLeft(auth.currentUser.uid, data[index-1]);
+        }}
+        onSwipedRight={() => {
+          addSwipedRight(auth.currentUser.uid, data[index-1]);
+        }}
         onSwipedAll={() => {
           console.log('Done Swiping!');
-          console.log("swiped right: ", swipedYes); // send info to backend
-          console.log("swiped left: ", swipedNo);
+          songList = getNewRecs(auth.currentUser.uid);
+          console.log("new song recs: ", songList);
           navigation.navigate("Homepage");
           }}
         cardIndex={0}
