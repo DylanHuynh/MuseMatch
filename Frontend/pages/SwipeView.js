@@ -6,7 +6,7 @@ import styles from '../styles/SwipeViewStyles'
 import data from './SwipeTestData'
 
 const isMatch = async (currentUserId, swipedUserId) => {
-  axios.get(url, currentUserId, swipedUserId)
+  axios.get("http://10.0.2.2:3000/api/get-is-match", currentUserId, swipedUserId)
   .then(response => {
     console.log(response)
   })
@@ -16,7 +16,7 @@ const isMatch = async (currentUserId, swipedUserId) => {
 }
 
 const swipedLeftOn = async (currentUserId, swipedUserId) => {
-  axios.post(url, currentUserId, swipedUserId)
+  axios.post("http://10.0.2.2:3000/api/post-swiped-left", currentUserId, swipedUserId)
   .then(response => {
     console.log(response)
   })
@@ -26,7 +26,7 @@ const swipedLeftOn = async (currentUserId, swipedUserId) => {
 }
 
 const swipedRightOn = async (currentUserId, swipedUserId) => {
-  axios.post(url, currentUserId, swipedUserId)
+  axios.post("http://10.0.2.2:3000/api/post-swiped-right", currentUserId, swipedUserId)
   .then(response => {
     console.log(response)
   })

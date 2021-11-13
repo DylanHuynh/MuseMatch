@@ -7,8 +7,9 @@ import styles from '../styles/RecommenderViewStyles'
 // import data from './SongsTestData'
 import axios from 'axios';
 
-const getSongs = async (userId) => {
-  axios.get(url, userId)
+
+const getTenSongs = async (userId) => {
+  axios.get("http://10.0.2.2:3000/api/get-daily-recs", userId)
   .then(response => {
     console.log(response)
   })
@@ -17,8 +18,8 @@ const getSongs = async (userId) => {
   })
 }
 
-const getNewRecs = async (userId, swipedYes, swipedNo) => {
-  axios.post(url, userId, swipedYes, swipedNo)
+const getNewRecs = async (userId) => {
+  axios.get("http://10.0.2.2:3000/api/get-new-recs", userId)
   .then(response => {
     console.log(response)
   })
@@ -27,13 +28,18 @@ const getNewRecs = async (userId, swipedYes, swipedNo) => {
   })
 }
 
+const addSwipedLeft = async (userId, song) => {
+  axios.post("http://10.0.2.2:3000/api/post-swiped-left", userId, song)
+}
 
-var index = 0;
-var swipedYes = [];
-var swipedNo = [];
-var data = getSongs(auth.currentUser.uid);
-const swiperRef = React.createRef();
+const addSwipedRight = async (userId, song) => {
+  axios.post("http://10.0.2.2:3000/api/post-swiped-right", userId, song)
+}
+
 const auth = Firebase.auth();
+var index = 0;
+var data = getTenSongs(auth.currentUser.uid);
+const swiperRef = React.createRef();
 
 const SwipeView = ({ navigation }, state) => {
   const [count, setCount] = useState(1);
@@ -57,14 +63,14 @@ const SwipeView = ({ navigation }, state) => {
         }}
         onSwiped={onSwiped}
         onSwipedLeft={() => {
-          swipedNo.push(data[index-1]);
+          addSwipedLeft(auth.currentUser.uid, data[index-1]);
         }}
         onSwipedRight={() => {
-          swipedYes.push(data[index-1]);
+          addSwipedRight(auth.currentUser.uid, data[index-1]);
         }}
         onSwipedAll={() => {
           console.log('Done Swiping!');
-          songList = getNewRecs(auth.currentUser.uid, swipedYes, swipedNo);
+          songList = getNewRecs(auth.currentUser.uid);
           console.log("new song recs: ", songList);
           navigation.navigate("Homepage");
           }}
