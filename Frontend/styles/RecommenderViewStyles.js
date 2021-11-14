@@ -1,7 +1,5 @@
 'use strict'
 import { StyleSheet } from "react-native"
-import { useFonts } from "expo-font";
-import { GothamBold } from '../App.js'
 
 export default StyleSheet.create({
     container: {
