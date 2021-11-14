@@ -97,4 +97,4 @@ async function searchBySong(search) {
     return data.body;
   }
 
-module.exports = {searchByArtist, searchBySong, getArtistByID, getSongByID}
+module.exports = {searchByArtist, searchBySong, getArtistByID, getSongByID, getRecommendationsGeneral}
