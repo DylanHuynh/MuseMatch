@@ -49,8 +49,7 @@ var index = 0;
 const swiperRef = React.createRef();
 
 const SwipeView = ({ navigation }, state) => {
-  // let data = getTenSongs(auth.currentUser.uid);
-  let data = []
+  let data = getTenSongs(auth.currentUser.uid) | [];
   const [count, setCount] = useState(1);
   const onSwiped = () => {
     index = (index + 1) % data.length;
