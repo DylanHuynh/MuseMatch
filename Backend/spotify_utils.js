@@ -9,7 +9,7 @@ const spotifyApi = new SpotifyWebApi({
 // Retrieve an access token using your credentials
 
 async function credentialsRefresh() {
-  const error = 0;
+  let error = 0;
   await spotifyApi.clientCredentialsGrant().
     then(function(result) {
         spotifyApi.setAccessToken(result.body.access_token);
@@ -85,5 +85,16 @@ async function getRecommendationsUser(
     }
 }
 
-exports.getArtistByID = getArtistByID;
-exports.getSongByID = getSongByID;
+async function searchByArtist(search) {
+  await credentialsRefresh(spotifyApi)
+  let data = await spotifyApi.searchArtists(search)
+  return data.body;
+}
+
+async function searchBySong(search) {
+    await credentialsRefresh(spotifyApi)
+    let data = await spotifyApi.searchTracks(search)
+    return data.body;
+  }
+
+module.exports = {searchByArtist, searchBySong, getArtistByID, getSongByID}

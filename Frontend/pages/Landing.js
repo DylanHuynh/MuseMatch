@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Alert, SafeAreaView } from 'react-native';
 
 import { useForm, Controller } from "react-hook-form";
 import AppButton from '../components/AppButton.js';
@@ -22,7 +22,7 @@ export default function Landing({ navigation }) {
     console.log('errors', errors);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <LinearGradient
                 colors={['#724ECE', '#1F71E7']}
                 style={styles.linearGradient}
@@ -48,7 +48,7 @@ export default function Landing({ navigation }) {
             </LinearGradient>
 
 
-        </View>
+        </SafeAreaView>
     );
 };
 

@@ -2,17 +2,15 @@ const { MongoClient } = require('mongodb');
 const SpotifyWebApi = require('spotify-web-api-node');
 
 /*** User Info
- * 
+ *
  *{
     id: "Unique ID of the user",
     name: "Name of the user",
     genres: [],
     songs: [],
     artists: [],
-    rightSwipped: [List of the id of people swiped right by them],
-    leftSwipped: [List of the id of people swiped left by them],
-    rightSongSwipped: [List of the id of song swiped right by them],
-    leftSongSwipped: [List of the id of song swiped left by them]
+    rightSwipped: [List of the id of people swiped right by them]
+    leftSwipped: [List of the id of people swiped left by them]
 }
  */
 
@@ -21,43 +19,73 @@ const url = 'mongodb+srv://MuseMatch:musematch123@cluster0.6ip8o.mongodb.net/myF
 const client = new MongoClient(url);
 
 async function write(userInfo) {
-    MongoClient.connect(url, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("beta");
-        dbo.collection("user").insertOne(userInfo, function(err, res) {
-          if (err) throw err;
-          db.close();
-          return;
-        });
-      });
+  MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("musematch");
+    dbo.collection("account_info").insertOne(userInfo, function (err, res) {
+      if (err) throw err;
+      db.close();
+      return;
+    });
+  });
 }
 
 async function readByID(id) {
+  MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("musematch");
+    dbo.collection("account_info").findOne({
+      id: id
+    }, function (err, result) {
+      if (err) throw err;
+      db.close();
+      return result;
+    });
+  });
+}
+
+async function readByUID(uid) {
   const client = await MongoClient.connect(url, { useNewUrlParser: true })
     .catch(err => { console.log(err); });
   if (!client) {
     return;
   }
+
   try {
-    const db = client.db("beta");
-    let collection = db.collection('user');
-    let query = { id: id }
+
+    const db = client.db("musematch");
+
+    let collection = db.collection('account_info');
+
+    let query = { uid: uid }
+
     let res = await collection.findOne(query);
-    return res;
+    console.log({res})
+    if (res == null) {
+      return {
+        uid: -1
+      }
+    }
+
+    return res
+
   } catch (err) {
+
     console.log(err);
   } finally {
+
     client.close();
   }
+
 }
 
 async function deleteByID(id) {
-  MongoClient.connect(url, function(err, db) {
+  MongoClient.connect(url, function (err, db) {
     if (err) throw err;
-    var dbo = db.db("beta");
-    dbo.collection("user").deleteOne({
-        id: id
-    }, function(err, result) {
+    var dbo = db.db("musematch");
+    dbo.collection("account_info").deleteOne({
+      id: id
+    }, function (err, result) {
       if (err) throw err;
       db.close();
       return;
@@ -106,7 +134,6 @@ async function isMatch(userA_ID, userB_ID) {
 
 async function swipeSongRight(swiperID, songID) {
   const swiper = await readByID(swiperID);
-  console.log(swiper);
   swiper.rightSongSwipped.push(songID);
   updateOneByID(swiperID, {
     rightSongSwipped: swiper.rightSongSwipped
@@ -115,11 +142,11 @@ async function swipeSongRight(swiperID, songID) {
 
 async function swipeSongLeft(swiperID, songID) {
   const swiper = await readByID(swiperID);
-  console.log(swiper);
   swiper.leftSongSwipped.push(songID);
   updateOneByID(swiperID, {
     leftSongSwipped: swiper.leftSongSwipped
   });
 }
 
-exports.readByID = readByID;
+
+module.exports = { write, readByUID }

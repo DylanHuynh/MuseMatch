@@ -1,22 +1,18 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, Alert, SafeAreaView } from 'react-native';
 import { encode as btoa } from 'base-64';
 import { useForm, Controller } from "react-hook-form";
+import * as SecureStore from 'expo-secure-store';
 
 import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
 import * as AuthSession from 'expo-auth-session'
-import * as Linking from 'expo-linking';
-
 import LoginErrorMessage from '../components/LoginErrorMessage.js';
 import Firebase from '../config/firebase';
 
-import axios from 'axios'
-
-
 const auth = Firebase.auth()
 
-  //Spotify
+//Spotify
 export const spotifyCredentials = {
   clientId: 'a2ecb5b0a2154d4f9fb99f632ecdd889',
   clientSecret: 'bc26c22208f142b1b5933db834fb686f',
@@ -24,11 +20,6 @@ export const spotifyCredentials = {
 }
 
 
-const getSpotifyCredentials = async () => {
-  const res = await axios.get('http://10.0.2.2:3000/api/spotify-credentials')
-  const spotifyCredentials = res.data
-  return spotifyCredentials
-}
 
 
 const scopesArr = ['user-modify-playback-state', 'user-read-currently-playing', 'user-read-playback-state', 'user-library-modify',
@@ -40,7 +31,7 @@ const getAuthorizationCode = async () => {
   let result;
   try {
 
-    const credentials = await getSpotifyCredentials() //we wrote this function above
+    const credentials = spotifyCredentials//we wrote this function above
 
     const redirectUrl = AuthSession.getRedirectUrl('redirect'); //this will be something like https://auth.expo.io/@your-username/your-app-slug
 
@@ -58,14 +49,13 @@ const getAuthorizationCode = async () => {
     console.error(err)
   }
   console.log(result)
-  debugger;
   return result.params.code
 }
 
 const getTokens = async () => {
   try {
     const authorizationCode = await getAuthorizationCode() //we wrote this function above
-    const credentials = await getSpotifyCredentials() //we wrote this function above (could also run this outside of the functions and store the credentials in local scope)
+    const credentials = spotifyCredentials; //we wrote this function above (could also run this outside of the functions and store the credentials in local scope)
     const credsB64 = btoa(`${credentials.clientId}:${credentials.clientSecret}`);
     const response = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
@@ -73,9 +63,8 @@ const getTokens = async () => {
         Authorization: `Basic ${credsB64}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${
-        credentials.redirectUri
-      }`,
+      body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${credentials.redirectUri
+        }`,
     });
     const responseJson = await response.json();
     // destructure the response and rename the properties to be in camelCase to satisfy my linter ;)
@@ -91,7 +80,6 @@ const getTokens = async () => {
       refreshToken,
       expiresIn
     }
-    console.log({responseJson});
     return accessToken;
   } catch (err) {
     console.error(err);
@@ -114,13 +102,13 @@ export default function Login({ navigation }) {
   });
 
   const onLogin = async () => {
+
     try {
       if (email !== '' && password !== '') {
         await auth.signInWithEmailAndPassword(email, password);
         const token = await getTokens();
-        navigation.navigate("Homepage", {
-          authToken: token
-        })
+        await SecureStore.setItemAsync('secure_token', token);
+        navigation.navigate("CreateProfile");
       }
     } catch (error) {
       setLoginError(error.message);
@@ -135,14 +123,9 @@ export default function Login({ navigation }) {
       setPasswordVisibility(!passwordVisibility);
     }
   };
-  // const onChange = arg => {
-  //   return {
-  //     value: arg.nativeEvent.text,
-  //   };
-  // };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.createAccountLabel}>Sign In</Text>
 
       <Text style={styles.label}>Username</Text>
@@ -194,7 +177,7 @@ export default function Login({ navigation }) {
           type="primary"
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
