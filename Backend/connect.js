@@ -9,8 +9,10 @@ const SpotifyWebApi = require('spotify-web-api-node');
     genres: [],
     songs: [],
     artists: [],
-    rightSwipped: [List of the id of people swiped right by them]
-    leftSwipped: [List of the id of people swiped left by them]
+    rightSwipped: [List of the id of people swiped right by them],
+    leftSwipped: [List of the id of people swiped left by them],
+    rightSongSwipped: [List of the id of song swiped right by them],
+    leftSongSwipped: [List of the id of song swiped left by them]
 }
  */
 
@@ -31,17 +33,22 @@ async function write(userInfo) {
 }
 
 async function readByID(id) {
-    MongoClient.connect(url, function(err, db) {
-        if (err) throw err;
-        var dbo = db.db("beta");
-        dbo.collection("user").findOne({
-            id: id
-        }, function(err, result) {
-          if (err) throw err;
-          db.close();
-          return result;
-        });
-      });
+  const client = await MongoClient.connect(url, { useNewUrlParser: true })
+    .catch(err => { console.log(err); });
+  if (!client) {
+    return;
+  }
+  try {
+    const db = client.db("beta");
+    let collection = db.collection('user');
+    let query = { id: id }
+    let res = await collection.findOne(query);
+    return res;
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+  }
 }
 
 async function deleteByID(id) {
@@ -58,16 +65,59 @@ async function deleteByID(id) {
   });
 }
 
+async function updateOneByID(id, updateValues) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("beta");
+    dbo.collection("user").updateOne({
+        id: id
+    }, {
+      $set: updateValues
+    }, function(err, result) {
+      if (err) throw err;
+      db.close();
+      return;
+    });
+  });
+}
+
 async function swipeRight(swiperID, swipeeID) {
-  let swiper = readByID(swiperID);
+  const swiper = await readByID(swiperID);
   swiper.rightSwipped.push(swipeeID);
-  deleteByID(swiperID);
-  write(swiper);
+  updateOneByID(swiperID, {
+    rightSwipped: swiper.rightSwipped
+  });
 }
 
 async function swipeLeft(swiperID, swipeeID) {
-  let swiper = readByID(swiperID);
+  const swiper = await readByID(swiperID);
   swiper.leftSwipped.push(swipeeID);
-  deleteByID(swiperID);
-  write(swiper);
+  updateOneByID(swiperID, {
+    leftSwipped: swiper.leftSwipped
+  });
+}
+
+async function isMatch(userA_ID, userB_ID) {
+  let userA = await readByID(userA_ID);
+  let userB = await readByID(userB_ID);
+  return (userA.rightSwipped.indexOf(userB_ID) != -1) && 
+         (userB.rightSwipped.indexOf(userA_ID) != -1);
+}
+
+async function swipeSongRight(swiperID, songID) {
+  const swiper = await readByID(swiperID);
+  console.log(swiper);
+  swiper.rightSongSwipped.push(songID);
+  updateOneByID(swiperID, {
+    rightSongSwipped: swiper.rightSongSwipped
+  });
+}
+
+async function swipeSongLeft(swiperID, songID) {
+  const swiper = await readByID(swiperID);
+  console.log(swiper);
+  swiper.leftSongSwipped.push(songID);
+  updateOneByID(swiperID, {
+    leftSongSwipped: swiper.leftSongSwipped
+  });
 }
