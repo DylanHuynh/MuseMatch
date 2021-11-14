@@ -121,3 +121,5 @@ async function swipeSongLeft(swiperID, songID) {
     leftSongSwipped: swiper.leftSongSwipped
   });
 }
+
+exports.readByID = readByID;
