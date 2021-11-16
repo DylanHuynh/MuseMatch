@@ -149,4 +149,4 @@ async function swipeSongLeft(swiperID, songID) {
 }
 
 
-module.exports = { write, readByUID, swipeSongRight, swipeSongLeft }
+module.exports = { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch }
