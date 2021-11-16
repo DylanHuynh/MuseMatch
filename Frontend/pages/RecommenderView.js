@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProgressBar from 'react-native-progress/Bar';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
@@ -9,6 +9,7 @@ import axios from 'axios';
 
 
 const getTenSongs = async (userId) => {
+  console.log(userId)
   axios.get("http://10.0.2.2:3000/api/get-daily-recs", { userId })
     .then(response => {
       console.log(response)
@@ -44,12 +45,15 @@ const addSwipedRight = async (userId, song) => {
   axios.post("http://10.0.2.2:3000/api/swiped-right-music", body)
 }
 
-// const auth = Firebase.auth();
 var index = 0;
 const swiperRef = React.createRef();
 
 const SwipeView = ({ navigation }, state) => {
-  let data = getTenSongs(auth.currentUser.uid) | [];
+  let data = [];
+  useEffect(() => {
+    data = getTenSongs(auth.currentUser.uid) | [];
+
+  },[])
   const [count, setCount] = useState(1);
   const onSwiped = () => {
     index = (index + 1) % data.length;
@@ -100,7 +104,7 @@ const SwipeView = ({ navigation }, state) => {
             <Card />
           )
         }}
-        onSwiped={onSwiped}
+        onSwiped={() => onSwiped()}
         onSwipedLeft={() => {
           addSwipedLeft(auth.currentUser.uid, data[index - 1]);
         }}
