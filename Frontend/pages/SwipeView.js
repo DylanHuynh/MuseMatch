@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
-import Firebase from '../config/firebase';
+import Firebase, { auth } from '../config/firebase';
 import styles from '../styles/SwipeViewStyles'
 import data from './SwipeTestData'
 
@@ -51,7 +51,7 @@ var index = 0;
 var swipedYes = [];
 var swipedNo = [];
 const swiperRef = React.createRef();
-const auth = Firebase.auth();
+//const auth = Firebase.auth();
 
 const onSwiped = () => {
   index = (index + 1) % data.length;

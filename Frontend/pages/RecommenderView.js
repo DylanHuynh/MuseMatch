@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ProgressBar from 'react-native-progress/Bar';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
-import Firebase from '../config/firebase';
+import Firebase, { auth } from '../config/firebase';
 import styles from '../styles/RecommenderViewStyles'
 // import data from './SongsTestData'
 import axios from 'axios';
@@ -44,7 +44,7 @@ const addSwipedRight = async (userId, song) => {
   axios.post("http://10.0.2.2:3000/api/swiped-right-music", body)
 }
 
-const auth = Firebase.auth();
+// const auth = Firebase.auth();
 var index = 0;
 const swiperRef = React.createRef();
 

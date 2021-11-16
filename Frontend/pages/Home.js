@@ -47,9 +47,8 @@ const H = () => {
                 <Stack.Screen name="Discover" component={Homepage} />
                 <Stack.Screen name="Make a Match" component={SwipeView} />
                 <Stack.Screen name="Recommender" component={RecommenderView} />
-                <Stack.Screen name="Messaging" component={Homepage} />
+                <Stack.Screen name="Messaging" component={ChatHomeStack} />
                 <Stack.Screen name="Settings" component={Homepage} />
-                <Stack.Screen name="Chat" component={ChatHomeStack}/>
             </Tab.Navigator>
         </NavigationContainer>
     )
