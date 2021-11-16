@@ -8,9 +8,12 @@ import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
 import * as AuthSession from 'expo-auth-session'
 import LoginErrorMessage from '../components/LoginErrorMessage.js';
-import Firebase from '../config/firebase';
+import { auth } from '../config/firebase';
 
-const auth = Firebase.auth()
+import axios from 'axios'
+
+
+//const auth = Firebase.auth()
 
 //Spotify
 export const spotifyCredentials = {

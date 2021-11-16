@@ -1,8 +1,8 @@
 const express = require('express')
 const cors=require("cors");
 const bodyParser = require("body-parser")
-var {searchByArtist, searchBySong, getRecommendationsGeneral} = require('./spotify_utils.js');
-const { write, readByUID, swipeSongRight, swipeSongLeft } = require('./mongodb.js');
+var {searchByArtist, searchBySong, getRecommendationsGeneral, getUserProfileInfo} = require('./spotify_utils.js');
+const { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch } = require('./mongodb.js');
 
 const corsOptions ={
    origin:'*',
@@ -48,6 +48,13 @@ app.get('/api/search-by-song', async (req, res, next) => {
 
     }
   )
+})
+
+app.get('/api/get-user-profile', async (req, res, next) => {
+  getUserProfileInfo(req.query.userAccessToken).then((profile)=>{
+      res.send(profile);
+    }
+  );
 })
 
 app.get('/api/get-user', async (req, res, next) => {
@@ -123,4 +130,19 @@ app.get('/api/get-recommendations', async (req, res, next) => {
   const genres = req.query.genres
   const response = await getRecommendationsGeneral(artists, genres);
   res.send(response)
+})
+
+app.post('/api/swipe-left', async (req, res, next) => {
+  const swiperID = req.query.swiperID
+  const swipeeID = req.query.swipeeID
+  await swipeLeft(swiperID, swipeeID);
+  res.send(false);
+})
+
+app.post('/api/swipe-right', async (req, res, next) => {
+  const swiperID = req.query.swiperID
+  const swipeeID = req.query.swipeeID
+  await swipeRight(swiperID, swipeeID);
+  const isMatch = await isMatch(swiperID, swipeeID);
+  res.send(isMatch);
 })

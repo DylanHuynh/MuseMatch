@@ -1,32 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProgressBar from 'react-native-progress/Bar';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
-import Firebase from '../config/firebase';
+import Firebase, { auth } from '../config/firebase';
 import styles from '../styles/RecommenderViewStyles'
 // import data from './SongsTestData'
 import axios from 'axios';
 
 
 const getTenSongs = async (userId) => {
-  axios.get("http://10.0.2.2:3000/api/get-daily-recs", userId)
-  .then(response => {
-    console.log(response)
-  })
-  .catch(error => {
-    console.log(error)
-  })
+  console.log(userId)
+  axios.get("http://10.0.2.2:3000/api/get-daily-recs", { userId })
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
   return response.data;
+
 }
 
 const getNewRecs = async (userId) => {
-  axios.get("http://10.0.2.2:3000/api/get-new-recs", userId)
-  .then(response => {
-    console.log(response)
-  })
-  .catch(error => {
-    console.log(error)
-  })
+  axios.get("http://10.0.2.2:3000/api/get-new-recs", { userId })
+    .then(response => {
+      console.log(response)
+    })
+    .catch(error => {
+      console.log(error)
+    })
   return response.data;
 }
 
@@ -46,12 +48,15 @@ const addSwipedRight = async (userId, song) => {
   axios.post("http://10.0.2.2:3000/api/swiped-right-music", body)
 }
 
-const auth = Firebase.auth();
 var index = 0;
 const swiperRef = React.createRef();
 
 const SwipeView = ({ navigation }, state) => {
-  let data = getTenSongs(auth.currentUser.uid) | [];
+  let data = [];
+  useEffect(() => {
+    data = getTenSongs(auth.currentUser.uid) | [];
+
+  }, [])
   const [count, setCount] = useState(1);
   const onSwiped = () => {
     index = (index + 1) % data.length;
@@ -102,7 +107,7 @@ const SwipeView = ({ navigation }, state) => {
             <Card />
           )
         }}
-        onSwiped={onSwiped}
+        onSwiped={() => onSwiped()}
         onSwipedLeft={() => {
           addSwipedLeft(auth.currentUser.uid, data[index - 1]);
         }}
