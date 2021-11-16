@@ -11,7 +11,6 @@ import SwipeView from './pages/SwipeView.js';
 import Chat from './pages/Chat.js';
 import CreateProfile from './pages/CreateProfile.js';
 import Home from './pages/Home'
-import { Tab } from 'react-native-elements/dist/tab/Tab';
 
 
 const Stack = createNativeStackNavigator();

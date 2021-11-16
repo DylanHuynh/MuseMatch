@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Animated, SafeAreaView, StatusBar, Text, View, TextInput, Button, Alert } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
 import { useForm, Controller } from "react-hook-form";
+import AppLoading from 'expo-app-loading';
 
 import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
@@ -22,6 +23,7 @@ export default function CreateAccount({ navigation }) {
     });
     const [artistList, setArtistList] = useState([]);
     const [songList, setSongList] = useState([]);
+    const [loaded, setLoaded] = useState(false);
 
     const getArtists = async (searchStr) => {
         const response = await axios.get('http://10.0.2.2:3000/api/search-by-artist', { params: { search: searchStr } });
@@ -64,10 +66,31 @@ export default function CreateAccount({ navigation }) {
         }
         axios.post('http://10.0.2.2:3000/api/create-account', resp)
         navigation.navigate('Home')
-
     }
+    const loadUser = async (uid) => {
+        console.log("starting!!!")
+        const user = await axios.get('http://10.0.2.2:3000/api/get-user', { params: { uid: uid } })
+        console.log(user.data)
+        if (user.data.uid != -1) {
+            navigation.navigate('Home')
+            return
+        }
+        console.log("new user")
+    }
+
+    if (!loaded) {
+        return (
+            <AppLoading
+                startAsync={() => loadUser(Firebase.auth().currentUser.uid)}
+                onFinish={() => setLoaded(true)}
+                onError={console.warn}
+            />
+        )
+    }
+
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.createAccountLabel}>Sign In</Text>
             <Text style={styles.label}>Username</Text>
             <Controller
                 control={control}
@@ -99,7 +122,7 @@ export default function CreateAccount({ navigation }) {
             />
 
             <Text style={styles.label}>Current Top Artist</Text>
-            <SafeAreaView>
+            <View>
                 <SearchableDropdown
                     onItemSelect={(item) => {
                         setArtist(item);
@@ -203,9 +226,9 @@ export default function CreateAccount({ navigation }) {
                     />
                 </View>
 
-            </SafeAreaView>
+            </View>
 
-        </View>
+        </SafeAreaView>
     );
 };
 

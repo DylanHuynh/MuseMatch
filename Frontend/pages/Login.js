@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, Alert, SafeAreaView } from 'react-native';
 import { encode as btoa } from 'base-64';
 import { useForm, Controller } from "react-hook-form";
 import * as SecureStore from 'expo-secure-store';
@@ -15,7 +15,7 @@ import axios from 'axios'
 
 //const auth = Firebase.auth()
 
-  //Spotify
+//Spotify
 export const spotifyCredentials = {
   clientId: 'a2ecb5b0a2154d4f9fb99f632ecdd889',
   clientSecret: 'bc26c22208f142b1b5933db834fb686f',
@@ -66,9 +66,8 @@ const getTokens = async () => {
         Authorization: `Basic ${credsB64}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${
-        credentials.redirectUri
-      }`,
+      body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${credentials.redirectUri
+        }`,
     });
     const responseJson = await response.json();
     // destructure the response and rename the properties to be in camelCase to satisfy my linter ;)
@@ -128,14 +127,9 @@ export default function Login({ navigation }) {
       setPasswordVisibility(!passwordVisibility);
     }
   };
-  // const onChange = arg => {
-  //   return {
-  //     value: arg.nativeEvent.text,
-  //   };
-  // };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.createAccountLabel}>Sign In</Text>
 
       <Text style={styles.label}>Username</Text>
@@ -187,7 +181,7 @@ export default function Login({ navigation }) {
           type="primary"
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
