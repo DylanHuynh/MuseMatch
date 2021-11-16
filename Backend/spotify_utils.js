@@ -1,5 +1,5 @@
 const SpotifyWebApi = require('spotify-web-api-node');
-let mongoDB_utils = require("./connect");
+let mongoDB_utils = require("./mongodb");
 
 const spotifyApi = new SpotifyWebApi({
     clientId: '2dc1d1cc4a344030a74de9fa03c8f4a8',
@@ -26,7 +26,7 @@ async function getArtistByID(artistID) {
     if (didRefresh == 0) {
         const artistData = await spotifyApi.getArtist(artistID);
         return artistData.body;
-    }   
+    }
 }
 
 async function getSongByID(songID) {
@@ -38,9 +38,9 @@ async function getSongByID(songID) {
 }
 
 async function getRecommendationsGeneral(
-  seed_artists_, 
-  seed_genres_, 
-  min_energy_ = 0.4, 
+  seed_artists_,
+  seed_genres_,
+  min_energy_ = 0.4,
   min_popularity_ = 75,
   limit_ = 3) {
     const didRefresh = await credentialsRefresh(spotifyApi);
@@ -62,8 +62,8 @@ async function getRecommendationsGeneral(
 }
 
 async function getRecommendationsUser(
-  userID, 
-  min_energy_ = 0.4, 
+  userID,
+  min_energy_ = 0.4,
   min_popularity_ = 75,
   limit_ = 3) {
     const didRefresh = await credentialsRefresh(spotifyApi);

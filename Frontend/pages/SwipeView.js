@@ -1,9 +1,21 @@
 import React from 'react';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
-import Firebase from '../config/firebase';
+import Firebase, { auth, db } from '../config/firebase';
 import styles from '../styles/SwipeViewStyles'
 import data from './SwipeTestData'
+
+const loadUser = async (uid) => {
+  console.log("starting!!!")
+  const user = await axios.get('http://10.0.2.2:3000/api/get-user', { params: { uid: uid } })
+  console.log(user.data)
+  if (user.data.uid != -1) {
+      navigation.navigate('Home')
+      return
+  }
+  console.log("new user")
+  return user.data
+}
 
 const isMatch = async (currentUserId, swipedUserId) => {
   const body = {
@@ -13,6 +25,26 @@ const isMatch = async (currentUserId, swipedUserId) => {
   axios.get("http://10.0.2.2:3000/api/get-is-match", body)
   .then(response => {
     console.log(response)
+    if (response.data.isMatch == true) {
+      db
+      .collection('THREADS')
+      .add({
+        name: loadUser(currentUserId).username + " " + loadUser(swipedUserId).username,
+        latestMessage: {
+          text: `You have joined the room.`,
+          createdAt: new Date().getTime()
+        },
+        members: [currentUserId, swipedUserId]
+      })
+      .then(docRef => {
+        docRef.collection('MESSAGES').add({
+          text: `You have joined the room.`,
+          createdAt: new Date().getTime(),
+          system: true
+        });
+        navigation.navigate('Chat Home');
+      });
+    }
   })
   .catch(error => {
     console.log(error)
@@ -51,7 +83,7 @@ var index = 0;
 var swipedYes = [];
 var swipedNo = [];
 const swiperRef = React.createRef();
-const auth = Firebase.auth();
+//const auth = Firebase.auth();
 
 const onSwiped = () => {
   index = (index + 1) % data.length;
