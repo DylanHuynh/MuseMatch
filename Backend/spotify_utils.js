@@ -97,4 +97,50 @@ async function searchBySong(search) {
     return data.body;
   }
 
-module.exports = {searchByArtist, searchBySong, getArtistByID, getSongByID, getRecommendationsGeneral}
+async function getUserProfileInfo(userAccessToken) {
+    const apiConnection = new SpotifyWebApi();
+    apiConnection.setAccessToken(userAccessToken);
+    let tracksResponse = await apiConnection.getMyTopTracks();
+    let tracksData = tracksResponse.body.items;
+    // Get top 10 songs
+    let top10Songs = [];
+    for (song of tracksData.slice(0, 10)) {
+      top10Songs.push({"name": song.name, "id": song.id, "image": song.album.images[0].url});
+    }
+    // Get favorite artist information
+    let artistResponse = await apiConnection.getMyTopArtists();
+    let topArtists = artistResponse.body.items;
+    let favArtist = topArtists[0];
+    let favArtistData = {
+      "name": favArtist.name,
+      "id": favArtist.id,
+      "image": favArtist.images[0].url
+    };
+    // Calculate top 3 genres
+    // TODO: Potentially revise/improve genre calculation algorithm
+    let genreCounts = {};
+    for (artist of topArtists.slice(0, 10)) {
+      for (genre of artist.genres) {
+        if (!(genre in genreCounts)) {
+          genreCounts[genre] = 0;
+        }
+        genreCounts[genre] += 1;
+      }
+    }
+    let genreCountsList = Object.keys(genreCounts).map(function(genre) {
+      return [genre, genreCounts[genre]];
+    })
+    genreCountsList.sort(function(first, second) {
+      return second[1] - first[1];
+    })
+    let top3Genres = genreCountsList.slice(0, 3).map(function(item) {return item[0];})
+    // Return accumulated profile data
+    let profileInfo = {
+      "top_10_songs": top10Songs,
+      "favorite_artist_data": favArtistData,
+      "top_3_genres": top3Genres
+    };
+    return profileInfo;
+}
+
+module.exports = {searchByArtist, searchBySong, getArtistByID, getSongByID, getRecommendationsGeneral, getUserProfileInfo};

@@ -1,7 +1,7 @@
 const express = require('express')
 const cors=require("cors");
 const bodyParser = require("body-parser")
-var {searchByArtist, searchBySong, getRecommendationsGeneral} = require('./spotify_utils.js');
+var {searchByArtist, searchBySong, getRecommendationsGeneral, getUserProfileInfo} = require('./spotify_utils.js');
 const { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch } = require('./mongodb.js');
 
 const corsOptions ={
@@ -48,6 +48,13 @@ app.get('/api/search-by-song', async (req, res, next) => {
 
     }
   )
+})
+
+app.get('/api/get-user-profile', async (req, res, next) => {
+  getUserProfileInfo(req.query.userAccessToken).then((profile)=>{
+      res.send(profile);
+    }
+  );
 })
 
 app.get('/api/get-user', async (req, res, next) => {
