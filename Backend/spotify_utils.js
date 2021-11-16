@@ -54,33 +54,47 @@ async function searchBySong(search) {
   }
 
 async function getUserProfileInfo(userAccessToken) {
-    let apiConnection = new SpotifyWebApi();
+    const apiConnection = new SpotifyWebApi();
     apiConnection.setAccessToken(userAccessToken);
     let tracksResponse = await apiConnection.getMyTopTracks();
-    var tracksData = tracksResponse.body.items;
+    let tracksData = tracksResponse.body.items;
     // Get top 10 songs
-    var top10songs = [];
+    let top10Songs = [];
     for (song of tracksData.slice(0, 10)) {
-      top10songs.push({"name": song.name, "id": song.id});
-    }
-    // Get top 3 songs images
-    var top3songimages = [];
-    for (song of tracksData.slice(0, 3)) {
-      top3songimages.push(song.album.images[0].url);
+      top10Songs.push({"name": song.name, "id": song.id, "image": song.album.images[0].url});
     }
     // Get favorite artist information
     let artistResponse = await apiConnection.getMyTopArtists();
-    var favArtist = artistResponse.body.items[0];
-    var favArtistData = {
+    let topArtists = artistResponse.body.items;
+    let favArtist = topArtists[0];
+    let favArtistData = {
       "name": favArtist.name,
       "id": favArtist.id,
       "image": favArtist.images[0].url
     };
+    // Calculate top 3 genres
+    // TODO: Potentially revise/improve genre calculation algorithm
+    let genreCounts = {};
+    for (artist of topArtists.slice(0, 10)) {
+      for (genre of artist.genres) {
+        if (!(genre in genreCounts)) {
+          genreCounts[genre] = 0;
+        }
+        genreCounts[genre] += 1;
+      }
+    }
+    let genreCountsList = Object.keys(genreCounts).map(function(genre) {
+      return [genre, genreCounts[genre]];
+    })
+    genreCountsList.sort(function(first, second) {
+      return second[1] - first[1];
+    })
+    let top3Genres = genreCountsList.slice(0, 3).map(function(item) {return item[0];})
     // Return accumulated profile data
     let profileInfo = {
-      "Top 10 Songs": top10songs,
-      "Top 3 Songs' Images": top3songimages,
-      "Favorite Artist Data": favArtistData
+      "top_10_songs": top10Songs,
+      "favorite_artist_data": favArtistData,
+      "top_3_genres": top3Genres
     };
     return profileInfo;
 }

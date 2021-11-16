@@ -1,7 +1,7 @@
 const express = require('express')
 const cors=require("cors");
 const bodyParser = require("body-parser")
-var {searchByArtist, searchBySong} = require('./spotify_utils.js');
+var {searchByArtist, searchBySong, getUserProfileInfo} = require('./spotify_utils.js');
 const { write } = require('./mongodb.js');
 
 const corsOptions ={
@@ -48,6 +48,17 @@ app.get('/api/search-by-song', async (req, res, next) => {
 
     }
   )
+})
+
+app.get('/api/get-user-profile', async (req, res, next) => {
+  /*
+    if there is an error thrown in getUserFromDb, asyncMiddleware
+    will pass it to next() and express will handle the error;
+  */
+  getUserProfileInfo(req.query.userAccessToken).then((profile)=>{
+      res.send(profile);
+    }
+  );
 })
 
 app.post('/api/create-account', async (req, res, next) => {
