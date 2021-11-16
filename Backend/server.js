@@ -1,8 +1,8 @@
 const express = require('express')
 const cors=require("cors");
 const bodyParser = require("body-parser")
-var {searchByArtist, searchBySong} = require('./spotify_utils.js');
-const { write, readByUID } = require('./mongodb.js');
+var {searchByArtist, searchBySong, getRecommendationsGeneral} = require('./spotify_utils.js');
+const { write, readByUID, swipeSongRight, swipeSongLeft } = require('./mongodb.js');
 
 const corsOptions ={
    origin:'*',
@@ -105,3 +105,22 @@ app.post('/api/create-account', async (req, res, next) => {
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
   })
+
+app.post('/api/swipe-song-right', async (req, res, next) => {
+  const userID = req.query.userID
+  const songID = req.query.songID
+  await swipeSongRight(songID, userID);
+})
+
+app.post('/api/swipe-song-left', async (req, res, next) => {
+  const userID = req.query.userID
+  const songID = req.query.songID
+  await swipeSongLeft(songID, userID);
+})
+
+app.get('/api/get-recommendations', async (req, res, next) => {
+  const artists = req.query.artists
+  const genres = req.query.genres
+  const response = await getRecommendationsGeneral(artists, genres);
+  res.send(response)
+})

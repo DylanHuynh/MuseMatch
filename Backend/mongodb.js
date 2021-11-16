@@ -93,18 +93,60 @@ async function deleteByID(id) {
   });
 }
 
+async function updateOneByID(id, updateValues) {
+  MongoClient.connect(url, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("beta");
+    dbo.collection("user").updateOne({
+        id: id
+    }, {
+      $set: updateValues
+    }, function(err, result) {
+      if (err) throw err;
+      db.close();
+      return;
+    });
+  });
+}
+
 async function swipeRight(swiperID, swipeeID) {
-  let swiper = readByID(swiperID);
+  const swiper = await readByID(swiperID);
   swiper.rightSwipped.push(swipeeID);
-  deleteByID(swiperID);
-  write(swiper);
+  updateOneByID(swiperID, {
+    rightSwipped: swiper.rightSwipped
+  });
 }
 
 async function swipeLeft(swiperID, swipeeID) {
-  let swiper = readByID(swiperID);
+  const swiper = await readByID(swiperID);
   swiper.leftSwipped.push(swipeeID);
-  deleteByID(swiperID);
-  write(swiper);
+  updateOneByID(swiperID, {
+    leftSwipped: swiper.leftSwipped
+  });
 }
 
-module.exports = { write, readByUID }
+async function isMatch(userA_ID, userB_ID) {
+  let userA = await readByID(userA_ID);
+  let userB = await readByID(userB_ID);
+  return (userA.rightSwipped.indexOf(userB_ID) != -1) && 
+         (userB.rightSwipped.indexOf(userA_ID) != -1);
+}
+
+async function swipeSongRight(swiperID, songID) {
+  const swiper = await readByID(swiperID);
+  swiper.rightSongSwipped.push(songID);
+  updateOneByID(swiperID, {
+    rightSongSwipped: swiper.rightSongSwipped
+  });
+}
+
+async function swipeSongLeft(swiperID, songID) {
+  const swiper = await readByID(swiperID);
+  swiper.leftSongSwipped.push(songID);
+  updateOneByID(swiperID, {
+    leftSongSwipped: swiper.leftSongSwipped
+  });
+}
+
+
+module.exports = { write, readByUID, swipeSongRight, swipeSongLeft }
