@@ -17,6 +17,8 @@ const getTenSongs = async (userId) => {
     .catch(error => {
       console.log(error)
     })
+  return response.data;
+
 }
 
 const getNewRecs = async (userId) => {
@@ -27,6 +29,7 @@ const getNewRecs = async (userId) => {
     .catch(error => {
       console.log(error)
     })
+  return response.data;
 }
 
 const addSwipedLeft = async (userId, song) => {
@@ -53,7 +56,7 @@ const SwipeView = ({ navigation }, state) => {
   useEffect(() => {
     data = getTenSongs(auth.currentUser.uid) | [];
 
-  },[])
+  }, [])
   const [count, setCount] = useState(1);
   const onSwiped = () => {
     index = (index + 1) % data.length;

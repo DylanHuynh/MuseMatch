@@ -49,6 +49,7 @@ const isMatch = async (currentUserId, swipedUserId) => {
   .catch(error => {
     console.log(error)
   })
+  return response.data;
 }
 
 const swipedLeftOn = async (currentUserId, swipedUserId) => {
