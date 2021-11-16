@@ -1,8 +1,8 @@
 const express = require('express')
 const cors=require("cors");
 const bodyParser = require("body-parser")
-var {searchByArtist, searchBySong, getUserProfileInfo} = require('./spotify_utils.js');
-const { write } = require('./mongodb.js');
+var {searchByArtist, searchBySong, getRecommendationsGeneral, getUserProfileInfo} = require('./spotify_utils.js');
+const { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch } = require('./mongodb.js');
 
 const corsOptions ={
    origin:'*',
@@ -31,9 +31,9 @@ app.get('/api/search-by-artist', async (req, res, next) => {
     if there is an error thrown in getUserFromDb, asyncMiddleware
     will pass it to next() and express will handle the error;
   */
+  console.log("here")
   searchByArtist(req.query.search).then((artists)=>{
     res.send(artists)
-
     }
   )
 })
@@ -51,14 +51,21 @@ app.get('/api/search-by-song', async (req, res, next) => {
 })
 
 app.get('/api/get-user-profile', async (req, res, next) => {
-  /*
-    if there is an error thrown in getUserFromDb, asyncMiddleware
-    will pass it to next() and express will handle the error;
-  */
   getUserProfileInfo(req.query.userAccessToken).then((profile)=>{
       res.send(profile);
     }
   );
+})
+
+app.get('/api/get-user', async (req, res, next) => {
+  /*
+    if there is an error thrown in getUserFromDb, asyncMiddleware
+    will pass it to next() and express will handle the error;
+  */
+  console.log(req.query.uid)
+  const temp = await readByUID(req.query.uid)
+  console.log(temp)
+  res.send(temp)
 })
 
 app.post('/api/create-account', async (req, res, next) => {
@@ -105,3 +112,37 @@ app.post('/api/create-account', async (req, res, next) => {
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
   })
+
+app.post('/api/swipe-song-right', async (req, res, next) => {
+  const userID = req.query.userID
+  const songID = req.query.songID
+  await swipeSongRight(songID, userID);
+})
+
+app.post('/api/swipe-song-left', async (req, res, next) => {
+  const userID = req.query.userID
+  const songID = req.query.songID
+  await swipeSongLeft(songID, userID);
+})
+
+app.get('/api/get-recommendations', async (req, res, next) => {
+  const artists = req.query.artists
+  const genres = req.query.genres
+  const response = await getRecommendationsGeneral(artists, genres);
+  res.send(response)
+})
+
+app.post('/api/swipe-left', async (req, res, next) => {
+  const swiperID = req.query.swiperID
+  const swipeeID = req.query.swipeeID
+  await swipeLeft(swiperID, swipeeID);
+  res.send(false);
+})
+
+app.post('/api/swipe-right', async (req, res, next) => {
+  const swiperID = req.query.swiperID
+  const swipeeID = req.query.swipeeID
+  await swipeRight(swiperID, swipeeID);
+  const isMatch = await isMatch(swiperID, swipeeID);
+  res.send(isMatch);
+})
