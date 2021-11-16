@@ -1,85 +1,131 @@
-import React, { useEffect, useCallback, useState, useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Avatar } from 'react-native-elements';
+import React, { useState, useEffect } from 'react';
+import { IconButton } from 'react-native-paper';
+import { GiftedChat, Send } from 'react-native-gifted-chat';
+import { View, ActivityIndicator } from 'react-native';
+import styles from '../styles/ChatScreenStyles.js';
 import { auth, db } from '../config/firebase';
-import { GiftedChat } from 'react-native-gifted-chat';
 
 
+export default function Chat({ route }) {
+    const { thread } = route.params;
 
-
-const Chat = ({ navigation }) => {
-    const [messages, setMessages] = useState([]);
-    const signOut = () => {
-        auth.signOut().then(() => {
-            // Sign-out successful.
-            navigation.replace("Login");
-        }).catch((error) => {
-            // An error happened.
-        });
+    const [messages, setMessages] = useState([
+        /**
+         * Mock message data
+         */
+        // example of system message
+        {
+        _id: 0,
+        text: 'New room created.',
+        createdAt: new Date().getTime(),
+        system: true
+        },
+        // example of chat message
+        {
+        _id: 1,
+        text: 'Henlo!',
+        createdAt: new Date().getTime(),
+        user: {
+            _id: 2,
+            name: 'Test User'
+        }
+        }
+    ]);
+    function renderLoading() {
+        return (
+        <View style={styles.loadingContainer}>
+            <ActivityIndicator size='large' color='#6646ee' />
+        </View>
+        );
     }
-    useLayoutEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => (
-                <View style={{ marginLeft: 20 }}>
-                    <Avatar
-                        rounded
-                        source={{
-                            uri: auth?.currentUser?.photoURL,
-                        }}
-                    />
-                </View>
-            ),
-            headerRight: () => (
-                <TouchableOpacity style={{
-                    marginRight: 10
-                }}
-                    onPress={signOut}
-                >
-                    <Text>logout</Text>
-                </TouchableOpacity>
-            )
-        })
-    }, [navigation]);
 
-    // useLayoutEffect(() => {
-    //   const unsubscribe = db.collection('chats').orderBy('createdAt', 'desc')
-    //       }))
-    //   ))
-    //     });
+    function renderSend(props) {
+        return (
+        <Send {...props}>
+            <View style={styles.sendingContainer}>
+            <IconButton icon='send-circle' size={32} color='#6646ee' />
+            </View>
+        </Send>
+        );
+    }
+    function scrollToBottomComponent() { //doesnt
+        return (
+        <View style={styles.bottomComponentContainer}>
+            <IconButton icon='chevron-double-down' size={36} color='#6646ee' />
+        </View>
+        );
+    }
+    async function handleSend(messages) {
+        const text = messages[0].text;
+    
+        db
+        .collection('THREADS')
+        .doc(thread._id)
+        .collection('MESSAGES')
+        .add({
+            text,
+            createdAt: new Date().getTime(),
+            user: {
+            _id: auth?.currentUser?.uid,
+            email: auth?.currentUser?.email
+            }
+        });
+        await db
+        .collection('THREADS')
+        .doc(thread._id)
+        .set(
+        {
+            latestMessage: {
+            text,
+            createdAt: new Date().getTime()
+            }
+        },
+        { merge: true }
+        );
+    }
     useEffect(() => {
-        const unsubscribe = db.collection('chats').orderBy('createdAt', 'desc')
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hello developer',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-            },
-        ])
-    }, [])
-    const onSend = useCallback((messages = []) => {
-        setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
-        //console.log(auth?.currentUser?.email)
-        const { _id, createdAt, text, user,} = messages[0]
-        db.collection('chats').add({ _id, createdAt,  text, user })
-    }, []);
+        const messagesListener = db
+          .collection('THREADS')
+          .doc(thread._id)
+          .collection('MESSAGES')
+          .orderBy('createdAt', 'desc')
+          .onSnapshot(querySnapshot => {
+            const messages = querySnapshot.docs.map(doc => {
+              const firebaseData = doc.data();
+    
+              const data = {
+                _id: doc.id,
+                text: '',
+                createdAt: new Date().getTime(),
+                ...firebaseData
+              };
+    
+              if (!firebaseData.system) {
+                data.user = {
+                  ...firebaseData.user,
+                  name: firebaseData.user.email
+                };
+              }
+    
+              return data;
+            });
+    
+            setMessages(messages);
+          });
+    
+        return () => messagesListener();
+      }, []);
     return (
         <GiftedChat
-            messages={messages}
-            showAvatarForEveryMessage={false}
-            onSend={messages => onSend(messages)}
-            user={{
-                _id: auth?.currentUser?.email,
-                name: auth?.currentUser?.displayName,
-                avatar: auth?.currentUser?.photoURL
-            }}
+        messages={messages}
+        onSend={handleSend}
+        user={{ _id: auth?.currentUser?.uid }}        
+        alwaysShowSend
+        renderSend={renderSend}
+        scrollToBottom
+        scrollToBottomComponent={scrollToBottomComponent}
+        placeholder='Type your message here...'
+        renderLoading={renderLoading}
         />
     );
 }
-const styles = StyleSheet.create({
-});
-export default Chat;

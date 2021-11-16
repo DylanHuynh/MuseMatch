@@ -7,15 +7,10 @@ import AppButton from '../components/AppButton.js';
 //const auth = Firebase.auth();
 
 export default function Homepage({navigation}) {
+
     return (
         <View style={styles.container}>
                     <Text>Test: {auth.currentUser.uid}</Text>
-                    <AppButton
-                        title="Chat"
-                        onPress={() => navigation.navigate("Chat")}
-                        type="secondary"
-
-                    />
         </View>
     )
 }
