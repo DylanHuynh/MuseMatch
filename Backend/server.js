@@ -136,6 +136,6 @@ app.post('/api/swipe-right', async (req, res, next) => {
   const swiperID = req.query.swiperID
   const swipeeID = req.query.swipeeID
   await swipeRight(swiperID, swipeeID);
-  const isMatch = isMatch(swiperID, swipeeID);
+  const isMatch = await isMatch(swiperID, swipeeID);
   res.send(isMatch);
 })
