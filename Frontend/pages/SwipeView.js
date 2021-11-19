@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import Firebase, { auth, db } from '../config/firebase';
-import styles from '../styles/SwipeViewStyles'
-import data from './SwipeTestData'
+import styles from '../styles/SwipeViewStyles';
+import data from './SwipeTestData';
+import axios from 'axios';
 
 
 const loadUser = async (uid) => {
