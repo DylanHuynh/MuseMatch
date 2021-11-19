@@ -40,24 +40,21 @@ async function getSongByID(songID) {
 async function getRecommendationsGeneral(
   seed_artists_,
   seed_genres_,
+  seed_tracks_,
   min_energy_ = 0.4,
   min_popularity_ = 75,
-  limit_ = 3) {
+  limit_ = 10) {
     const didRefresh = await credentialsRefresh(spotifyApi);
     if (didRefresh == 0) {
-      spotifyApi.getRecommendations({
+      console.log(seed_artists_,seed_genres_,seed_tracks_,limit_)
+      return await spotifyApi.getRecommendations({
         min_energy: min_energy_,
         seed_artists: seed_artists_,
         seed_genres: seed_genres_,
         min_popularity: min_popularity_,
+        seed_tracks: seed_tracks_,
         limit: limit_
-      }).then(function(data) {
-        let recommendations = data.body;
-        console.log(recommendations);
-      }, function(err) {
-          console.log("Something went wrong!", err);
-        }
-      );
+      });
     }
 }
 
@@ -133,7 +130,7 @@ async function getUserProfileInfo(userAccessToken) {
     genreCountsList.sort(function(first, second) {
       return second[1] - first[1];
     })
-    let top3Genres = genreCountsList.slice(0, 3).map(function(item) {return item[0];})
+    let top3Genres = genreCountsList.slice(0, 3).filter(item => item[1] > 1).map(function(item) {return item[0];})
     // Return accumulated profile data
     let profileInfo = {
       "top_10_songs": top10Songs,
