@@ -10,8 +10,7 @@ import styles from '../styles/RecommenderViewStyles'
 import axios from 'axios';
 
 
-const [doneSwiping, setDoneSwiping] = useState(false);
-const [finalRecs, setFinalRecs] = useState([]);
+
 
 const getTenSongs = async (userAccessToken) => {
   console.log('accessToken', userAccessToken)
@@ -23,7 +22,7 @@ const getTenSongs = async (userAccessToken) => {
     songs[i] = {
       id: song.id,
       artist: song.artists[0].name,
-      artistID:song.artists[0].id,
+      artistID: song.artists[0].id,
       song_name: song.name,
       album_cover: song.album.images[0].url
 
@@ -65,19 +64,12 @@ var swipedYes = [];
 var swipedNo = [];
 const swiperRef = React.createRef();
 
-const getFinalRecs = async () => {
-  body = {
-    artists: swipedYes.map(song => song.artistID).toString(),
-    genres: swipedYes.map(song => song.genre).toString(),
-    tracks: swipedYes.map(song => song.id).toString()
-  }
-  // TODO: implement here
-  // const recs = await axios.get("http://10.0.2.2:3000/api/swipe-song-right", body)
-  setFinalRecs([])
-  setDoneSwiping(true);
-}
-const SwipeView = ({ navigation }, state) => {
+
+const SwipeView = ({ navigation }) => {
+  const [doneSwiping, setDoneSwiping] = useState(false);
+  const [finalRecs, setFinalRecs] = useState([]);
   const [data, setData] = useState([]);
+  const [count, setCount] = useState(1);
   useEffect(() => {
     async function fetchMyAPI() {
       const token = await SecureStore.getItemAsync('secure_token')
@@ -87,7 +79,17 @@ const SwipeView = ({ navigation }, state) => {
     fetchMyAPI()
 
   }, [])
-  const [count, setCount] = useState(1);
+  const getFinalRecs = async () => {
+    body = {
+      artists: swipedYes.map(song => song.artistID).toString(),
+      genres: swipedYes.map(song => song.genre).toString(),
+      tracks: swipedYes.map(song => song.id).toString()
+    }
+    // TODO: implement here
+    // const recs = await axios.get("http://10.0.2.2:3000/api/swipe-song-right", body)
+    setFinalRecs([])
+    setDoneSwiping(true);
+  }
   const onSwiped = () => {
     if (index == data.length) {
       getFinalRecs();
@@ -104,37 +106,38 @@ const SwipeView = ({ navigation }, state) => {
     if (doneSwiping) {
       return (
         <View style={styles.card}>
-         {/* TODO: card view of results. final recs are the list of final reommendations */}
+          {/* TODO: card view of results. final recs are the list of final reommendations */}
         </View>
       );
-    } else return (
-      <>
-        <View style={styles.card}>
-          <Text style={styles.songCounter}>Song {index + 1} of {data.length}</Text>
-          {data.length > 0 ?
-            <View style={styles.songView}>
-              <Image style={styles.albumCover} source={{ uri: data[index].album_cover }} />
-              <Text style={styles.songName}>{data[index].song_name}</Text>
-              <Text style={styles.artist}>{data[index].artist}</Text>
-            </View> :
-            <Text style={styles.songCounter}>No songs currently available</Text>
-          }
+    } else
+      return (
+        <>
+          <View style={styles.card}>
+            <Text style={styles.songCounter}>Song {index + 1} of {data.length}</Text>
+            {data.length > 0 ?
+              <View style={styles.songView}>
+                <Image style={styles.albumCover} source={{ uri: data[index].album_cover }} />
+                <Text style={styles.songName}>{data[index].song_name}</Text>
+                <Text style={styles.artist}>{data[index].artist}</Text>
+              </View> :
+              <Text style={styles.songCounter}>No songs currently available</Text>
+            }
 
 
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeLeft()}>
-              <Image style={styles.circleXImage} source={require('../assets/x-icon.png')} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.circleButton} onPress={() => { console.log(index) }}>
-              <Image style={styles.circlePlayImage} source={require('../assets/play-icon.png')} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeRight()}>
-              <Image style={styles.circleHeartImage} source={require('../assets/heart-icon.png')} />
-            </TouchableOpacity>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeLeft()}>
+                <Image style={styles.circleXImage} source={require('../assets/x-icon.png')} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.circleButton} onPress={() => { console.log(index) }}>
+                <Image style={styles.circlePlayImage} source={require('../assets/play-icon.png')} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeRight()}>
+                <Image style={styles.circleHeartImage} source={require('../assets/heart-icon.png')} />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </>
-    )
+        </>
+      )
   }
   return (
     <>
