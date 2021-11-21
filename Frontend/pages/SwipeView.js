@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
+import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon, Modal } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import Firebase, { auth, db } from '../config/firebase';
 import styles from '../styles/SwipeViewStyles';
@@ -90,32 +90,69 @@ const swiperRef = React.createRef();
 
 
 
-const onSwiped = () => {
 
-  index = (index + 1) % data.length;
-  console.log("index: ", index);
-  console.log(data[index]);
-  console.log("_______");
-}
-const onSwipedLeft = () => {
-  swipedNo.push(data[index - 1]);
-  swipedLeftOn(auth.currentUser.uid, data[index - 1].id);
-}
-const onSwipedRight = () => {
-  swipedYes.push(data[index - 1]);
-  swipedRightOn(auth.currentUser.uid, data[index - 1].id);
-  if (isMatch(auth.currentUser.uid, data[index - 1].id)) {
-    // show popup, show match in messages
-    console.log("Match found!")
-  }
-}
-const onSwipedAll = () => {
-  console.log('Done Swiping!');
-  console.log("swiped right: ", swipedYes);
-  console.log("swiped left: ", swipedNo);
-}
 
 const SwipeView = ({ navigation }) => {
+  const [showMatch, setShowMatch] = useState(false);
+  const onSwiped = () => {
+    index = (index + 1) % data.length;
+    console.log("index: ", index);
+    console.log(data[index]);
+    console.log("_______");
+  }
+  const onSwipedLeft = () => {
+    swipedNo.push(data[index - 1]);
+    swipedLeftOn(auth.currentUser.uid, data[index - 1].id);
+  }
+  const onSwipedRight = () => {
+    swipedYes.push(data[index - 1]);
+    swipedRightOn(auth.currentUser.uid, data[index - 1].id);
+    if (isMatch(auth.currentUser.uid, data[index - 1].id)) {
+      // show popup, show match in messages
+      setShowMatch(true);
+      console.log("Match found!")
+    }
+  }
+  const onSwipedAll = () => {
+    console.log('Done Swiping!');
+    console.log("swiped right: ", swipedYes);
+    console.log("swiped left: ", swipedNo);
+  }
+  
+  const Card = () => {
+    return (
+      <View style={styles.card}>
+        <View style={styles.profileView}>
+          <Image style={styles.profilePicture} source={{ uri: data[index].image }} />
+          <Text style={styles.nameHeader}>{data[index].name}</Text>
+          <Text style={styles.genres}>Genres: {data[index].genres}</Text>
+        </View>
+        <Modal onRequestClose={() => setShowMatch(false)} visible={showMatch} transparent={true} >
+          <View style={styles.popupOutside}>
+            <View style={styles.popupBox}>
+              <Text style={styles.popupHeader}>You've Been Matched!</Text>
+              <Text style={styles.popupText}>User: example user</Text>
+              <Text style={styles.popupText}>Genre: example genre</Text>
+              <Button style={styles.popupButton} title="Start a conversation!" onPress={() => navigation.navigate('Messaging')}>Start a conversation!</Button>
+            </View>
+          </View>
+        </Modal>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeLeft()}>
+            <Image style={styles.circleXImage} source={require('../assets/x-icon.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.circleButton} onPress={() => { console.log('play is pressed') }}>
+            <Image style={styles.circlePlayImage} source={require('../assets/play-icon.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeRight()}>
+            <Image style={styles.circleHeartImage} source={require('../assets/heart-icon.png')} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    )
+  }
+
   return (
     <Swiper
       ref={swiperRef}
@@ -135,30 +172,6 @@ const SwipeView = ({ navigation }) => {
       cardHorizontalMargin={30}
       marginTop={0}>
     </Swiper>
-  )
-}
-
-const Card = () => {
-   return (
-    <View style={styles.card}>
-      <View style={styles.profileView}>
-        <Image style={styles.profilePicture} source={{ uri: data[index].image }} />
-        <Text style={styles.nameHeader}>{data[index].name}</Text>
-        <Text style={styles.genres}>Genres: {data[index].genres}</Text>
-      </View>
-
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeLeft()}>
-          <Image style={styles.circleXImage} source={require('../assets/x-icon.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.circleButton} onPress={() => { console.log('play is pressed') }}>
-          <Image style={styles.circlePlayImage} source={require('../assets/play-icon.png')} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeRight()}>
-          <Image style={styles.circleHeartImage} source={require('../assets/heart-icon.png')} />
-        </TouchableOpacity>
-      </View>
-    </View>
   )
 }
 
