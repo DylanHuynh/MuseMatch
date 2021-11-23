@@ -9,9 +9,8 @@ export default StyleSheet.create({
       },
       card: {
         top: 25,
-        flex: 1,
+        height: 570,
         borderRadius: 25,
-        justifyContent: 'center',
         backgroundColor: "#F3F3FF",
       },
       text: {
@@ -26,20 +25,19 @@ export default StyleSheet.create({
         backgroundColor: 'transparent'
       },
       nameHeader: {
-          position: "relative",
           textAlign: 'center',
-          fontFamily: "GothamBold",
-          fontSize: 30,
+          fontWeight: '700',
+          fontSize: 25,
           color: "#404040",
           paddingTop: 10,
       },
       genres: {
           position: "relative",
           textAlign: 'center',
-          fontFamily: "GothamBold",
-          fontSize: 10,
+          fontSize: 15,
           color: "#404040",
           paddingTop: 5,
+          paddingBottom: 20
       },
       profilePicture: {
           position: "relative",
@@ -57,7 +55,7 @@ export default StyleSheet.create({
 
       },
       profileView: {
-        paddingBottom: 308,
+        paddingTop: 30
       },
       circleButton: {
           alignItems:'center',
@@ -91,8 +89,29 @@ export default StyleSheet.create({
         borderRadius:50,
         tintColor:"#F35A5A"
     },
-      buttonContainer: {
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-      }
+    buttonContainer: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+    },
+
+    // Top Songs Cell
+
+    topSongsNumberHeader: {
+      fontWeight: 'bold',
+      fontSize: 24,
+      marginLeft: 20
+    },
+    topSongsCellImage: {
+      height: 45,
+      width: 45,
+      marginLeft: 30
+    },
+    topSongsTitle: {
+      fontSize: 20,
+      fontWeight: 'bold'
+    },
+    topSongsArtist: {
+      fontSize: 15,
+      fontWeight: 'bold'
+    }
 });

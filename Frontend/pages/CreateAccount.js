@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Alert, SafeAreaView} from 'react-native';
 
 import { useForm, Controller  } from "react-hook-form";
 import AppButton from '../components/AppButton.js';
@@ -59,94 +59,96 @@ export default function CreateAccount({ navigation }) {
       console.log('errors', errors);
 
       return (
-        <View style={styles.container}>
-          <Text style={styles.createAccountLabel}>Create Account</Text>
-          <Text style={styles.label}>First Name</Text>
-          <Controller
-            control={control}
-            render={({field: { onChange, onBlur, value }}) => (
-              <TextInput
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={value => onChange(value)}
-                value={value}
-              />
-            )}
-            name="firstName"
-            rules={{ required: true }}
-          />
-          <Text style={styles.label}>Last Name</Text>
-          <Controller
-            control={control}
-            render={({field: { onChange, onBlur, value }}) => (
-              <TextInput
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={value => onChange(value)}
-                value={value}
-              />
-            )}
-            name="lastName"
-            rules={{ required: true }}
-          />
-          <Text style={styles.label}>Email</Text>
-
-          <Controller
-            control={control}
-            render={({field: { onChange, onBlur, value }}) => (
-              <TextInput
-                placeholder='Enter email'
-                autoCapitalize='none'
-                keyboardType='email-address'
-                textContentType='emailAddress'
-                style={styles.input}
-                onBlur={onBlur}
-                onChangeText={text => setEmail(text)}
-                value={email}
-              />
-            )}
-            name="email"
-            rules={{ required: true }}
-          />
-        <Text style={styles.label}>Password</Text>
-
-          <Controller
-            control={control}
-            render={({field: { onChange, onBlur, value }}) => (
-              <TextInput
-                placeholder='Enter password'
-                autoCapitalize='none'
-                autoCorrect={false}
-                secureTextEntry={passwordVisibility}
-                textContentType='password'
-                style={styles.input}
-                onBlur={onBlur}
-                value={password}
-                onChangeText={text => setPassword(text)}
-                handlePasswordVisibility={handlePasswordVisibility}
-              />
-            )}
-            name="password"
-            rules={{ required: true }}
-          />
-          {signupError ? <LoginErrorMessage error={signupError} visible={true} /> : null}
-
-          <View style={styles.buttonContainer}>
-            <AppButton
-                    title="Sign Up"
-                    onPress={onHandleSignup}
-                    type="primary"
+        <SafeAreaView style={styles.safeAreaContainer}>
+          <View style={styles.container}>
+            <Text style={styles.createAccountLabel}>Create Account</Text>
+            <Text style={styles.label}>First Name</Text>
+            <Controller
+              control={control}
+              render={({field: { onChange, onBlur, value }}) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={value => onChange(value)}
+                  value={value}
                 />
-          </View>
-          <View style={styles.or_line_container}>
-            <View style={styles.or_line} />
-            <View>
-                <Text style={styles.or_text}>or</Text>
-            </View>
-            <View style={styles.or_line} />
-          </View>
+              )}
+              name="firstName"
+              rules={{ required: true }}
+            />
+            <Text style={styles.label}>Last Name</Text>
+            <Controller
+              control={control}
+              render={({field: { onChange, onBlur, value }}) => (
+                <TextInput
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={value => onChange(value)}
+                  value={value}
+                />
+              )}
+              name="lastName"
+              rules={{ required: true }}
+            />
+            <Text style={styles.label}>Email</Text>
 
-        </View>
+            <Controller
+              control={control}
+              render={({field: { onChange, onBlur, value }}) => (
+                <TextInput
+                  placeholder='Enter email'
+                  autoCapitalize='none'
+                  keyboardType='email-address'
+                  textContentType='emailAddress'
+                  style={styles.input}
+                  onBlur={onBlur}
+                  onChangeText={text => setEmail(text)}
+                  value={email}
+                />
+              )}
+              name="email"
+              rules={{ required: true }}
+            />
+          <Text style={styles.label}>Password</Text>
+
+            <Controller
+              control={control}
+              render={({field: { onChange, onBlur, value }}) => (
+                <TextInput
+                  placeholder='Enter password'
+                  autoCapitalize='none'
+                  autoCorrect={false}
+                  secureTextEntry={passwordVisibility}
+                  textContentType='password'
+                  style={styles.input}
+                  onBlur={onBlur}
+                  value={password}
+                  onChangeText={text => setPassword(text)}
+                  handlePasswordVisibility={handlePasswordVisibility}
+                />
+              )}
+              name="password"
+              rules={{ required: true }}
+            />
+            {signupError ? <LoginErrorMessage error={signupError} visible={true} /> : null}
+
+            <View style={styles.buttonContainer}>
+              <AppButton
+                      title="Sign Up"
+                      onPress={onHandleSignup}
+                      type="primary"
+                  />
+            </View>
+            <View style={styles.or_line_container}>
+              <View style={styles.or_line} />
+              <View>
+                  <Text style={styles.or_text}>or</Text>
+              </View>
+              <View style={styles.or_line} />
+            </View>
+
+          </View>
+        </SafeAreaView>
       );
     };
 

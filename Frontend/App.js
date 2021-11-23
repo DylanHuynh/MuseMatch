@@ -24,12 +24,17 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Landing" screenOptions={{
-        headerShown: false
-      }}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Landing" component={Landing} />
-        <Stack.Screen name="Create Account" component={CreateAccount} />
+      <Stack.Navigator initialRouteName = "Landing">
+        <Stack.Screen name="Landing" component={Landing} options = {{
+          headerShown: false
+        }}/>
+        <Stack.Screen name="Login" component={Login} options = {{
+          headerShown: true
+        }} />
+        <Stack.Screen name="Create Account" component={CreateAccount} options = {{
+          headerShown: true
+        }}
+          />
         <Stack.Screen name="Home" component = {Home} />
         <Stack.Screen name="CreateProfile" component = {CreateProfile} />
       </Stack.Navigator>

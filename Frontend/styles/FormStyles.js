@@ -37,11 +37,13 @@ export default StyleSheet.create({
         backgroundColor: '#6056D4',
         borderRadius: 4,
       },
+      safeAreaContainer: {
+        flex:1
+      },
       container: {
         flex: 1,
         justifyContent: 'center',
         padding: 8,
-        width: "100%",
         backgroundColor: '#FFFFFF',
       },
       input: {

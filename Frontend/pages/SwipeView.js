@@ -1,58 +1,16 @@
-import React from 'react';
-import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
+import React, {useEffect, useState} from 'react';
+import { Button, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
-import Firebase from '../config/firebase';
+import PagerView from 'react-native-pager-view';
 import styles from '../styles/SwipeViewStyles'
 import data from './SwipeTestData'
+import SegmentedControl from '@react-native-segmented-control/segmented-control';
 
-const isMatch = async (currentUserId, swipedUserId) => {
-  const body = {
-    currentUserId,
-    swipedUserId
-  }
-  axios.get("http://10.0.2.2:3000/api/get-is-match", body)
-  .then(response => {
-    console.log(response)
-  })
-  .catch(error => {
-    console.log(error)
-  })
-}
-
-const swipedLeftOn = async (currentUserId, swipedUserId) => {
-  const body = {
-    currentUserId,
-    swipedUserId
-  }
-  axios.post("http://10.0.2.2:3000/api/swiped-left-person", body)
-  .then(response => {
-    console.log(response)
-  })
-  .catch(error => {
-    console.log(error)
-  })
-}
-
-const swipedRightOn = async (currentUserId, swipedUserId) => {
-  const body = {
-    currentUserId,
-    swipedUserId
-  }
-  axios.post("http://10.0.2.2:3000/api/swiped-right-person", body)
-  .then(response => {
-    console.log(response)
-  })
-  .catch(error => {
-    console.log(error)
-  })
-}
 
 var index = 0;
 var swipedYes = [];
 var swipedNo = [];
 const swiperRef = React.createRef();
-const auth = Firebase.auth();
-
 const onSwiped = () => {
   index = (index + 1) % data.length;
   console.log("index: ", index);
@@ -61,15 +19,11 @@ const onSwiped = () => {
 }
 const onSwipedLeft = () => {
   swipedNo.push(data[index-1]);
-  swipedLeftOn(auth.currentUser.uid, data[index-1].id);
+
 }
 const onSwipedRight = () => {
   swipedYes.push(data[index-1]);
-  swipedRightOn(auth.currentUser.uid, data[index-1].id);
-  if (isMatch(auth.currentUser.uid, data[index-1].id)) {
-      // show popup, show match in messages
-      console.log("Match found!")
-  }
+
 }
 const onSwipedAll = () => {
   console.log('Done Swiping!');
@@ -95,12 +49,19 @@ const SwipeView = ({ navigation }) => {
       backgroundColor={'#546DD3'}
       stackSize= {3}
       cardHorizontalMargin={30}
-      marginTop={0}>
+      marginTop={0}
+      verticalSwipe={false}
+      >
     </Swiper>
   )
 }
 
+
 const Card = () => {
+
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const arr = ["1.", "2.", "3.", "4.", "5.", "6.", "1.", "2.", "3.", "4.", "5.", "6."]
+
   return (
     <View style = {styles.card}>
         <View style = {styles.profileView}>
@@ -108,6 +69,44 @@ const Card = () => {
             <Text style = {styles.nameHeader}>{data[index].name}</Text>
             <Text style = {styles.genres}>Genres: {data[index].genres}</Text>
         </View>
+
+        <SegmentedControl
+          values={['Top Songs', 'Top Artists', 'My Picks']}
+          selectedIndex={selectedIndex}
+          onChange={(event) => {
+            setSelectedIndex(event.nativeEvent.selectedSegmentIndex);
+          }}
+        />
+
+        {selectedIndex == 0 && 
+
+          <ScrollView style = {{height: 300}}>
+            <TouchableOpacity activeOpacity={1}>
+              {arr.map((number) => {
+                return (
+                    <TopSongs number={number}/>
+                )
+              })}
+              </TouchableOpacity>
+          </ScrollView>
+
+        }
+
+        {selectedIndex == 1 && 
+          
+          <ScrollView style = {{flexDirection: 'row'}}>
+            <Text>Selected 2</Text>
+          </ScrollView>
+
+        }
+
+        {selectedIndex == 2 && 
+          
+          <ScrollView style = {{flexDirection: 'row'}}>
+            <Text>Selected 3</Text>
+          </ScrollView>
+
+        }
 
         <View style = {styles.buttonContainer}>
           <TouchableOpacity style = {styles.circleButton} onPress={() => swiperRef.current.swipeLeft()}>
@@ -120,6 +119,19 @@ const Card = () => {
             <Image style = {styles.circleHeartImage} source= {require('../assets/heart-icon.png')}/>
           </TouchableOpacity>
         </View>
+    </View>
+  )
+}
+
+const TopSongs = (props) => {
+  return (
+    <View style = {{flexDirection: 'row', marginTop: 7, marginBottom: 10}}>
+      <Text style = {styles.topSongsNumberHeader}>{props.number}</Text>
+      <Image style = {styles.topSongsCellImage} source= {require('../assets/ed.jpg')}/>
+      <View style = {{marginLeft: 15}}>
+        <Text style = {styles.topSongsTitle}>Mood</Text>
+        <Text style = {styles.topSongsArtist}>Iann Dior</Text>
+      </View>
     </View>
   )
 }
