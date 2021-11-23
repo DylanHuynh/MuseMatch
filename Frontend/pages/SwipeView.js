@@ -95,7 +95,6 @@ const swiperRef = React.createRef();
 
 const SwipeView = ({ navigation }) => {
   const [showMatch, setShowMatch] = useState(false);
-  // const [popupIndex, setPopupIndex] = useState(0);
   const onSwiped = () => {
     index = (index + 1) % data.length;
     popupIndex = index - 1;
@@ -104,17 +103,14 @@ const SwipeView = ({ navigation }) => {
     console.log("_______");
   }
   const onSwipedLeft = () => {
-    // setCount(prevCount => prevCount + 1);
     swipedNo.push(data[index - 1]);
     swipedLeftOn(auth.currentUser.uid, data[index - 1].id);
     
   }
   const onSwipedRight = () => {
-    // setCount(prevCount => prevCount + 1);
     swipedYes.push(data[index - 1]);
     swipedRightOn(auth.currentUser.uid, data[index - 1].id);
-    if (isMatch(auth.currentUser.uid, data[index - 1].id)) {
-      // show popup, show match in messages
+    if (false && isMatch(auth.currentUser.uid, data[index - 1].id)) {
       setShowMatch(true);
       console.log("Match found!")
     }
