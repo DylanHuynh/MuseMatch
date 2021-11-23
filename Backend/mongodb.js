@@ -149,17 +149,23 @@ async function swipeSongLeft(swiperID, songID) {
 }
 
 async function getAllUsers() {
-  MongoClient.connect(url, function (err, db) {
-    if (err) throw err;
-    var dbo = db.db("beta");
-    dbo.collection("user").find({}).toArray(function(err, result) {
-      if (err) throw err;
-      db.close();
-      return result;
-    });
-    })
-}
+  const client = await MongoClient.connect(url, { useNewUrlParser: true })
+    .catch(err => { console.log(err); });
+  if (!client) {
+    return;
+  }
+  try {
+    const db = client.db("beta");
+    let collection = db.collection('user');
+    let res = await collection.find({}).toArray();
+    return res
 
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+  }
+}
 
 module.exports = { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch , getAllUsers }
 
