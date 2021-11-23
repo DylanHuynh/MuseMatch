@@ -8,9 +8,9 @@ import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import axios from 'axios';
-import Firebase from '../config/firebase';
+import { auth } from '../config/firebase';
 
-export default function CreateAccount({ navigation }) {
+export default function CreateProfile({ navigation }) {
     const [bio, setBio] = useState("")
     const [username, setUsername] = useState("")
     const [song, setSong] = useState({
@@ -62,7 +62,7 @@ export default function CreateAccount({ navigation }) {
             song: song.name,
             song_id: song.id,
             bio: bio,
-            uid: Firebase.auth().currentUser.uid
+            uid: auth.currentUser.uid
         }
         axios.post('http://10.0.2.2:3000/api/create-account', resp)
         navigation.navigate('Home')
@@ -81,7 +81,7 @@ export default function CreateAccount({ navigation }) {
     if (!loaded) {
         return (
             <AppLoading
-                startAsync={() => loadUser(Firebase.auth().currentUser.uid)}
+                startAsync={() => loadUser(auth.currentUser.uid)}
                 onFinish={() => setLoaded(true)}
                 onError={console.warn}
             />

@@ -6,6 +6,9 @@ import { useFonts } from 'expo-font';
 import Landing from './pages/Landing.js';
 import Login from './pages/Login.js';
 import CreateAccount from './pages/CreateAccount.js';
+import Homepage from './pages/Homepage.js';
+import SwipeView from './pages/SwipeView.js';
+import Chat from './pages/Chat.js';
 import CreateProfile from './pages/CreateProfile.js';
 import Home from './pages/Home'
 
@@ -30,6 +33,7 @@ export default function App() {
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Landing" component={Landing} />
         <Stack.Screen name="Create Account" component={CreateAccount} />
+        <Stack.Screen name="Chat" component={Chat}/>
         <Stack.Screen name="Home" component = {Home} />
         <Stack.Screen name="CreateProfile" component = {CreateProfile} />
       </Stack.Navigator>
