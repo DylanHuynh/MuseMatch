@@ -99,7 +99,10 @@ export default StyleSheet.create({
         fontFamily: 'GothamBold',
         fontSize: 30,
         textAlign: 'center',
-        lineHeight: 4,
+        marginBottom: 20,
+        lineHeight: 35,
+        // lineHeight: 0.4,
+        // lineHeight: 4,
       },
       popupText: {
         margin: 5, 
@@ -122,9 +125,14 @@ export default StyleSheet.create({
         backgroundColor: '#00000030'
       },
       popupButton: {
-        paddingTop: 20, 
+        marginTop: 25, 
+        padding: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
         fontFamily: 'GothamBold',
         fontSize: 20,
         textAlign: 'center',
+        backgroundColor: '#AD7BFF',
+        borderRadius: 20,
       },
 });

@@ -83,6 +83,7 @@ const swipedRightOn = async (currentUserId, swipedUserId) => {
 }
 
 var index = 0;
+var popupIndex = 0;
 var swipedYes = [];
 var swipedNo = [];
 const swiperRef = React.createRef();
@@ -94,17 +95,22 @@ const swiperRef = React.createRef();
 
 const SwipeView = ({ navigation }) => {
   const [showMatch, setShowMatch] = useState(false);
+  // const [popupIndex, setPopupIndex] = useState(0);
   const onSwiped = () => {
     index = (index + 1) % data.length;
+    popupIndex = index - 1;
     console.log("index: ", index);
     console.log(data[index]);
     console.log("_______");
   }
   const onSwipedLeft = () => {
+    // setCount(prevCount => prevCount + 1);
     swipedNo.push(data[index - 1]);
     swipedLeftOn(auth.currentUser.uid, data[index - 1].id);
+    
   }
   const onSwipedRight = () => {
+    // setCount(prevCount => prevCount + 1);
     swipedYes.push(data[index - 1]);
     swipedRightOn(auth.currentUser.uid, data[index - 1].id);
     if (isMatch(auth.currentUser.uid, data[index - 1].id)) {
@@ -131,9 +137,11 @@ const SwipeView = ({ navigation }) => {
           <View style={styles.popupOutside}>
             <View style={styles.popupBox}>
               <Text style={styles.popupHeader}>You've Been Matched!</Text>
-              <Text style={styles.popupText}>User: example user</Text>
-              <Text style={styles.popupText}>Genre: example genre</Text>
-              <Button style={styles.popupButton} title="Start a conversation!" onPress={() => navigation.navigate('Messaging')}>Start a conversation!</Button>
+              <Text style={styles.popupText}>User: {data[popupIndex].name}</Text>
+              <Text style={styles.popupText}>Genre: {data[popupIndex].genres}</Text>
+              <TouchableOpacity style={styles.popupButton} onPress={() => navigation.navigate('Messaging')}>
+                <Text style={styles.popupText}>Start a conversation!</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </Modal>
