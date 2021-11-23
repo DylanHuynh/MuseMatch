@@ -2,7 +2,7 @@ const express = require('express')
 const cors=require("cors");
 const bodyParser = require("body-parser")
 var {searchByArtist, searchBySong, getRecommendationsGeneral} = require('./spotify_utils.js');
-const { write, readByUID, swipeSongRight, swipeSongLeft } = require('./mongodb.js');
+const { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch , getAllUsers } = require('./mongodb.js');
 
 const corsOptions ={
    origin:'*',
@@ -122,5 +122,10 @@ app.get('/api/get-recommendations', async (req, res, next) => {
   const artists = req.query.artists
   const genres = req.query.genres
   const response = await getRecommendationsGeneral(artists, genres);
+  res.send(response)
+})
+
+app.get('/api/get-users', async (req, res, next) => {
+  const response = await getAllUsers();
   res.send(response)
 })

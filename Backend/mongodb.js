@@ -148,5 +148,18 @@ async function swipeSongLeft(swiperID, songID) {
   });
 }
 
+async function getAllUsers() {
+  MongoClient.connect(url, function (err, db) {
+    if (err) throw err;
+    var dbo = db.db("beta");
+    dbo.collection("user").find({}).toArray(function(err, result) {
+      if (err) throw err;
+      db.close();
+      return result;
+    });
+    })
+}
 
-module.exports = { write, readByUID, swipeSongRight, swipeSongLeft }
+
+module.exports = { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch , getAllUsers }
+
