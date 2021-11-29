@@ -51,9 +51,7 @@ app.get('/api/search-by-song', async (req, res, next) => {
 })
 
 app.get('/api/get-user-profile', async (req, res, next) => {
-  console.log(req)
   getUserProfileInfo(req.query.userAccessToken).then((profile) => {
-    console.log(profile);
     res.send(profile);
   }
   );
@@ -64,9 +62,7 @@ app.get('/api/get-user', async (req, res, next) => {
     if there is an error thrown in getUserFromDb, asyncMiddleware
     will pass it to next() and express will handle the error;
   */
-  console.log(req.query.uid)
   const temp = await readByUID(req.query.uid)
-  console.log(temp)
   res.send(temp)
 })
 
@@ -97,8 +93,7 @@ app.post('/api/create-account', async (req, res, next) => {
 
   }
   write(dummy_req)
-  console.log(dummy_req)
-  console.log("done")
+
   return "hi!"
   //TODO: we will pass the account info to make an account in the backend (primary key is user id)
 })
