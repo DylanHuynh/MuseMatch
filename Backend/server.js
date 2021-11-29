@@ -1,7 +1,6 @@
 const express = require('express')
 const cors = require("cors");
 const bodyParser = require("body-parser")
-var {searchByArtist, searchBySong, getRecommendationsGeneral, getUserProfileInfo} = require('./spotify_utils.js');
 var { searchByArtist, searchBySong, getRecommendationsGeneral, getUserProfileInfo } = require('./spotify_utils.js');
 const { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch, getAllUsers } = require('./mongodb.js');
 
@@ -63,9 +62,7 @@ app.get('/api/get-user', async (req, res, next) => {
     if there is an error thrown in getUserFromDb, asyncMiddleware
     will pass it to next() and express will handle the error;
   */
-  console.log(req.query.uid)
   const temp = await readByUID(req.query.uid)
-  console.log(temp)
   res.send(temp)
 })
 
@@ -85,6 +82,7 @@ app.post('/api/create-account', async (req, res, next) => {
     favorite_song: resp.song,
     song_id: resp.song_id,
     bio: resp.bio,
+    spotify_profile: resp.spotify_profile,
     genres: [],
     songs: [],
     artists: [],
@@ -95,8 +93,7 @@ app.post('/api/create-account', async (req, res, next) => {
 
   }
   write(dummy_req)
-  console.log(dummy_req)
-  console.log("done")
+
   return "hi!"
   //TODO: we will pass the account info to make an account in the backend (primary key is user id)
 })
@@ -131,7 +128,7 @@ app.get('/api/get-recommendations', async (req, res, next) => {
   res.send(response)
 })
 
-app.get('/api/get-users', async (req, res, next) => {
+app.get('/api/get-all-users', async (req, res, next) => {
   const response = await getAllUsers();
   res.send(response)
 })
