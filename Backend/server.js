@@ -144,8 +144,8 @@ app.post('/api/swipe-profile-right', async (req, res, next) => {
   const swiperID = req.body.swiperID
   const swipeeID = req.body.swipeeID
   await swipeRight(swiperID, swipeeID);
-  const isMatch = await isMatch(swiperID, swipeeID);
-  res.send(isMatch);
+  const match = await isMatch(swiperID, swipeeID);
+  res.send(match);
 })
 
 
