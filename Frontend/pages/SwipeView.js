@@ -47,7 +47,10 @@ const SwipeView = ({ navigation }) => {
       onSwipedAll={onSwipedAll}
       cardIndex={0}
       backgroundColor={'#546DD3'}
-      stackSize= {3}
+      showSecondCard={true}
+      stackSize={3}
+      stackSeparation={0}
+      animateCardOpacity={true}
       cardHorizontalMargin={30}
       marginTop={0}
       verticalSwipe={false}
@@ -76,6 +79,7 @@ const Card = () => {
           onChange={(event) => {
             setSelectedIndex(event.nativeEvent.selectedSegmentIndex);
           }}
+          style = {{marginHorizontal: 30, marginBottom: 20}}
         />
 
         {selectedIndex == 0 && 
@@ -94,17 +98,22 @@ const Card = () => {
 
         {selectedIndex == 1 && 
           
-          <ScrollView style = {{flexDirection: 'row'}}>
-            <Text>Selected 2</Text>
+          <ScrollView style = {{height: 300}}>
+            <TouchableOpacity activeOpacity={1}>
+              {arr.map((number) => {
+                return (
+                    <TopArtists number={number}/>
+                )
+              })}
+              </TouchableOpacity>
           </ScrollView>
 
         }
 
         {selectedIndex == 2 && 
           
-          <ScrollView style = {{flexDirection: 'row'}}>
-            <Text>Selected 3</Text>
-          </ScrollView>
+          <AboutMe bio = {
+            "Rodney Erickson is a content marketing professional at HubSpot, an inbound marketing and sales platform that helps companies attract visitors, convert leads, and close customers. Previously, Rodney worked as a marketing manager for a tech software startup."}/>
 
         }
 
@@ -132,6 +141,47 @@ const TopSongs = (props) => {
         <Text style = {styles.topSongsTitle}>Mood</Text>
         <Text style = {styles.topSongsArtist}>Iann Dior</Text>
       </View>
+    </View>
+  )
+}
+
+const TopArtists = (props) => {
+  return (
+    <View style = {{flexDirection: 'row', marginTop: 7, marginBottom: 10}}>
+      <Text style = {styles.topSongsNumberHeader}>{props.number}</Text>
+      <Image style = {styles.topSongsCellImage} source= {require('../assets/ed.jpg')}/>
+      <View style = {{marginLeft: 15, justifyContent: 'center', alignItems: 'center'}}>
+        <Text style = {styles.topArtists}>Iann Dior</Text>
+      </View>
+    </View>
+  )
+}
+
+const AboutMe = (props) => {
+  return (
+    <View>
+      <View style = {{paddingBottom: 30}}>
+        <Text style = {{fontWeight: 'bold', fontSize: 22, paddingLeft: 10}}>Bio</Text>
+        <Text style = {{paddingHorizontal: 10, paddingTop: 5, fontSize: 13}}>{props.bio}</Text>
+      </View>
+      <View>
+        <Text style = {{fontWeight: 'bold', fontSize: 22, paddingLeft: 10}}>What I Have On Repeat</Text>
+        <View style = {{paddingHorizontal: 10, paddingTop: 5, paddingBottom: 5}}>
+          <View style = {{flexDirection: 'row'}}>
+            <Text style = {{fontWeight: '700'}}>Genre: </Text>
+            <Text>Classical</Text>
+          </View>
+          <View style = {{flexDirection: 'row'}}>
+            <Text style = {{fontWeight: '700'}}>Artist: </Text>
+            <Text>Travis Scott</Text>
+          </View>
+          <View style = {{flexDirection: 'row'}}>
+            <Text style = {{fontWeight: '700'}}>Song: </Text>
+            <Text>W.A.P</Text>
+          </View>
+        </View>
+      </View>
+      
     </View>
   )
 }

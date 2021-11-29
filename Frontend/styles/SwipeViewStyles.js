@@ -8,8 +8,7 @@ export default StyleSheet.create({
         backgroundColor: 'black',
       },
       card: {
-        top: 25,
-        height: 570,
+        height: '80%',
         borderRadius: 25,
         backgroundColor: "#F3F3FF",
       },
@@ -92,6 +91,7 @@ export default StyleSheet.create({
     buttonContainer: {
       flexDirection: "row",
       justifyContent: "space-evenly",
+      paddingVertical: 10
     },
 
     // Top Songs Cell
@@ -99,7 +99,8 @@ export default StyleSheet.create({
     topSongsNumberHeader: {
       fontWeight: 'bold',
       fontSize: 24,
-      marginLeft: 20
+      marginLeft: 20,
+      width: 25,
     },
     topSongsCellImage: {
       height: 45,
@@ -113,5 +114,11 @@ export default StyleSheet.create({
     topSongsArtist: {
       fontSize: 15,
       fontWeight: 'bold'
+    },
+    topArtists: {
+      fontSize: 20,
+      fontWeight: 'bold',
+      textAlignVertical: "center",
+
     }
 });
