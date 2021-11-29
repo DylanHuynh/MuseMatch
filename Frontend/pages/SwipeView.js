@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon, Modal } from 'react-native'
+import React, { useEffect, useState } from 'react';
 import Swiper from 'react-native-deck-swiper'
 import Firebase, { auth, db } from '../config/firebase';
 import styles from '../styles/SwipeViewStyles';
-import data from './SwipeTestData';
+import testData from './SwipeTestData';
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
 
 const loadUser = async (uid) => {
@@ -94,8 +95,13 @@ const swiperRef = React.createRef();
 
 
 const SwipeView = ({ navigation }) => {
+  const [data, setData] = useState(testData)
   const [showMatch, setShowMatch] = useState(false);
+
   const onSwiped = () => {
+    if (index + 1>= data.length) {
+      return
+    }
     index = (index + 1) % data.length;
     popupIndex = index - 1;
     console.log("index: ", index);
@@ -103,14 +109,19 @@ const SwipeView = ({ navigation }) => {
     console.log("_______");
   }
   const onSwipedLeft = () => {
+    if (index + 1>= data.length) {
+      return
+    }
     swipedNo.push(data[index - 1]);
     swipedLeftOn(auth.currentUser.uid, data[index - 1].id);
-    
   }
   const onSwipedRight = () => {
+    if (index + 1>= data.length) {
+      return
+    }
     swipedYes.push(data[index - 1]);
     swipedRightOn(auth.currentUser.uid, data[index - 1].id);
-    if (false && isMatch(auth.currentUser.uid, data[index - 1].id)) {
+    if (isMatch(auth.currentUser.uid, data[index - 1].id)) {
       setShowMatch(true);
       console.log("Match found!")
     }
@@ -120,50 +131,31 @@ const SwipeView = ({ navigation }) => {
     console.log("swiped right: ", swipedYes);
     console.log("swiped left: ", swipedNo);
   }
-  
-  const Card = () => {
-    return (
-      <View style={styles.card}>
-        <View style={styles.profileView}>
-          <Image style={styles.profilePicture} source={{ uri: data[index].image }} />
-          <Text style={styles.nameHeader}>{data[index].name}</Text>
-          <Text style={styles.genres}>Genres: {data[index].genres}</Text>
-        </View>
-        <Modal onRequestClose={() => setShowMatch(false)} visible={showMatch} transparent={true} >
-          <View style={styles.popupOutside}>
-            <View style={styles.popupBox}>
-              <Text style={styles.popupHeader}>You've Been Matched!</Text>
-              <Text style={styles.popupText}>User: {data[popupIndex].name}</Text>
-              <Text style={styles.popupText}>Genre: {data[popupIndex].genres}</Text>
-              <TouchableOpacity style={styles.popupButton} onPress={() => navigation.navigate('Messaging')}>
-                <Text style={styles.popupText}>Start a conversation!</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
+  useEffect(() => {
+    async function fetchMyAPI() {
+      const userAccessToken = await SecureStore.getItemAsync('secure_token')
+      const allUsersResponse = await axios.get("http://10.0.2.2:3000/api/get-all-users", { params: { userAccessToken: userAccessToken } })
+      const allUsers = allUsersResponse.data.map(user => {
+        return {
+          id: user.uid,
+          name: user.username,
+          genres: user.spotify_profile.top_3_genres.toString().toUpperCase(),
+          image: user.spotify_profile.favorite_artist_data.image
+        }
+      })
+      console.log({allUsers})
+      setData(allUsers);
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeLeft()}>
-            <Image style={styles.circleXImage} source={require('../assets/x-icon.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.circleButton} onPress={() => { console.log('play is pressed') }}>
-            <Image style={styles.circlePlayImage} source={require('../assets/play-icon.png')} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeRight()}>
-            <Image style={styles.circleHeartImage} source={require('../assets/heart-icon.png')} />
-          </TouchableOpacity>
-        </View>
-      </View>
-    )
-  }
-
+    }
+    fetchMyAPI()
+  }, [])
   return (
     <Swiper
       ref={swiperRef}
       cards={data}
       renderCard={(card, index) => {
         return (
-          <Card />
+          <Card data={data} />
         )
       }}
       onSwiped={onSwiped}
@@ -176,6 +168,42 @@ const SwipeView = ({ navigation }) => {
       cardHorizontalMargin={30}
       marginTop={0}>
     </Swiper>
+  )
+}
+
+const Card = ({ data }) => {
+  return (
+    <View style={styles.card}>
+      <View style={styles.profileView}>
+        <Image style={styles.profilePicture} source={{ uri: data[index].image }} />
+        <Text style={styles.nameHeader}>{data[index].name}</Text>
+        <Text style={styles.genres}>Genres: {data[index].genres}</Text>
+      </View>
+      <Modal onRequestClose={() => setShowMatch(false)} visible={showMatch} transparent={true} >
+        <View style={styles.popupOutside}>
+          <View style={styles.popupBox}>
+            <Text style={styles.popupHeader}>You've Been Matched!</Text>
+            <Text style={styles.popupText}>User: {data[popupIndex].name}</Text>
+            <Text style={styles.popupText}>Genre: {data[popupIndex].genres}</Text>
+            <TouchableOpacity style={styles.popupButton} onPress={() => navigation.navigate('Messaging')}>
+              <Text style={styles.popupText}>Start a conversation!</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeLeft()}>
+          <Image style={styles.circleXImage} source={require('../assets/x-icon.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.circleButton} onPress={() => { console.log('play is pressed') }}>
+          <Image style={styles.circlePlayImage} source={require('../assets/play-icon.png')} />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.circleButton} onPress={() => swiperRef.current.swipeRight()}>
+          <Image style={styles.circleHeartImage} source={require('../assets/heart-icon.png')} />
+        </TouchableOpacity>
+      </View>
+    </View>
   )
 }
 

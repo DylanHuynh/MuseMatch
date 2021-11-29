@@ -54,7 +54,10 @@ export default function CreateProfile({ navigation }) {
             artist,
         }
     });
-    const onHandleCreateProfile = () => {
+    const onHandleCreateProfile = async () => {
+        const userAccessToken = await SecureStore.getItemAsync('secure_token')
+        const userResponse = await axios.get("http://10.0.2.2:3000/api/get-user-profile", { params: { userAccessToken: userAccessToken } })
+        console.log(userResponse.data)
         const resp = {
             username: username,
             artist: artist.name,
@@ -62,7 +65,8 @@ export default function CreateProfile({ navigation }) {
             song: song.name,
             song_id: song.id,
             bio: bio,
-            uid: auth.currentUser.uid
+            uid: auth.currentUser.uid,
+            spotify_profile: userResponse.data
         }
         axios.post('http://10.0.2.2:3000/api/create-account', resp)
         navigation.navigate('Home')
@@ -90,7 +94,7 @@ export default function CreateProfile({ navigation }) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.createAccountLabel}>Sign In</Text>
+            <Text style={styles.createAccountLabel}>Create Profile</Text>
             <Text style={styles.label}>Username</Text>
             <Controller
                 control={control}
@@ -221,7 +225,7 @@ export default function CreateProfile({ navigation }) {
                 <View style={styles.buttonContainer}>
                     <AppButton
                         title="Create Profile"
-                        onPress={onHandleCreateProfile}
+                        onPress={() => onHandleCreateProfile()}
                         type="primary"
                     />
                 </View>

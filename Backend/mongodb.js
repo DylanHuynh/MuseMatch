@@ -159,8 +159,8 @@ async function getAllUsers() {
     return;
   }
   try {
-    const db = client.db("beta");
-    let collection = db.collection('user');
+    const db = client.db("musematch");
+    let collection = db.collection('account_info');
     let res = await collection.find({}).toArray();
     return res
 
