@@ -90,9 +90,49 @@ export default StyleSheet.create({
         height:30,
         borderRadius:50,
         tintColor:"#F35A5A"
-    },
+      },
       buttonContainer: {
         flexDirection: "row",
         justifyContent: "space-evenly",
-      }
+      },
+      popupHeader: {
+        fontFamily: 'GothamBold',
+        fontSize: 30,
+        textAlign: 'center',
+        marginBottom: 20,
+        lineHeight: 35,
+        // lineHeight: 0.4,
+        // lineHeight: 4,
+      },
+      popupText: {
+        margin: 5, 
+        fontFamily: 'GothamBold',
+        fontSize: 20,
+        textAlign: 'center',
+      },
+      popupBox: {
+        width: 294,
+        height: 294,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        borderRadius: 20,
+      },
+      popupOutside: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#00000030'
+      },
+      popupButton: {
+        marginTop: 25, 
+        padding: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
+        fontFamily: 'GothamBold',
+        fontSize: 20,
+        textAlign: 'center',
+        backgroundColor: '#AD7BFF',
+        borderRadius: 20,
+      },
 });
