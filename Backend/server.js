@@ -1,7 +1,6 @@
 const express = require('express')
 const cors = require("cors");
 const bodyParser = require("body-parser")
-var {searchByArtist, searchBySong, getRecommendationsGeneral, getUserProfileInfo} = require('./spotify_utils.js');
 var { searchByArtist, searchBySong, getRecommendationsGeneral, getUserProfileInfo } = require('./spotify_utils.js');
 const { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch, getAllUsers } = require('./mongodb.js');
 
@@ -52,7 +51,9 @@ app.get('/api/search-by-song', async (req, res, next) => {
 })
 
 app.get('/api/get-user-profile', async (req, res, next) => {
+  console.log(req)
   getUserProfileInfo(req.query.userAccessToken).then((profile) => {
+    console.log(profile);
     res.send(profile);
   }
   );
@@ -85,6 +86,7 @@ app.post('/api/create-account', async (req, res, next) => {
     favorite_song: resp.song,
     song_id: resp.song_id,
     bio: resp.bio,
+    spotify_profile: resp.spotify_profile,
     genres: [],
     songs: [],
     artists: [],
@@ -131,7 +133,7 @@ app.get('/api/get-recommendations', async (req, res, next) => {
   res.send(response)
 })
 
-app.get('/api/get-users', async (req, res, next) => {
+app.get('/api/get-all-users', async (req, res, next) => {
   const response = await getAllUsers();
   res.send(response)
 })

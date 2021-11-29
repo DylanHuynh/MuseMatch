@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon } from 'react-native'
 import Swiper from 'react-native-deck-swiper'
 import Firebase, { auth, db } from '../config/firebase';
 import styles from '../styles/SwipeViewStyles';
-import data from './SwipeTestData';
+import testData from './SwipeTestData';
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store';
 
 
 const loadUser = async (uid) => {
@@ -90,39 +91,68 @@ const swiperRef = React.createRef();
 
 
 
-const onSwiped = () => {
 
-  index = (index + 1) % data.length;
-  console.log("index: ", index);
-  console.log(data[index]);
-  console.log("_______");
-}
-const onSwipedLeft = () => {
-  swipedNo.push(data[index - 1]);
-  swipedLeftOn(auth.currentUser.uid, data[index - 1].id);
-}
-const onSwipedRight = () => {
-  swipedYes.push(data[index - 1]);
-  swipedRightOn(auth.currentUser.uid, data[index - 1].id);
-  if (isMatch(auth.currentUser.uid, data[index - 1].id)) {
-    // show popup, show match in messages
-    console.log("Match found!")
-  }
-}
-const onSwipedAll = () => {
-  console.log('Done Swiping!');
-  console.log("swiped right: ", swipedYes);
-  console.log("swiped left: ", swipedNo);
-}
 
 const SwipeView = ({ navigation }) => {
+  const [data, setData] = useState(testData)
+
+  const onSwiped = () => {
+    if (index + 1>= data.length) {
+      return
+    }
+    index = (index + 1) % data.length;
+    console.log("index: ", index);
+    console.log(data[index]);
+    console.log("_______");
+  }
+  const onSwipedLeft = () => {
+    if (index + 1>= data.length) {
+      return
+    }
+    swipedNo.push(data[index - 1]);
+    swipedLeftOn(auth.currentUser.uid, data[index - 1].id);
+  }
+  const onSwipedRight = () => {
+    if (index + 1>= data.length) {
+      return
+    }
+    swipedYes.push(data[index - 1]);
+    swipedRightOn(auth.currentUser.uid, data[index - 1].id);
+    if (isMatch(auth.currentUser.uid, data[index - 1].id)) {
+      // show popup, show match in messages
+      console.log("Match found!")
+    }
+  }
+  const onSwipedAll = () => {
+    console.log('Done Swiping!');
+    console.log("swiped right: ", swipedYes);
+    console.log("swiped left: ", swipedNo);
+  }
+  useEffect(() => {
+    async function fetchMyAPI() {
+      const userAccessToken = await SecureStore.getItemAsync('secure_token')
+      const allUsersResponse = await axios.get("http://10.0.2.2:3000/api/get-all-users", { params: { userAccessToken: userAccessToken } })
+      const allUsers = allUsersResponse.data.map(user => {
+        return {
+          id: user.uid,
+          name: user.username,
+          genres: user.spotify_profile.top_3_genres.toString().toUpperCase(),
+          image: user.spotify_profile.favorite_artist_data.image
+        }
+      })
+      console.log({allUsers})
+      setData(allUsers);
+
+    }
+    fetchMyAPI()
+  }, [])
   return (
     <Swiper
       ref={swiperRef}
       cards={data}
       renderCard={(card, index) => {
         return (
-          <Card />
+          <Card data={data} />
         )
       }}
       onSwiped={onSwiped}
@@ -138,8 +168,8 @@ const SwipeView = ({ navigation }) => {
   )
 }
 
-const Card = () => {
-   return (
+const Card = ({ data }) => {
+  return (
     <View style={styles.card}>
       <View style={styles.profileView}>
         <Image style={styles.profilePicture} source={{ uri: data[index].image }} />

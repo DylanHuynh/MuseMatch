@@ -29,7 +29,7 @@ export default function CreateAccount({ navigation }) {
           if (email !== '' && password !== '') {
             await auth.createUserWithEmailAndPassword(email, password);
             await auth.signInWithEmailAndPassword(email, password); //Added this so it creates then signs in
-            navigation.navigate("CreateProfile")
+            navigation.navigate("Login")
           }
         } catch (error) {
           setSignupError(error.message);
