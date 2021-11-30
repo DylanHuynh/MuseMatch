@@ -92,7 +92,7 @@ var popupIndex = 0;
 var swipedYes = [];
 var swipedNo = [];
 const swiperRef = React.createRef();
-//const auth = Firebase.auth();
+// const auth = Firebase.auth();
 
 
 
@@ -176,7 +176,14 @@ const SwipeView = ({ navigation }) => {
           genres: user.spotify_profile.top_3_genres.toString().toUpperCase(),
           image: user.spotify_profile.favorite_artist_data.image
         }
-      })
+      }).filter(user => user.uid != auth.currentUser.uid)
+      allUsers += [{
+        id: '0',
+        name: 'Ed Sheeran',
+        genres: 'Rock, Pop, Indie',
+        image:
+          'https://i.scdn.co/image/ab6761610000e5eb12a2ef08d00dd7451a6dbed6'
+      }]
       setData(allUsers);
 
     }
