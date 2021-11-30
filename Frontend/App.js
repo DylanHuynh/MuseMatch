@@ -10,6 +10,7 @@ import Homepage from './pages/Homepage.js';
 import SwipeView from './pages/SwipeView.js';
 import Chat from './pages/Chat.js';
 import CreateProfile from './pages/CreateProfile.js';
+import SongRecs from './pages/SongRecsView.js';
 import Home from './pages/Home'
 
 
@@ -36,6 +37,7 @@ export default function App() {
         <Stack.Screen name="Chat" component={Chat}/>
         <Stack.Screen name="Home" component = {Home} />
         <Stack.Screen name="CreateProfile" component = {CreateProfile} />
+        <Stack.Screen name="SongRecs" component = {SongRecs} />
       </Stack.Navigator>
     </NavigationContainer>
 

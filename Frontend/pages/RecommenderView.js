@@ -156,8 +156,10 @@ const SwipeView = ({ navigation }) => {
           addSwipedLeft(auth.currentUser.uid, data[index - 1].id);
         }}
         onSwipedRight={() => {
-          swipedYes.push(data[index - 1]);
-          addSwipedRight(auth.currentUser.uid, data[index - 1].id);
+          // temporary
+          navigation.navigate("SongRecs");
+          // swipedYes.push(data[index - 1]);
+          // addSwipedRight(auth.currentUser.uid, data[index - 1].id);
         }}
         onSwipedAll={() => {
           console.log('Done Swiping!');
