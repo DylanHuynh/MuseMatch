@@ -109,9 +109,8 @@ export default function Login({ navigation }) {
     try {
       if (email !== '' && password !== '') {
         await auth.signInWithEmailAndPassword(email, password);
-        //const token = await getTokens();
-        //await SecureStore.setItemAsync('secure_token', token);
-        //navigation.navigate("CreateProfile");
+        const token = await getTokens();
+        await SecureStore.setItemAsync('secure_token', token);
         navigation.navigate("Home");
       }
     } catch (error) {

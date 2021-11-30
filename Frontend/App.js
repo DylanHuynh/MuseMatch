@@ -12,6 +12,7 @@ import Chat from './pages/Chat.js';
 import CreateProfile from './pages/CreateProfile.js';
 import Home from './pages/Home'
 import Discover from './pages/Discover'
+import RecommenderIntro from './pages/RecommenderIntro'
 
 
 const Stack = createNativeStackNavigator();
@@ -28,7 +29,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Discover" screenOptions={{
+      <Stack.Navigator initialRouteName="Landing" screenOptions={{
         headerShown: false
       }}>
         <Stack.Screen name="Login" component={Login} />
@@ -38,6 +39,8 @@ export default function App() {
         <Stack.Screen name="Home" component = {Home} />
         <Stack.Screen name="CreateProfile" component = {CreateProfile} />
         <Stack.Screen name="Discover" component = {Discover} />
+        <Stack.Screen name="RecommenderIntro" component = {RecommenderIntro} />
+
       </Stack.Navigator>
     </NavigationContainer>
 

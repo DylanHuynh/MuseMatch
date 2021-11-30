@@ -39,7 +39,7 @@ export default StyleSheet.create({
     },
     transparentAppButtonContainer: {
       width: 201,
-      height: 36,
+      height: 45,
       elevation: 8,
       backgroundColor: "rgba(201, 76, 76, 0.0)",
       borderRadius: 20,

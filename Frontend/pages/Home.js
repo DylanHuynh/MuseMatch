@@ -8,7 +8,7 @@ import Homepage from '../pages/Homepage';
 import SwipeView from '../pages/SwipeView';
 import ChatHomeStack from '../pages/ChatHomeStack';
 import AddRoomScreen from '../pages/AddRoomScreen';
-import RecommenderView from '../pages/RecommenderView';
+import RecommenderStack from '../pages/RecommenderIntro';
 
 
 const Tab = createBottomTabNavigator();
@@ -46,7 +46,7 @@ const H = () => {
             >
                 <Stack.Screen name="Discover" component={Homepage} />
                 <Stack.Screen name="Make a Match" component={SwipeView} />
-                <Stack.Screen name="Recommender" component={RecommenderView} />
+                <Stack.Screen name="Recommender" component={RecommenderStack} />
                 <Stack.Screen name="Messaging" component={ChatHomeStack} />
                 <Stack.Screen name="Settings" component={Homepage} />
             </Tab.Navigator>
