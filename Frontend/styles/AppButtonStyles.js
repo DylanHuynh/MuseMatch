@@ -38,8 +38,8 @@ export default StyleSheet.create({
       alignSelf: "center",
     },
     transparentAppButtonContainer: {
-      width: 201,
-      height: 45,
+      width: 400,
+      height: 36,
       elevation: 8,
       backgroundColor: "rgba(201, 76, 76, 0.0)",
       borderRadius: 20,
