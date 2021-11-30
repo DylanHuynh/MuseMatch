@@ -93,6 +93,7 @@ export default function CreateProfile({ navigation }) {
     }
 
     return (
+<<<<<<< HEAD
         <SafeAreaView style={styles.safeAreaContainer}>
             <View style = {styles.container}>
                 <Text style={styles.createAccountLabel}>Sign In</Text>
@@ -110,6 +111,24 @@ export default function CreateProfile({ navigation }) {
                     name="username"
                     rules={{ required: true }}
                 />
+=======
+        <SafeAreaView style={styles.container}>
+            <Text style={styles.createAccountLabel}>Create Profile</Text>
+            <Text style={styles.label}>Username</Text>
+            <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                        style={styles.input}
+                        onBlur={onBlur}
+                        onChangeText={value => setUsername(value)}
+                        value={username}
+                    />
+                )}
+                name="username"
+                rules={{ required: true }}
+            />
+>>>>>>> 9c60f66464f134b57159b7a848356acc9e026b0a
 
                 <Text style={styles.label}>Bio</Text>
                 <Controller

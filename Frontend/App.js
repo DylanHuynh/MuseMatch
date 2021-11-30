@@ -27,6 +27,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
+<<<<<<< HEAD
       <Stack.Navigator initialRouteName = "Landing">
         <Stack.Screen name="Landing" component={Landing} options = {{
           headerShown: false
@@ -38,6 +39,15 @@ export default function App() {
           headerShown: true
         }}
           />
+=======
+      <Stack.Navigator initialRouteName="Landing" screenOptions={{
+        headerShown: false
+      }}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Landing" component={Landing} />
+        <Stack.Screen name="Create Account" component={CreateAccount} />
+        <Stack.Screen name="Chat" component={Chat}/>
+>>>>>>> 9c60f66464f134b57159b7a848356acc9e026b0a
         <Stack.Screen name="Home" component = {Home} />
         <Stack.Screen name="CreateProfile" component = {CreateProfile} />
       </Stack.Navigator>
