@@ -14,7 +14,7 @@ import * as SecureStore from 'expo-secure-store';
 const SongRecsView = ({ navigation }) => {
   const [data, setData] = useState(testData)
 
-    const arr = ["1.", "2.", "3.", "4.", "5.", "6."]
+    const arr = ["1.", "2.", "3.", "4.", "5.", "6.", "7.", "8", "9", "10"]
   
     return (
       <View style = {styles.card}>
@@ -45,7 +45,7 @@ const TopSongs = (props) => {
         <Text style = {styles.topSongsTitle}>Mood</Text>
         <Text style = {styles.topSongsArtist}>Iann Dior</Text>
       </View>
-      <TouchableOpacity onPress={() => console.log("heart pressed")}>
+      <TouchableOpacity onPress={() => console.log("heart #" + props.number + " pressed")}>
         <Image style={styles.circleHeartImage} source={require('../assets/heart-icon.png')} />
       </TouchableOpacity>
     </View>
