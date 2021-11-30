@@ -6,6 +6,9 @@ import { useFonts } from 'expo-font';
 import Landing from './pages/Landing.js';
 import Login from './pages/Login.js';
 import CreateAccount from './pages/CreateAccount.js';
+import Homepage from './pages/Homepage.js';
+import SwipeView from './pages/SwipeView.js';
+import Chat from './pages/Chat.js';
 import CreateProfile from './pages/CreateProfile.js';
 import Home from './pages/Home'
 

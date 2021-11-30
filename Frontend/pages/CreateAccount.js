@@ -4,18 +4,12 @@ import { StyleSheet, Text, View, TextInput, Button, Alert, SafeAreaView} from 'r
 import { useForm, Controller  } from "react-hook-form";
 import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
-import Firebase from '../config/firebase';
+import { auth } from '../config/firebase';
 import LoginErrorMessage from '../components/LoginErrorMessage.js';
-
 // Import the functions you need from the SDKs you need
 //import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
-
-const auth = Firebase.auth();
-
-
-
 export default function CreateAccount({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -35,7 +29,7 @@ export default function CreateAccount({ navigation }) {
           if (email !== '' && password !== '') {
             await auth.createUserWithEmailAndPassword(email, password);
             await auth.signInWithEmailAndPassword(email, password); //Added this so it creates then signs in
-            navigation.navigate("CreateProfile")
+            navigation.navigate("Login")
           }
         } catch (error) {
           setSignupError(error.message);

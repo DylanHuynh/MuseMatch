@@ -119,6 +119,49 @@ export default StyleSheet.create({
       fontSize: 20,
       fontWeight: 'bold',
       textAlignVertical: "center",
-
-    }
+    },
+    buttonContainer: {
+      flexDirection: "row",
+      paddingBottom: 18,
+      paddingTop: 8,
+      justifyContent: "space-evenly",
+    },
+    popupHeader: {
+      fontFamily: 'GothamBold',
+      fontSize: 30,
+      textAlign: 'center',
+      marginBottom: 20,
+      lineHeight: 35,
+    },
+    popupText: {
+      margin: 5, 
+      fontFamily: 'GothamBold',
+      fontSize: 20,
+      textAlign: 'center',
+    },
+    popupBox: {
+      width: 294,
+      height: 294,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'white',
+      borderRadius: 20,
+    },
+    popupOutside: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#00000030'
+    },
+    popupButton: {
+      marginTop: 25, 
+      padding: 5,
+      paddingLeft: 10,
+      paddingRight: 10,
+      fontFamily: 'GothamBold',
+      fontSize: 20,
+      textAlign: 'center',
+      backgroundColor: '#AD7BFF',
+      borderRadius: 20,
+    },
 });

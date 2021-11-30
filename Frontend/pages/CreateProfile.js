@@ -8,9 +8,9 @@ import AppButton from '../components/AppButton.js';
 import styles from '../styles/FormStyles.js';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 import axios from 'axios';
-import Firebase from '../config/firebase';
+import { auth } from '../config/firebase';
 
-export default function CreateAccount({ navigation }) {
+export default function CreateProfile({ navigation }) {
     const [bio, setBio] = useState("")
     const [username, setUsername] = useState("")
     const [song, setSong] = useState({
@@ -54,7 +54,10 @@ export default function CreateAccount({ navigation }) {
             artist,
         }
     });
-    const onHandleCreateProfile = () => {
+    const onHandleCreateProfile = async () => {
+        const userAccessToken = await SecureStore.getItemAsync('secure_token')
+        const userResponse = await axios.get("http://10.0.2.2:3000/api/get-user-profile", { params: { userAccessToken: userAccessToken } })
+        console.log(userResponse.data)
         const resp = {
             username: username,
             artist: artist.name,
@@ -62,7 +65,8 @@ export default function CreateAccount({ navigation }) {
             song: song.name,
             song_id: song.id,
             bio: bio,
-            uid: Firebase.auth().currentUser.uid
+            uid: auth.currentUser.uid,
+            spotify_profile: userResponse.data
         }
         axios.post('http://10.0.2.2:3000/api/create-account', resp)
         navigation.navigate('Home')
@@ -81,7 +85,7 @@ export default function CreateAccount({ navigation }) {
     if (!loaded) {
         return (
             <AppLoading
-                startAsync={() => loadUser(Firebase.auth().currentUser.uid)}
+                startAsync={() => loadUser(auth.currentUser.uid)}
                 onFinish={() => setLoaded(true)}
                 onError={console.warn}
             />
@@ -217,6 +221,13 @@ export default function CreateAccount({ navigation }) {
                                 nestedScrollEnabled: true,
                             }
                         }
+                />
+
+                <View style={styles.buttonContainer}>
+                    <AppButton
+                        title="Create Profile"
+                        onPress={() => onHandleCreateProfile()}
+                        type="primary"
                     />
 
                     <View style={styles.buttonContainer}>
@@ -228,6 +239,7 @@ export default function CreateAccount({ navigation }) {
                     </View>
 
                 </View>
+            </View>
             </View>
 
         </SafeAreaView>
