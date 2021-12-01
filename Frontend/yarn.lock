@@ -6251,7 +6251,6 @@
   dependencies:
     "prop-types" "^15.7.2"
 
-<<<<<<< HEAD
 "react-native-pager-view@^5.4.9":
   "integrity" "sha512-D6tzxpwMGdl6CXgtskGWhKRc5cJakCazESRGt7PkqnpyiH3N35ft1KmR82pCSQetAFlytFiToeu3a/dG5CELvA=="
   "resolved" "https://registry.npmjs.org/react-native-pager-view/-/react-native-pager-view-5.4.9.tgz"
@@ -6261,12 +6260,6 @@
   "integrity" "sha512-FcwfYyIbhD7bqDy01d0kVL1+T+gjMA1OVMJw3rN7GbUCHRJWI2guEXptNF4QCYiuR80X3WowqxXl6CZPs1757Q=="
   "resolved" "https://registry.npmjs.org/react-native-paper/-/react-native-paper-4.10.1.tgz"
   "version" "4.10.1"
-=======
-"react-native-paper@^4.10.0":
-  "integrity" "sha512-Pt8deqdyVAaxvgtlTFzCzAnjGSaqjZK4FirozHXenBEXhMuv+4aFKie9Og1plsdVl9bXcqtnfubm44mWRcszgg=="
-  "resolved" "https://registry.npmjs.org/react-native-paper/-/react-native-paper-4.10.0.tgz"
-  "version" "4.10.0"
->>>>>>> 9c60f66464f134b57159b7a848356acc9e026b0a
   dependencies:
     "@callstack/react-theme-provider" "^3.0.7"
     "color" "^3.1.2"
@@ -6380,11 +6373,7 @@
     "prop-types" "^15.6.0"
     "react-timer-mixin" "^0.13.4"
 
-<<<<<<< HEAD
 "react-native@*", "react-native@^0.49.1", "react-native@>=0.42.0", "react-native@>=0.50.0", "react-native@>=0.57", "react-native@>=0.62", "react-native@>=0.62.0-rc.0 <0.64.0", "react-native@0.57.1", "react-native@https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz":
-=======
-"react-native@*", "react-native@^0.49.1", "react-native@>=0.42.0", "react-native@>=0.50.0", "react-native@>=0.57", "react-native@>=0.62.0-rc.0 <0.64.0", "react-native@0.57.1", "react-native@https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz":
->>>>>>> 9c60f66464f134b57159b7a848356acc9e026b0a
   "integrity" "sha512-qWR6pcG4yDu/Rthm+DvAS017rL38LbZFnJv/k4HL4ZUH/WhKuqC+stD7TlpaOBb3N2bkydm9s+GCa14T41MLEg=="
   "resolved" "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz"
   "version" "0.63.2"
@@ -6435,11 +6424,7 @@
   "resolved" "https://registry.npmjs.org/react-timer-mixin/-/react-timer-mixin-0.13.4.tgz"
   "version" "0.13.4"
 
-<<<<<<< HEAD
 "react@*", "react@^16.0", "react@^16.0.0-beta.5", "react@^16.13.1", "react@^16.8.0 || ^17", "react@^16.8.0 || ^17.0.0", "react@^17.0.0", "react@>=16.0", "react@>=16.3.0", "react@>=16.5.1", "react@16.13.1", "react@16.5.0":
-=======
-"react@*", "react@^16.0", "react@^16.0.0-beta.5", "react@^16.13.1", "react@^16.8.0 || ^17", "react@^16.8.0 || ^17.0.0", "react@^17.0.0", "react@>=16.3.0", "react@>=16.5.1", "react@16.13.1", "react@16.5.0":
->>>>>>> 9c60f66464f134b57159b7a848356acc9e026b0a
   "integrity" "sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.13.1.tgz"
   "version" "16.13.1"
