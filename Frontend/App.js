@@ -19,6 +19,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [loaded] = useFonts({
     "GothamBold": require('./assets/fonts/GothamBold.ttf'),
+    "Nunito": require('./assets/fonts/Nunito-Bold.ttf')
   });
 
   if (!loaded) {
@@ -29,7 +30,8 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Landing" screenOptions={{
-        headerShown: false
+        headerShown: false,
+        cardStyle: { backgroundColor: '#546DD3' }
       }}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Landing" component={Landing} />

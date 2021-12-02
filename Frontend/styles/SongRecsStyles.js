@@ -7,16 +7,25 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: 'black',
       },
+      card: {
+        height: '100%',
+        // borderRadius: 25,
+        backgroundColor: "#e0e5f7",
+      },
       title: {
         textAlign: 'center',
         fontFamily: "GothamBold",
-        fontSize: 40,
-        color: "#404040",
+        lineHeight: 50,
+        fontSize: 36,
+        color: 'black',
+        paddingTop: 170,
+        paddingBottom: 40,
       },
       text: {
         textAlign: 'center',
         fontSize: 50,
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        fontFamily: "GothamBold",
       },
       topSongsNumberHeader: {
         fontWeight: 'bold',
@@ -27,15 +36,20 @@ export default StyleSheet.create({
       topSongsCellImage: {
         height: 45,
         width: 45,
-        marginLeft: 30
+        marginLeft: 20,
       },
       topSongsTitle: {
         fontSize: 20,
-        fontWeight: 'bold'
+        fontFamily: "Nunito",
+        paddingTop: 2,
+        paddingLeft: 5,
       },
       topSongsArtist: {
-        fontSize: 15,
-        fontWeight: 'bold'
+        fontSize: 12,
+        fontFamily: "Nunito",
+        marginTop: -3,
+        paddingLeft: 5,
+        // paddingRight: 110,
       },
       circleButton: {
         alignItems:'center',
@@ -46,12 +60,31 @@ export default StyleSheet.create({
         borderRadius:50,
       },
       circleHeartImage: {
-          alignItems:'center',
-          justifyContent:'center',
-          width:30,
-          height:30,
-          borderRadius:50,
-          tintColor:"#F35A5A"
-        },
-      
+        // alignItems:'center',
+        justifyContent:'flex-end',
+        width:20,
+        height:20,
+        borderRadius:50,
+        opacity:0.7,
+        // alignItems: "flex-end",
+        // paddingRight: -60,
+      },
+      scrollView: {
+        flex: 1,
+        height: 20,
+        width: 400,
+        paddingLeft: 40,
+      },
+      row: {
+        flexDirection: 'row', 
+        marginTop: 7, 
+        marginBottom: 7,
+        alignItems: "center",
+      },
+      linkText: {
+        fontSize: 14,
+        fontFamily: "Nunito",
+        paddingTop: 40,
+        textAlign: 'center',
+      }
 });
