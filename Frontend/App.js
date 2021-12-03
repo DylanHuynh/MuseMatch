@@ -11,6 +11,7 @@ import SwipeView from './pages/SwipeView.js';
 import Chat from './pages/Chat.js';
 import CreateProfile from './pages/CreateProfile.js';
 import Home from './pages/Home'
+import RecommenderIntro from './pages/RecommenderIntro'
 
 
 const Stack = createNativeStackNavigator();
@@ -40,6 +41,8 @@ export default function App() {
           />
         <Stack.Screen name="Home" component = {Home} />
         <Stack.Screen name="CreateProfile" component = {CreateProfile} />
+        <Stack.Screen name="RecommenderIntro" component = {RecommenderIntro} />
+
       </Stack.Navigator>
     </NavigationContainer>
 
