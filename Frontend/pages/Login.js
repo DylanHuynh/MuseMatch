@@ -60,16 +60,15 @@ const getTokens = async () => {
     const authorizationCode = await getAuthorizationCode() //we wrote this function above
     const credentials = spotifyCredentials; //we wrote this function above (could also run this outside of the functions and store the credentials in local scope)
     const credsB64 = btoa(`${credentials.clientId}:${credentials.clientSecret}`);
-    const response = await fetch('https://accounts.spotify.com/api/token', {
-      method: 'POST',
+    const body = `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${credentials.redirectUri
+    }`
+    const response = await axios.post('https://accounts.spotify.com/api/token', body, {
       headers: {
         Authorization: `Basic ${credsB64}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: `grant_type=authorization_code&code=${authorizationCode}&redirect_uri=${credentials.redirectUri
-        }`,
     });
-    const responseJson = await response.json();
+    const responseJson = await response.data;
     // destructure the response and rename the properties to be in camelCase to satisfy my linter ;)
     const {
       access_token: accessToken,
