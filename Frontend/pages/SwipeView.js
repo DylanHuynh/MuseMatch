@@ -13,47 +13,9 @@ import * as SecureStore from 'expo-secure-store';
 const loadUser = async (uid) => {
   console.log("starting!!!")
   const user = await axios.get('http://10.0.2.2:3000/api/get-user', { params: { uid: uid } })
-  if (user.data.uid != -1) {
-    navigation.navigate('Home')
-    return
-  }
   return user.data
 }
 
-const isMatch = async (currentUserId, swipedUserId) => {
-  const body = {
-    currentUserId,
-    swipedUserId
-  }
-  axios.get("http://10.0.2.2:3000/api/get-is-match", body)
-    .then(response => {
-      console.log(response)
-      if (response.data.isMatch == true) {
-        db
-          .collection('THREADS')
-          .add({
-            name: loadUser(currentUserId).username + " " + loadUser(swipedUserId).username,
-            latestMessage: {
-              text: `You have joined the room.`,
-              createdAt: new Date().getTime()
-            },
-            members: [currentUserId, swipedUserId]
-          })
-          .then(docRef => {
-            docRef.collection('MESSAGES').add({
-              text: `You have joined the room.`,
-              createdAt: new Date().getTime(),
-              system: true
-            });
-            navigation.navigate('Chat Home');
-          });
-      }
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  return response.data;
-}
 
 const swipedLeftOn = async (currentUserId, swipedUserId) => {
   const body = {
@@ -69,25 +31,7 @@ const swipedLeftOn = async (currentUserId, swipedUserId) => {
     })
 }
 
-const swipedRightOn = async (currentUserId, swipedUserId) => {
-  console.log("swiping right")
-  console.log(currentUserId, swipedUserId)
-  const body = {
-    swiperID: currentUserId,
-    swipeeID: swipedUserId
-  }
-  await axios.post("http://10.0.2.2:3000/api/swipe-profile-right", body)
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  if (isMatch(auth.currentUser.uid, data[index - 1].id)) {
-    setShowMatch(true);
-    console.log("Match found!")
-  }
-}
+
 
 var index = 0;
 var popupIndex = 0;
@@ -117,6 +61,44 @@ const onSwipedAll = () => {
 const SwipeView = ({ navigation }) => {
   const [data, setData] = useState([])
   const [showMatch, setShowMatch] = useState(false);
+
+  const swipedRightOn = async (currentUserId, swipedUserId) => {
+    console.log("swiping right")
+    console.log(currentUserId, swipedUserId)
+    const body = {
+      swiperID: currentUserId,
+      swipeeID: swipedUserId
+    }
+    const response = await axios.post("http://10.0.2.2:3000/api/swipe-profile-right", body)
+    const match = response.data
+    console.log({ match })
+    if (match) {
+      console.log('dyhuynh1')
+      console.log(currentUserId,swipedUserId)
+      const user1 = await loadUser(currentUserId)
+      const user2 = await loadUser(swipedUserId)
+      console.log({user1})
+      db
+      .collection('THREADS')
+      .add({
+        name: user1.username + " and " + user2.username,
+        latestMessage: {
+          text: `You have joined the room.`,
+          createdAt: new Date().getTime()
+        },
+        members: [currentUserId, swipedUserId]
+      })
+      .then(docRef => {
+        docRef.collection('MESSAGES').add({
+          text: `You have joined the room.`,
+          createdAt: new Date().getTime(),
+          system: true
+        });
+      });
+      setShowMatch(true);
+      console.log("Match found!")
+    }
+  }
 
   const onSwiped = () => {
     if (index + 1 >= data.length) {
@@ -188,7 +170,7 @@ const SwipeView = ({ navigation }) => {
                 <TouchableOpacity activeOpacity={1}>
                   {arr.map((number) => {
                     return (
-                      <TopSongs number={number} song_index={number - 1}/>
+                      <TopSongs number={number} song_index={number - 1} />
                     )
                   })}
                 </TouchableOpacity>
@@ -202,7 +184,7 @@ const SwipeView = ({ navigation }) => {
                 <TouchableOpacity activeOpacity={1}>
                   {arr.map((number) => {
                     return (
-                      <TopArtists number={number}  />
+                      <TopArtists number={number} />
                     )
                   })}
                 </TouchableOpacity>
@@ -246,7 +228,7 @@ const SwipeView = ({ navigation }) => {
           image: user.spotify_profile.favorite_artist_data.image,
           top_10_songs: user.spotify_profile.top_10_songs
         }
-      })
+      }).filter(user => user.id != auth.currentUser.uid)
       await setData(allUsers);
 
     }
@@ -254,8 +236,8 @@ const SwipeView = ({ navigation }) => {
   }, [])
 
   const TopSongs = ({ number, song_index }) => {
-    console.log({song_index})
-    console.log({index})
+    console.log({ song_index })
+    console.log({ index })
     return (
       <View style={{ flexDirection: 'row', marginTop: 7, marginBottom: 10 }}>
         <Text style={styles.topSongsNumberHeader}>{number}</Text>
