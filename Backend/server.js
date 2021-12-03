@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require("cors");
 const bodyParser = require("body-parser")
 var { searchByArtist, searchBySong, getRecommendationsGeneral, getUserProfileInfo } = require('./spotify_utils.js');
-const { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch } = require('./mongodb.js');
+const { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch, getAllUsers } = require('./mongodb.js');
 
 const corsOptions = {
   origin: '*',
@@ -11,6 +11,7 @@ const corsOptions = {
 }
 
 const app = express()
+app.use(express.json({limit: '50mb'}));
 app.use(cors(corsOptions)) // Use this after the variable declaration
 app.use(bodyParser.json())
 const port = 3000
@@ -62,9 +63,7 @@ app.get('/api/get-user', async (req, res, next) => {
     if there is an error thrown in getUserFromDb, asyncMiddleware
     will pass it to next() and express will handle the error;
   */
-  console.log(req.query.uid)
   const temp = await readByUID(req.query.uid)
-  console.log(temp)
   res.send(temp)
 })
 
@@ -84,6 +83,7 @@ app.post('/api/create-account', async (req, res, next) => {
     favorite_song: resp.song,
     song_id: resp.song_id,
     bio: resp.bio,
+    spotify_profile: resp.spotify_profile,
     genres: [],
     songs: [],
     artists: [],
@@ -94,8 +94,7 @@ app.post('/api/create-account', async (req, res, next) => {
 
   }
   write(dummy_req)
-  console.log(dummy_req)
-  console.log("done")
+
   return "hi!"
   //TODO: we will pass the account info to make an account in the backend (primary key is user id)
 })
@@ -130,6 +129,11 @@ app.get('/api/get-recommendations', async (req, res, next) => {
   res.send(response)
 })
 
+app.get('/api/get-all-users', async (req, res, next) => {
+  const response = await getAllUsers();
+  res.send(response)
+})
+
 app.post('/api/swipe-profile-left', async (req, res, next) => {
   const swiperID = req.body.swiperID
   const swipeeID = req.body.swipeeID
@@ -141,21 +145,19 @@ app.post('/api/swipe-profile-right', async (req, res, next) => {
   const swiperID = req.body.swiperID
   const swipeeID = req.body.swipeeID
   await swipeRight(swiperID, swipeeID);
-  const isMatch = await isMatch(swiperID, swipeeID);
-  res.send(isMatch);
+  const match = await isMatch(swiperID, swipeeID);
+  res.send(match);
 })
 
 
 app.post('/api/swipe-song-right', async (req, res, next) => {
   const userID = req.body.userID
   const songID = req.body.songID
-  console.log(req.body)
   await swipeSongRight(userID, songID);
 })
 
 app.post('/api/swipe-song-left', async (req, res, next) => {
-  const userID = req.query.userID
-  const songID = req.query.songID
-  console.log(req.body)
+  const userID = req.body.userID
+  const songID = req.body.songID
   await swipeSongLeft(userID, songID);
 })

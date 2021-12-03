@@ -22,33 +22,34 @@ export default function Landing({ navigation }) {
     console.log('errors', errors);
 
     return (
-        <SafeAreaView style={styles.container}>
-            <LinearGradient
-                colors={['#724ECE', '#1F71E7']}
-                style={styles.linearGradient}
-            >
-                <View style={styles.bodyContainer}>
-                    <Text style={styles.label}>Make Genuine Connections.</Text>
-                    <Text style={styles.label}>Just Through Music.</Text>
-                </View>
-                <View styles={styles.footer}>
-                    <AppButton
-                        title="Sign up"
-                        onPress={() => navigation.navigate("Create Account")}
-                        type="secondary"
+        <LinearGradient
+            colors={['#724ECE', '#1F71E7']}
+            style={styles.linearGradient}
+        >
+            <SafeAreaView style={styles.container}>
+            <View style={styles.bodyContainer}>
+                <Text style={styles.label}>Make Genuine Connections.</Text>
+                <Text style={styles.label}>Just Through Music.</Text>
+            </View>
+            <View styles={styles.footer}>
+                <AppButton
+                    title="Sign up"
+                    onPress={() => navigation.navigate("Create Account")}
+                    type="secondary"
 
-                    />
-                    <AppButton
-                        title="I already have an account"
-                        type="transparent"
-                        onPress={() => navigation.navigate("Login")}
-                    />
-                </View>
+                />
+                <AppButton
+                    title="I already have an account"
+                    type="transparent"
+                    onPress={() => navigation.navigate("Login")}
+                />
+            </View>
 
-            </LinearGradient>
+            </SafeAreaView>
+        </LinearGradient>
 
 
-        </SafeAreaView>
+       
     );
 };
 

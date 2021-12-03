@@ -130,7 +130,6 @@ export default function Login({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.createAccountLabel}>Sign In</Text>
-
       <Text style={styles.label}>Username</Text>
       <Controller
         control={control}

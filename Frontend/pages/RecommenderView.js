@@ -113,14 +113,16 @@ const SwipeView = ({ navigation }) => {
       return (
         <>
           <View style={styles.card}>
-            <Text style={styles.songCounter}>Song {index + 1} of {data.length}</Text>
             {data.length > 0 ?
-              <View style={styles.songView}>
-                <Image style={styles.albumCover} source={{ uri: data[index].album_cover }} />
-                <Text style={styles.songName}>{data[index].song_name}</Text>
-                <Text style={styles.artist}>{data[index].artist}</Text>
-              </View> :
-              <Text style={styles.songCounter}>No songs currently available</Text>
+              <>
+                <Text style={styles.songCounter}>Song {index + 1} of {data.length}</Text>
+                <View style={styles.songView}>
+                  <Image style={styles.albumCover} source={{ uri: data[index].album_cover }} />
+                  <Text style={styles.songName}>{data[index].song_name}</Text>
+                  <Text style={styles.artist}>{data[index].artist}</Text>
+                </View>
+              </> :
+              <Text style={styles.songCounter}>Loading...</Text>
             }
 
 

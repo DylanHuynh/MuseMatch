@@ -7,8 +7,6 @@ export default StyleSheet.create({
       elevation: 8,
       backgroundColor: "#6056D4",
       borderRadius: 20,
-      paddingVertical: 15,
-      paddingHorizontal: 20,
       justifyContent:"center",
       margin: 10
 
@@ -25,8 +23,6 @@ export default StyleSheet.create({
       elevation: 8,
       backgroundColor: "#FFFFFF",
       borderRadius: 20,
-      paddingVertical: 15,
-      paddingHorizontal: 20,
       justifyContent:"center",
       margin: 10
 
@@ -38,13 +34,11 @@ export default StyleSheet.create({
       alignSelf: "center",
     },
     transparentAppButtonContainer: {
-      width: 400,
+      width: 201,
       height: 36,
       elevation: 8,
       backgroundColor: "rgba(201, 76, 76, 0.0)",
       borderRadius: 20,
-      paddingVertical: 15,
-      paddingHorizontal: 20,
       justifyContent:"center",
       margin: 10
 

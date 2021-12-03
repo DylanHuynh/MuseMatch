@@ -9,8 +9,8 @@ const SpotifyWebApi = require('spotify-web-api-node');
     genres: [],
     songs: [],
     artists: [],
-    rightSwipped: [List of the id of people swiped right by them]
-    leftSwipped: [List of the id of people swiped left by them]
+    rightSwiped: [List of the id of people swiped right by them]
+    leftSwiped: [List of the id of people swiped left by them]
 }
  */
 
@@ -111,32 +111,33 @@ async function updateOneByID(uid, updateValues) {
 }
 
 async function swipeRight(swiperID, swipeeID) {
-  const swiper = await readByID(swiperID);
-  swiper.rightSwipped.push(swipeeID);
+  const swiper = await readByUID(swiperID);
+  swiper.rightProfileSwiped.push(swipeeID);
   updateOneByID(swiperID, {
-    rightSwipped: swiper.rightSwipped
+    rightProfileSwiped: swiper.rightProfileSwiped
   });
 }
 
 async function swipeLeft(swiperID, swipeeID) {
-  const swiper = await readByID(swiperID);
-  swiper.leftSwipped.push(swipeeID);
+  const swiper = await readByUID(swiperID);
+  swiper.leftProfileSwiped.push(swipeeID);
   updateOneByID(swiperID, {
-    leftSwipped: swiper.leftSwipped
+    leftProfileSwiped: swiper.leftProfileSwiped
   });
 }
 
 async function isMatch(userA_ID, userB_ID) {
-  let userA = await readByID(userA_ID);
-  let userB = await readByID(userB_ID);
-  return (userA.rightSwipped.indexOf(userB_ID) != -1) &&
-         (userB.rightSwipped.indexOf(userA_ID) != -1);
+  let userA = await readByUID(userA_ID);
+  let userB = await readByUID(userB_ID);
+  console.log(userA.rightProfileSwiped)
+  console.log(userB.rightProfileSwiped)
+  return (userA.rightProfileSwiped.indexOf(userB_ID) != -1) &&
+         (userB.rightProfileSwiped.indexOf(userA_ID) != -1);
 }
 
 async function swipeSongRight(swiperID, songID) {
   const swiper = await readByUID(swiperID);
   swiper.rightSongSwiped.push(songID);
-  console.log("rightSwipe",swiper.rightSongSwiped)
   updateOneByID(swiperID, {
     rightSongSwiped: swiper.rightSongSwiped
   });
@@ -145,12 +146,29 @@ async function swipeSongRight(swiperID, songID) {
 async function swipeSongLeft(swiperID, songID) {
   const swiper = await readByUID(swiperID);
   swiper.leftSongSwiped.push(songID);
-  console.log("leftSwipe",swiper.rightSongSwiped)
-
   updateOneByID(swiperID, {
     leftSongSwiped: swiper.leftSongSwiped
   });
 }
 
+async function getAllUsers() {
+  const client = await MongoClient.connect(url, { useNewUrlParser: true })
+    .catch(err => { console.log(err); });
+  if (!client) {
+    return;
+  }
+  try {
+    const db = client.db("musematch");
+    let collection = db.collection('account_info');
+    let res = await collection.find({}).toArray();
+    return res
 
-module.exports = { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch }
+  } catch (err) {
+    console.log(err);
+  } finally {
+    client.close();
+  }
+}
+
+module.exports = { write, readByUID, swipeSongRight, swipeSongLeft, swipeRight, swipeLeft, isMatch , getAllUsers }
+

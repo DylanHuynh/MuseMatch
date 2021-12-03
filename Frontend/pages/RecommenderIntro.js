@@ -55,7 +55,7 @@ function RecommenderIntro({ navigation }) {
             style={styles.linearGradient}
         >
                 <Text style={styles.introTitle}>Your Daily Recommender</Text>
-                <Text style={styles.subtitle}>Based on your interests in...</Text> 
+                <Text style={styles.subtitle}>Based on your interests in...</Text>
                 <FlatGrid
                     itemDimension={130}
                     data={items}
@@ -68,15 +68,15 @@ function RecommenderIntro({ navigation }) {
                                 flex: 1,
                                 flexDirection: 'column',
                                 margin: 1
-                            }}>    
+                            }}>
 
                             <Image style={styles.itemContainer} source={{uri: item.src}}/>
                         </View>
                     )}
-                /> 
-                
+                />
+
                 <AppButton
-                    title="Take a look at my recommendations >"
+                    title="Take a look at my recommendations"
                     onPress={() => navigation.navigate("RecommenderView")}
                     type="transparent"
                 />
