@@ -11,6 +11,7 @@ const corsOptions = {
 }
 
 const app = express()
+app.use(express.json({limit: '50mb'}));
 app.use(cors(corsOptions)) // Use this after the variable declaration
 app.use(bodyParser.json())
 const port = 3000
@@ -152,13 +153,11 @@ app.post('/api/swipe-profile-right', async (req, res, next) => {
 app.post('/api/swipe-song-right', async (req, res, next) => {
   const userID = req.body.userID
   const songID = req.body.songID
-  console.log(req.body)
   await swipeSongRight(userID, songID);
 })
 
 app.post('/api/swipe-song-left', async (req, res, next) => {
-  const userID = req.query.userID
-  const songID = req.query.songID
-  console.log(req.body)
+  const userID = req.body.userID
+  const songID = req.body.songID
   await swipeSongLeft(userID, songID);
 })

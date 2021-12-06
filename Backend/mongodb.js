@@ -45,7 +45,6 @@ async function readByID(id) {
 }
 
 async function readByUID(uid) {
-  console.log("uid",uid)
   const client = await MongoClient.connect(url, { useNewUrlParser: true })
     .catch(err => { console.log(err); });
   if (!client) {
@@ -61,7 +60,6 @@ async function readByUID(uid) {
     let query = { uid: uid }
 
     let res = await collection.findOne(query);
-    console.log({res})
     if (res == null) {
       return {
         uid: -1
@@ -138,7 +136,6 @@ async function isMatch(userA_ID, userB_ID) {
 async function swipeSongRight(swiperID, songID) {
   const swiper = await readByUID(swiperID);
   swiper.rightSongSwiped.push(songID);
-  console.log("rightSwipe",swiper.rightSongSwiped)
   updateOneByID(swiperID, {
     rightSongSwiped: swiper.rightSongSwiped
   });
@@ -147,8 +144,6 @@ async function swipeSongRight(swiperID, songID) {
 async function swipeSongLeft(swiperID, songID) {
   const swiper = await readByUID(swiperID);
   swiper.leftSongSwiped.push(songID);
-  console.log("leftSwipe",swiper.rightSongSwiped)
-
   updateOneByID(swiperID, {
     leftSongSwiped: swiper.leftSongSwiped
   });

@@ -34,6 +34,44 @@ export default StyleSheet.create({
       songView: {
         paddingTop: 40,
       },
+      imageThumbnail: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 100,
+      },
+      linearGradient: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 5,
+        height: '100%',
+        width: '100%'
+    },
+      introTitle: {
+        textAlign: 'center',
+        // fontFamily: "GothamBold",
+        fontWeight: 'bold',
+        fontSize: 30,
+        color: 'white',
+        marginTop: 100,
+      },
+      gridView: {
+        paddingTop: 10,
+        flex: 1,
+      },
+      itemContainer: {
+        justifyContent: 'flex-end',
+        borderRadius: 5,
+        padding: 10,
+        height: 150,
+      },
+      subtitle: {
+        textAlign: 'center',
+        fontFamily: "GothamBold",
+        fontSize: 15,
+        color: 'white',
+        paddingTop: 30,
+        paddingBottom: 10,
+      },
       songName: {
           position: "relative",
           textAlign: 'left',

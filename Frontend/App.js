@@ -12,6 +12,7 @@ import Chat from './pages/Chat.js';
 import CreateProfile from './pages/CreateProfile.js';
 import SongRecs from './pages/SongRecsView.js';
 import Home from './pages/Home'
+import RecommenderIntro from './pages/RecommenderIntro'
 
 
 const Stack = createNativeStackNavigator();
@@ -29,17 +30,21 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Landing" screenOptions={{
-        headerShown: false,
-        cardStyle: { backgroundColor: '#546DD3' }
-      }}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Landing" component={Landing} />
-        <Stack.Screen name="Create Account" component={CreateAccount} />
-        <Stack.Screen name="Chat" component={Chat}/>
+      <Stack.Navigator initialRouteName = "Landing">
+        <Stack.Screen name="Landing" component={Landing} options = {{
+          headerShown: false
+        }}/>
+        <Stack.Screen name="Login" component={Login} options = {{
+          headerShown: true
+        }} />
+        <Stack.Screen name="Create Account" component={CreateAccount} options = {{
+          headerShown: true
+        }}
+          />
         <Stack.Screen name="Home" component = {Home} />
         <Stack.Screen name="CreateProfile" component = {CreateProfile} />
-        <Stack.Screen name="SongRecs" component = {SongRecs} />
+        <Stack.Screen name="RecommenderIntro" component = {RecommenderIntro} />
+
       </Stack.Navigator>
     </NavigationContainer>
 
