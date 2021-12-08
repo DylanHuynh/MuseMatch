@@ -239,9 +239,8 @@ export default function CreateProfile({ navigation }) {
                     </View>
 
                 </View>
+                </View>
             </View>
-            </View>
-
         </SafeAreaView>
     );
 };

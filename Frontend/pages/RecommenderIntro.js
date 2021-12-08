@@ -8,7 +8,7 @@ import Firebase, { auth } from '../config/firebase';
 import styles from '../styles/RecommenderViewStyles'
 import AppButton from '../components/AppButton.js';
 import RecommenderView from './RecommenderView';
-
+import SongRecs from './SongRecsView';
 // import data from './SongsTestData'
 import axios from 'axios';
 
@@ -90,6 +90,7 @@ export default function RecommenderStack() {
       <ModalStack.Navigator mode='modal' initialRouteName="RecommenderIntro" headerMode='none' screenOptions={{ headerShown: false }}>
         <ModalStack.Screen name='RecommenderIntro' component={RecommenderIntro} />
         <ModalStack.Screen name='RecommenderView' component={RecommenderView} />
+        <ModalStack.Screen name="SongRecs" component = {SongRecs} />
       </ModalStack.Navigator>
     );
   }

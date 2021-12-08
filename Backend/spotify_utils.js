@@ -39,7 +39,7 @@ async function getSongByID(songID) {
 
 async function getRecommendationsGeneral(
   seed_artists_,
-  seed_genres_,
+  seed_genres_ = "pop",
   seed_tracks_,
   min_energy_ = 0.4,
   min_popularity_ = 75,

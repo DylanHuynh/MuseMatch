@@ -10,6 +10,7 @@ import Homepage from './pages/Homepage.js';
 import SwipeView from './pages/SwipeView.js';
 import Chat from './pages/Chat.js';
 import CreateProfile from './pages/CreateProfile.js';
+import SongRecs from './pages/SongRecsView.js';
 import Home from './pages/Home'
 import RecommenderIntro from './pages/RecommenderIntro'
 
@@ -19,6 +20,7 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [loaded] = useFonts({
     "GothamBold": require('./assets/fonts/GothamBold.ttf'),
+    "Nunito": require('./assets/fonts/Nunito-Bold.ttf')
   });
 
   if (!loaded) {
