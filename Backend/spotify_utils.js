@@ -102,17 +102,26 @@ async function getUserProfileInfo(userAccessToken) {
     // Get top 10 songs
     let top10Songs = [];
     for (song of tracksData.slice(0, 10)) {
-      top10Songs.push({"name": song.name, "id": song.id, "image": song.album.images[0].url});
+      top10Songs.push({
+        "name": song.name, 
+        "id": song.id, 
+        "image": song.album.images[0].url, 
+        "artist": song.artists[0].name,
+        "artist_id": song.artists[0].id
+      });
     }
     // Get favorite artist information
     let artistResponse = await apiConnection.getMyTopArtists();
     let topArtists = artistResponse.body.items;
-    let favArtist = topArtists[0];
-    let favArtistData = {
-      "name": favArtist.name,
-      "id": favArtist.id,
-      "image": favArtist.images[0].url
-    };
+    let favArtistData = [];
+    for (let i = 0; i < 10; i++) {
+      let artist = topArtists[i];
+      favArtistData.push({
+        "name": artist.name,
+        "id": artist.id,
+        "image": artist.images[0].url
+      });
+    }
     // Calculate top 3 genres
     // TODO: Potentially revise/improve genre calculation algorithm
     let genreCounts = {};
