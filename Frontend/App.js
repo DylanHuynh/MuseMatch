@@ -35,15 +35,21 @@ export default function App() {
           headerShown: false
         }}/>
         <Stack.Screen name="Login" component={Login} options = {{
-          headerShown: true
+          headerShown: false
         }} />
         <Stack.Screen name="Create Account" component={CreateAccount} options = {{
-          headerShown: true
+          headerShown: false
         }}
           />
-        <Stack.Screen name="Home" component = {Home} />
-        <Stack.Screen name="CreateProfile" component = {CreateProfile} />
-        <Stack.Screen name="RecommenderIntro" component = {RecommenderIntro} />
+        <Stack.Screen name="Home" component = {Home} options = {{
+          headerShown: false
+        }}/>
+        <Stack.Screen name="CreateProfile" component = {CreateProfile} options = {{
+          headerShown: false
+        }}/>
+        <Stack.Screen name="RecommenderIntro" component = {RecommenderIntro} options = {{
+          headerShown: false
+        }}/>
 
       </Stack.Navigator>
     </NavigationContainer>

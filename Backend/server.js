@@ -107,7 +107,7 @@ app.listen(port, () => {
 
 app.get('/api/get-daily-recs', async (req, res, next) => {
   const profile = await getUserProfileInfo(req.query.userAccessToken)
-  const artistId = profile.favorite_artist_data.id
+  const artistId = profile.top_10_artists[0].id
   const genres = profile.top_3_genres[0].toString()
   let trackList = profile.top_10_songs.map(song => song.id)
   if (trackList.length > 3) {

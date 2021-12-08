@@ -184,7 +184,7 @@ const SwipeView = ({ navigation }) => {
                 <TouchableOpacity activeOpacity={1}>
                   {arr.map((number) => {
                     return (
-                      <TopArtists number={number} />
+                      <TopArtists number={number} artist_index={number - 1} />
                     )
                   })}
                 </TouchableOpacity>
@@ -193,10 +193,7 @@ const SwipeView = ({ navigation }) => {
             }
 
             {selectedIndex == 2 &&
-
-              <AboutMe bio={
-                "Rodney Erickson is a content marketing professional at HubSpot, an inbound marketing and sales platform that helps companies attract visitors, convert leads, and close customers. Previously, Rodney worked as a marketing manager for a tech software startup."} />
-
+              <AboutMe bio={data[index].bio} artist={data[index].favorite_artist} song={data[index].favorite_song}/>
             }
 
             <View style={styles.buttonContainer}>
@@ -221,12 +218,17 @@ const SwipeView = ({ navigation }) => {
       const userAccessToken = await SecureStore.getItemAsync('secure_token')
       const allUsersResponse = await axios.get("http://10.0.2.2:3000/api/get-all-users", { params: { userAccessToken: userAccessToken } })
       const allUsers = allUsersResponse.data.map(user => {
+        console.log(user)
         return {
           id: user.uid,
           name: user.username,
+          favorite_artist: user.favorite_artist,
+          favorite_song: user.favorite_song,
           genres: user.spotify_profile.top_3_genres.toString().toUpperCase(),
-          image: user.spotify_profile.favorite_artist_data.image,
-          top_10_songs: user.spotify_profile.top_10_songs
+          image: user.spotify_profile.top_10_artists[0].image,
+          top_10_songs: user.spotify_profile.top_10_songs,
+          top_10_artists: user.spotify_profile.top_10_artists,
+          bio : user.bio
         }
       }).filter(user => user.id != auth.currentUser.uid)
       await setData(allUsers);
@@ -236,26 +238,25 @@ const SwipeView = ({ navigation }) => {
   }, [])
 
   const TopSongs = ({ number, song_index }) => {
-    console.log({ song_index })
-    console.log({ index })
     return (
       <View style={{ flexDirection: 'row', marginTop: 7, marginBottom: 10 }}>
-        <Text style={styles.topSongsNumberHeader}>{number}</Text>
-        <Image style={styles.topSongsCellImage} source={{ uri: data[index].top_10_songs[song_index].image }} />
-        <View style={{ marginLeft: 15 }}>
-          <Text style={styles.topSongsTitle}>{data[index].top_10_songs[song_index].name}</Text>
+        <Text adjustsFontSizeToFit numberOfLines={1} style={styles.topSongsNumberHeader}>{number}</Text>
+        <Image adjustsFontSizeToFit numberOfLines={1} style={styles.topSongsCellImage} source={{ uri: data[index].top_10_songs[song_index].image }} />
+        <View style={{ marginLeft: 15, marginRight: 5, paddingRight: 5 }}>
+          <Text adjustsFontSizeToFit numberOfLines={1} style={styles.topSongsTitle}>{data[index].top_10_songs[song_index].name}</Text>
+          <Text adjustsFontSizeToFit numberOfLines={1} style={styles.topSongsArtist}>{data[index].top_10_songs[song_index].artist}</Text>
         </View>
       </View>
     )
   }
 
-  const TopArtists = (props) => {
+  const TopArtists = ({ number, artist_index }) => {
     return (
       <View style={{ flexDirection: 'row', marginTop: 7, marginBottom: 10 }}>
-        <Text style={styles.topSongsNumberHeader}>{props.number}</Text>
-        <Image style={styles.topSongsCellImage} source={require('../assets/ed.jpg')} />
-        <View style={{ marginLeft: 15, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={styles.topArtists}>Iann Dior</Text>
+        <Text adjustsFontSizeToFit numberOfLines={1} style={styles.topSongsNumberHeader}>{number}</Text>
+        <Image adjustsFontSizeToFit numberOfLines={1} style={styles.topSongsCellImage} source={{ uri: data[index].top_10_artists[artist_index].image }} />
+        <View style={{ marginLeft: 15, marginRight: 5, paddingRight: 5, justifyContent: 'center', alignItems: 'center' }}>
+          <Text  adjustsFontSizeToFit numberOfLines={1} style={styles.topArtists}>{data[index].top_10_artists[artist_index].name}</Text>
         </View>
       </View>
     )
@@ -272,16 +273,12 @@ const SwipeView = ({ navigation }) => {
           <Text style={{ fontWeight: 'bold', fontSize: 22, paddingLeft: 10 }}>What I Have On Repeat</Text>
           <View style={{ paddingHorizontal: 10, paddingTop: 5, paddingBottom: 5 }}>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={{ fontWeight: '700' }}>Genre: </Text>
-              <Text>Classical</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: '700' }}>Artist: </Text>
-              <Text>Travis Scott</Text>
+              <Text>{props.artist}</Text>
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={{ fontWeight: '700' }}>Song: </Text>
-              <Text>W.A.P</Text>
+              <Text>{props.song}</Text>
             </View>
           </View>
         </View>

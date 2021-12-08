@@ -8,8 +8,10 @@ export default StyleSheet.create({
         backgroundColor: 'black',
       },
       card: {
-        height: '80%',
+        top: 25,
+        flex: 1,
         borderRadius: 25,
+        justifyContent: 'center',
         backgroundColor: "#F3F3FF",
       },
       text: {
@@ -109,7 +111,11 @@ export default StyleSheet.create({
     },
     topSongsTitle: {
       fontSize: 20,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      flexShrink: 1,
+    },
+    topSongsArtist: {
+      fontSize: 10,
     },
     topSongsArtist: {
       fontSize: 15,
