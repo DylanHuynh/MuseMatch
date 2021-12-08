@@ -95,7 +95,7 @@ export default function CreateProfile({ navigation }) {
     return (
         <SafeAreaView style={styles.safeAreaContainer}>
             <View style = {styles.container}>
-                <Text style={styles.createAccountLabel}>Sign In</Text>
+                <Text style={styles.createAccountLabel}>Create Profile</Text>
                 <Text style={styles.label}>Username</Text>
                 <Controller
                     control={control}
@@ -230,13 +230,7 @@ export default function CreateProfile({ navigation }) {
                         type="primary"
                     />
 
-                    <View style={styles.buttonContainer}>
-                        <AppButton
-                            title="Create Profile"
-                            onPress={onHandleCreateProfile}
-                            type="primary"
-                        />
-                    </View>
+
 
                 </View>
                 </View>
