@@ -1,38 +1,33 @@
 import React, {useEffect, useState} from 'react';
 import { Button, StyleSheet, Text, View, Image, TouchableOpacity, Icon, Modal, ScrollView, TouchableWithoutFeedback } from 'react-native'
-import PagerView from 'react-native-pager-view';
 import styles from '../styles/SongRecsStyles.js'
 import data from './SongsTestData'
-import SegmentedControl from '@react-native-segmented-control/segmented-control';
-import Firebase, { auth, db } from '../config/firebase';
-import testData from './SwipeTestData';
-import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
+
 
 
 
 const SongRecsView = ({ navigation }) => {
-  
+
   const arr = Array(data.length);
   for (let i = 0; i < data.length; i++) {
     arr[i] = i;
   }
   console.log(data[0].song_name);
 
-  
+
 
 
   return (
     <View style = {styles.card}>
       <Text style = {styles.title}>Explore Your Curated Recs</Text>
-      
+
 
       <View style = {{height: 300}}>
         <ScrollView style = {styles.scrollView}>
             <TouchableOpacity activeOpacity={1}>
                 {arr.map((number) => {
                     return (
-                      <RowView number={number}/>                      
+                      <RowView number={number}/>
                     )
                 })}
             </TouchableOpacity>

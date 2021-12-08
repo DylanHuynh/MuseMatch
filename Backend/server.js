@@ -106,7 +106,6 @@ app.listen(port, () => {
 
 
 app.get('/api/get-daily-recs', async (req, res, next) => {
-  console.log(req.query)
   const profile = await getUserProfileInfo(req.query.userAccessToken)
   const artistId = profile.favorite_artist_data.id
   const genres = profile.top_3_genres[0].toString()
@@ -117,16 +116,21 @@ app.get('/api/get-daily-recs', async (req, res, next) => {
   const tracks = trackList.toString()
   getRecommendationsGeneral(seed_artists_ = artistId, seed_genres_ = genres, seed_tracks = tracks)
     .then(response => {
-      console.log(response.body)
       res.send(response.body.tracks)
     })
 })
 
 app.get('/api/get-recommendations', async (req, res, next) => {
+  console.log("hit!")
+  console.log(req.query)
   const artists = req.query.artists
-  const genres = req.query.genres
-  const response = await getRecommendationsGeneral(artists, genres);
-  res.send(response)
+  const tracks = req.query.tracks
+
+  getRecommendationsGeneral(seed_artists_ = artists,seed_genres="pop", seed_tracks = tracks)
+    .then(response => {
+      console.log(response.body)
+      res.send(response.body.tracks)
+    })
 })
 
 app.get('/api/get-all-users', async (req, res, next) => {

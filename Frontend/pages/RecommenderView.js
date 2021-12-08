@@ -13,9 +13,7 @@ import axios from 'axios';
 
 
 const getTenSongs = async (userAccessToken) => {
-  console.log('accessToken', userAccessToken)
   const response = await axios.get("http://10.0.2.2:3000/api/get-daily-recs", { params: { userAccessToken: userAccessToken } })
-  console.log(response.data)
   let songs = response.data
   for (let i = 0; i < songs.length; i++) {
     const song = songs[i]
@@ -31,16 +29,7 @@ const getTenSongs = async (userAccessToken) => {
   return songs
 }
 
-const getNewRecs = async (token) => {
-  axios.get("http://10.0.2.2:3000/api/get-new-recs", { token })
-    .then(response => {
-      console.log(response)
-    })
-    .catch(error => {
-      console.log(error)
-    })
-  return response.data;
-}
+
 
 const addSwipedLeft = async (userId, song) => {
   const body = {
@@ -60,8 +49,8 @@ const addSwipedRight = async (userId, song) => {
 }
 
 var index = 0;
-var swipedYes = [];
-var swipedNo = [];
+let swipedYes = [];
+let swipedNo = [];
 const swiperRef = React.createRef();
 
 
@@ -79,23 +68,28 @@ const SwipeView = ({ navigation }) => {
     fetchMyAPI()
 
   }, [])
+
   const getFinalRecs = async () => {
-    body = {
-      artists: swipedYes.map(song => song.artistID).toString(),
-      genres: swipedYes.map(song => song.genre).toString(),
-      tracks: swipedYes.map(song => song.id).toString()
-    }
-    // TODO: implement here
-    // const recs = await axios.get("http://10.0.2.2:3000/api/swipe-song-right", body)
+    console.log({swipedYes})
+    const userAccessToken = await SecureStore.getItemAsync('secure_token');
+    const response = await axios.get("http://10.0.2.2:3000/api/get-daily-recs", { params: { userAccessToken: userAccessToken } })
+   console.log('dyhuynh',{response})
+    const resp = await axios.get("http://10.0.2.2:3000/api/get-recommendations", { params: {
+      artists: swipedYes.map(song => song.artistID).slice(0,2).toString(),
+      tracks: swipedYes.map(song => song.id).slice(0,2).toString()
+    } })
+    console.log("done")
+    console.log(resp)
     setFinalRecs([])
-    setDoneSwiping(true);
   }
   const onSwiped = () => {
-    if (index == data.length) {
+    if (index + 1 == data.length) {
       getFinalRecs();
+      // navigation.navigate("SongRecs");
       return
     }
-    index = (index + 1) % data.length;
+    index = index + 1;
+
     console.log("index: ", index);
     console.log(data[index]);
     console.log("_______");
@@ -154,21 +148,27 @@ const SwipeView = ({ navigation }) => {
         }}
         onSwiped={() => onSwiped()}
         onSwipedLeft={() => {
+          if (index - 1 >= data.length) {
+            return
+          }
           swipedNo.push(data[index - 1]);
           addSwipedLeft(auth.currentUser.uid, data[index - 1].id);
         }}
         onSwipedRight={() => {
+          if (index - 1 >= data.length) {
+            return
+          }
           // temporary
-          navigation.navigate("SongRecs");
-          // swipedYes.push(data[index - 1]);
-          // addSwipedRight(auth.currentUser.uid, data[index - 1].id);
+          // navigation.navigate("SongRecs");
+          swipedYes.push(data[index - 1]);
+          addSwipedRight(auth.currentUser.uid, data[index - 1].id);
         }}
-        onSwipedAll={() => {
-          console.log('Done Swiping!');
-          songList = getNewRecs(auth.currentUser.uid);
-          console.log("new song recs: ", songList);
-          navigation.navigate("Homepage");
-        }}
+        // onSwipedAll={() => {
+        //   console.log('Done Swiping!');
+        //   songList = getNewRecs(auth.currentUser.uid);
+        //   console.log("new song recs: ", songList);
+        //   navigation.navigate("SongRecs");
+        // }}
         cardIndex={0}
         backgroundColor={'#546DD3'}
         stackSize={3}

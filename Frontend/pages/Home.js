@@ -10,7 +10,7 @@ import ChatHomeStack from '../pages/ChatHomeStack';
 import AddRoomScreen from '../pages/AddRoomScreen';
 import RecommenderView from '../pages/RecommenderView';
 import SongRecs from '../pages/SongRecsView';
-
+import RecommenderStack from './RecommenderIntro';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -50,7 +50,7 @@ const H = () => {
                 <Stack.Screen name="Recommender" component={RecommenderStack} />
                 <Stack.Screen name="Messaging" component={ChatHomeStack} />
                 <Stack.Screen name="Settings" component={Homepage} />
-                <Stack.Screen name="SongRecs" component = {SongRecs} />
+
             </Tab.Navigator>
         </NavigationContainer>
     )
