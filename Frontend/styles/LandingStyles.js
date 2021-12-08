@@ -21,9 +21,16 @@ export default StyleSheet.create({
     bodyContainer: {
         flex: 1,
         width: '60%',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     footer: {
         height:100,
+    },
+    image: {        
+          alignItems:'center',
+          justifyContent:'center',
+          top: 50,
+          width:250,
+          height:250,
     }
 })

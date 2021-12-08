@@ -62,6 +62,11 @@ const SwipeView = ({ navigation }) => {
   const [data, setData] = useState([])
   const [showMatch, setShowMatch] = useState(false);
 
+  function useForceUpdate() {
+    const [value, setValue] = useState(0); // integer state
+    return () => setValue(value => value + 1); // update the state to force render
+  }
+
   const swipedRightOn = async (currentUserId, swipedUserId) => {
     console.log("swiping right")
     console.log(currentUserId, swipedUserId)
@@ -74,28 +79,29 @@ const SwipeView = ({ navigation }) => {
     console.log({ match })
     if (match) {
       console.log('dyhuynh1')
-      console.log(currentUserId,swipedUserId)
+      console.log(currentUserId, swipedUserId)
       const user1 = await loadUser(currentUserId)
       const user2 = await loadUser(swipedUserId)
-      console.log({user1})
+      console.log({ user1 })
       db
-      .collection('THREADS')
-      .add({
-        name: user1.username + " and " + user2.username,
-        latestMessage: {
-          text: `You have joined the room.`,
-          createdAt: new Date().getTime()
-        },
-        members: [currentUserId, swipedUserId]
-      })
-      .then(docRef => {
-        docRef.collection('MESSAGES').add({
-          text: `You have joined the room.`,
-          createdAt: new Date().getTime(),
-          system: true
+        .collection('THREADS')
+        .add({
+          name: user1.username + " and " + user2.username,
+          latestMessage: {
+            text: `You have joined the room.`,
+            createdAt: new Date().getTime()
+          },
+          members: [currentUserId, swipedUserId]
+        })
+        .then(docRef => {
+          docRef.collection('MESSAGES').add({
+            text: `You have joined the room.`,
+            createdAt: new Date().getTime(),
+            system: true
+          });
         });
-      });
       setShowMatch(true);
+      useForceUpdate();
       console.log("Match found!")
     }
   }
@@ -193,7 +199,7 @@ const SwipeView = ({ navigation }) => {
             }
 
             {selectedIndex == 2 &&
-              <AboutMe bio={data[index].bio} artist={data[index].favorite_artist} song={data[index].favorite_song}/>
+              <AboutMe bio={data[index].bio} artist={data[index].favorite_artist} song={data[index].favorite_song} />
             }
 
             <View style={styles.buttonContainer}>
@@ -228,7 +234,7 @@ const SwipeView = ({ navigation }) => {
           image: user.spotify_profile.top_10_artists[0].image,
           top_10_songs: user.spotify_profile.top_10_songs,
           top_10_artists: user.spotify_profile.top_10_artists,
-          bio : user.bio
+          bio: user.bio
         }
       }).filter(user => user.id != auth.currentUser.uid)
       await setData(allUsers);
@@ -256,7 +262,7 @@ const SwipeView = ({ navigation }) => {
         <Text adjustsFontSizeToFit numberOfLines={1} style={styles.topSongsNumberHeader}>{number}</Text>
         <Image adjustsFontSizeToFit numberOfLines={1} style={styles.topSongsCellImage} source={{ uri: data[index].top_10_artists[artist_index].image }} />
         <View style={{ marginLeft: 15, marginRight: 5, paddingRight: 5, justifyContent: 'center', alignItems: 'center' }}>
-          <Text  adjustsFontSizeToFit numberOfLines={1} style={styles.topArtists}>{data[index].top_10_artists[artist_index].name}</Text>
+          <Text adjustsFontSizeToFit numberOfLines={1} style={styles.topArtists}>{data[index].top_10_artists[artist_index].name}</Text>
         </View>
       </View>
     )
