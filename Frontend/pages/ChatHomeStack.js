@@ -19,7 +19,7 @@ function ChatApp() {
         headerTitleStyle: {
           fontSize: 22,
         },
-        
+
       }
     }
     >
@@ -27,14 +27,7 @@ function ChatApp() {
         name='Chat Home'
         component={ChatHomeScreen}
         options={({ navigation }) => ({
-          headerRight: () => (
-            <IconButton
-            icon='message-plus'
-            size={23}
-            color='#ffffff'
-            onPress={() => navigation.navigate('AddRoom')}
-            />
-          ),
+
         })}
       />
       <ChatAppStack.Screen

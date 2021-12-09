@@ -99,15 +99,17 @@ const SwipeView = ({ navigation }) => {
             createdAt: new Date().getTime(),
             system: true
           });
-        });
-      setShowMatch(true);
-      useForceUpdate();
+        })
+        .then(() => setShowMatch(true))
+        .then(() => useForceUpdate());
+
       console.log("Match found!")
     }
   }
 
   const onSwiped = () => {
     if (index + 1 >= data.length) {
+      navigation.navigate('Messaging')
       return
     }
     index = (index + 1) % data.length;
