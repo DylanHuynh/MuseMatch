@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Alert, SafeAreaView, Image } from 'react-native';
 
 import { useForm, Controller } from "react-hook-form";
 import AppButton from '../components/AppButton.js';
@@ -28,6 +28,7 @@ export default function Landing({ navigation }) {
         >
             <SafeAreaView style={styles.container}>
             <View style={styles.bodyContainer}>
+                {/* <Image style={styles.image} source={require('../assets/musematch.png')} /> */}
                 <Text style={styles.label}>Make Genuine Connections.</Text>
                 <Text style={styles.label}>Just Through Music.</Text>
             </View>

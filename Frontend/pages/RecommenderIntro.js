@@ -8,7 +8,7 @@ import Firebase, { auth } from '../config/firebase';
 import styles from '../styles/RecommenderViewStyles'
 import AppButton from '../components/AppButton.js';
 import RecommenderView from './RecommenderView';
-import SongRecs from './SongRecsView';
+import SongRecsView from './SongRecsView';
 // import data from './SongsTestData'
 import axios from 'axios';
 
@@ -32,9 +32,7 @@ function RecommenderIntro({ navigation }) {
         //{ name: 'AMETHYST', code: '#9b59b6', image: data[3].album_cover, },
       ]);
     const getSongs = async (userAccessToken) => {
-        console.log('accessToken', userAccessToken)
         const response = await axios.get("http://10.0.2.2:3000/api/get-daily-recs", { params: { userAccessToken: userAccessToken } })
-        console.log(response.data)
         let songs = response.data
         for (let i = 0; i < songs.length; i++) {
         const song = songs[i]
@@ -90,7 +88,7 @@ export default function RecommenderStack() {
       <ModalStack.Navigator mode='modal' initialRouteName="RecommenderIntro" headerMode='none' screenOptions={{ headerShown: false }}>
         <ModalStack.Screen name='RecommenderIntro' component={RecommenderIntro} />
         <ModalStack.Screen name='RecommenderView' component={RecommenderView} />
-        <ModalStack.Screen name="SongRecs" component = {SongRecs} />
+        <ModalStack.Screen name="SongRecsView" component = {SongRecsView} />
       </ModalStack.Navigator>
     );
   }

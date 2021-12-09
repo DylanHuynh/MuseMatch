@@ -76,15 +76,16 @@ export default StyleSheet.create({
         paddingLeft: 40,
       },
       row: {
-        flexDirection: 'row', 
-        marginTop: 7, 
+        flexDirection: 'row',
+        marginTop: 7,
         marginBottom: 7,
         alignItems: "center",
       },
       linkText: {
-        fontSize: 14,
+        fontSize: 12,
         fontFamily: "Nunito",
         paddingTop: 40,
         textAlign: 'center',
+        marginLeft: 85
       }
 });
