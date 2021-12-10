@@ -86,6 +86,7 @@ export default StyleSheet.create({
         fontFamily: "Nunito",
         paddingTop: 40,
         textAlign: 'center',
-        marginLeft: 85
+        width: 300,
+        marginLeft: 50
       }
 });

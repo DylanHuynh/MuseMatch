@@ -76,7 +76,7 @@ function RecommenderIntro({ navigation }) {
                 <AppButton
                     title="Take a look at my recommendations"
                     onPress={() => navigation.navigate("RecommenderView")}
-                    type="transparent"
+                    type="primary"
                 />
         </LinearGradient>
         )
