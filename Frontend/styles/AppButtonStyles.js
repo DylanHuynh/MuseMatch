@@ -2,9 +2,9 @@ import { View, Button, StyleSheet, TouchableOpacity, Text } from "react-native";
 
 export default StyleSheet.create({
     primaryAppButtonContainer: {
-      width: 201,
+      padding: 20,
       height: 36,
-      elevation: 8,
+      elevation: 4,
       backgroundColor: "#6056D4",
       borderRadius: 20,
       justifyContent:"center",
@@ -18,9 +18,9 @@ export default StyleSheet.create({
       alignSelf: "center",
     },
     secondaryAppButtonContainer: {
-      width: 201,
+      padding: 20,
       height: 36,
-      elevation: 8,
+      elevation: 4,
       backgroundColor: "#FFFFFF",
       borderRadius: 20,
       justifyContent:"center",
@@ -34,9 +34,9 @@ export default StyleSheet.create({
       alignSelf: "center",
     },
     transparentAppButtonContainer: {
-      width: 201,
+      padding: 20,
       height: 36,
-      elevation: 8,
+      elevation: 4,
       backgroundColor: "rgba(201, 76, 76, 0.0)",
       borderRadius: 20,
       justifyContent:"center",

@@ -36,12 +36,12 @@ export default function Landing({ navigation }) {
                 <AppButton
                     title="Sign up"
                     onPress={() => navigation.navigate("Create Account")}
-                    type="secondary"
+                    type="primary"
 
                 />
                 <AppButton
                     title="I already have an account"
-                    type="transparent"
+                    type="secondary"
                     onPress={() => navigation.navigate("Login")}
                 />
             </View>
@@ -50,7 +50,7 @@ export default function Landing({ navigation }) {
         </LinearGradient>
 
 
-       
+
     );
 };
 
